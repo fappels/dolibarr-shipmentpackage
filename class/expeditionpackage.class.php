@@ -101,6 +101,7 @@ class ExpeditionPackage extends CommonObject
 	 */
 	public $fields=array(
 		'rowid' => array('type'=>'int', 'label'=>'TechnicalID', 'enabled'=>'1', 'position'=>10, 'notnull'=>1, 'visible'=>0,),
+		'entity' => array('type'=>'integer', 'label'=>'Entity', 'enabled'=>'1', 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>15),
 		'ref' => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>'1', 'position'=>20, 'notnull'=>1, 'visible'=>4, 'noteditable'=>'1', 'default'=>'(PROV)', 'index'=>1, 'searchall'=>1, 'showoncombobox'=>'1', 'comment'=>"Reference of object"),
 		'ref_supplier' => array('type'=>'varchar(128)', 'label'=>'RefSupplier', 'enabled'=>'1', 'position'=>25, 'notnull'=>0, 'visible'=>1, 'index'=>1, 'searchall'=>1, 'showoncombobox'=>'1', 'help'=>"PackageRefSupplier"),
 		'fk_expedition' => array('type'=>'int', 'label'=>'Fkexpedition', 'enabled'=>'1', 'position'=>30, 'notnull'=>0, 'visible'=>5,),

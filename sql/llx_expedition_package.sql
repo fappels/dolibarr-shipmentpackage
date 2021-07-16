@@ -16,6 +16,7 @@
 
 CREATE TABLE llx_expedition_package(
 	rowid integer AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+	entity integer DEFAULT 1 NOT NULL, 
 	ref varchar(128) DEFAULT '(PROV)' NOT NULL, 
 	ref_supplier varchar(128),		-- package ref supplier who handles package (tracking number)
 	fk_expedition integer, 			-- when package from shipment, can be null for a free package not related to order
