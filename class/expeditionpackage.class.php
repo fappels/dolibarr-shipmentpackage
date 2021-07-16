@@ -102,8 +102,10 @@ class ExpeditionPackage extends CommonObject
 	public $fields=array(
 		'rowid' => array('type'=>'int', 'label'=>'TechnicalID', 'enabled'=>'1', 'position'=>10, 'notnull'=>1, 'visible'=>0,),
 		'ref' => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>'1', 'position'=>20, 'notnull'=>1, 'visible'=>4, 'noteditable'=>'1', 'default'=>'(PROV)', 'index'=>1, 'searchall'=>1, 'showoncombobox'=>'1', 'comment'=>"Reference of object"),
-		'fk_expedition' => array('type'=>'int', 'label'=>'Fkexpedition', 'enabled'=>'1', 'position'=>30, 'notnull'=>1, 'visible'=>-1,),
+		'ref_supplier' => array('type'=>'varchar(128)', 'label'=>'RefSupplier', 'enabled'=>'1', 'position'=>25, 'notnull'=>0, 'visible'=>1, 'index'=>1, 'searchall'=>1, 'showoncombobox'=>'1', 'help'=>"PackageRefSupplier"),
+		'fk_expedition' => array('type'=>'int', 'label'=>'Fkexpedition', 'enabled'=>'1', 'position'=>30, 'notnull'=>0, 'visible'=>5,),
 		'fk_soc' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'ThirdParty', 'enabled'=>'1', 'position'=>40, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToThirparty",),
+		'fk_supplier' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'TransportSupplier', 'enabled'=>'1', 'position'=>45, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToTransporter",),
 		'fk_project' => array('type'=>'integer:Project:projet/class/project.class.php:1', 'label'=>'Project', 'enabled'=>'1', 'position'=>50, 'notnull'=>-1, 'visible'=>-1, 'index'=>1,),
 		'description' => array('type'=>'varchar(255)', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>-1,),
 		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>-1,),
@@ -129,8 +131,10 @@ class ExpeditionPackage extends CommonObject
 	);
 	public $rowid;
 	public $ref;
+	public $ref_supplier;
 	public $fk_expedition;
 	public $fk_soc;
+	public $fk_supplier;
 	public $fk_project;
 	public $description;
 	public $value;
