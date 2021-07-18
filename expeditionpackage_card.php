@@ -77,6 +77,7 @@ if (!$res) {
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
+require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 dol_include_once('/package/class/expeditionpackage.class.php');
 dol_include_once('/package/lib/package_expeditionpackage.lib.php');
 
@@ -92,7 +93,7 @@ $cancel = GETPOST('cancel', 'aZ09');
 $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'expeditionpackagecard'; // To manage different context of search
 $backtopage = GETPOST('backtopage', 'alpha');
 $backtopageforcancel = GETPOST('backtopageforcancel', 'alpha');
-//$lineid   = GETPOST('lineid', 'int');
+$lineid   = GETPOST('lineid', 'int');
 
 // Initialize technical objects
 $object = new ExpeditionPackage($db);
@@ -175,7 +176,72 @@ if (empty($reshook)) {
 	include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
 
 	// Action to move up and down lines of object
-	//include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';
+	include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';
+
+	// Add line
+	if ($action == 'addline' && $permissiontoadd) {
+		$langs->load('errors');
+		$error = 0;
+
+		$fk_product = GETPOST('fk_product', 'int');
+		$qty = GETPOST('qty', 'alpha');
+
+		if (empty($fk_product)) {
+			setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Product')), null, 'errors');
+			$error++;
+		}
+
+		if (empty($qty)) {
+			setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Quantity')), null, 'errors');
+			$error++;
+		}
+
+		if (!$error) {
+			$line = new ExpeditionPackageLine($db);
+			$line->fk_expedition_package = $id;
+			$line->fk_product = $fk_product;
+			$line->qty = $qty;
+			$result = $line->create($user);
+			if ($result <= 0) {
+				setEventMessages($line->error, $line->errors, 'errors');
+				$action = '';
+			} else {
+				unset($_POST['fk_product']);
+			}
+		}
+	}
+
+	// update line
+	if ($action == 'updateline' && $permissiontoadd) {
+		$langs->load('errors');
+		$error = 0;
+
+		$fk_product = GETPOST('fk_product', 'int');
+		$qty = GETPOST('qty', 'alpha');
+
+		if (empty($fk_product)) {
+			setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Product')), null, 'errors');
+			$error++;
+		}
+
+		if (empty($qty)) {
+			setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Quantity')), null, 'errors');
+			$error++;
+		}
+
+		$line = new ExpeditionPackageLine($db);
+		$line->fetch($lineid);
+		$line->fk_product = $fk_product;
+		$line->qty = $qty;
+
+		$result = $line->update($user);
+		if ($result <= 0) {
+			setEventMessages($line->error, $line->errors, 'errors');
+			$action = '';
+		} else {
+			unset($_POST['fk_product']);
+		}
+	}
 
 	// Action to build doc
 	include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
@@ -452,7 +518,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		}
 
 		if (!empty($object->lines)) {
-			$object->printObjectLines($action, $mysoc, null, GETPOST('lineid', 'int'), 1);
+			$object->printObjectLines($action, $mysoc, null, GETPOST('lineid', 'int'), 1, '/custom/package/tpl'); // TODO find solution to not need to use this
 		}
 
 		// Form to add new line
@@ -464,7 +530,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 				$reshook = $hookmanager->executeHooks('formAddObjectLine', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 				if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 				if (empty($reshook))
-					$object->formAddObjectLine(1, $mysoc, $soc);
+					$object->formAddObjectLine(1, $mysoc, $soc, '/custom/package/tpl');  // TODO find solution to not need to use this
 			}
 		}
 

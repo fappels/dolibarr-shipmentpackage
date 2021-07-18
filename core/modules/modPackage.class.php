@@ -83,7 +83,7 @@ class modPackage extends DolibarrModules
 		// If file is in theme/yourtheme/img directory under name object_pictovalue.png, use this->picto='pictovalue'
 		// If file is in module/img directory under name object_pictovalue.png, use this->picto='pictovalue@module'
 		// To use a supported fa-xxx css style of font awesome, use this->picto='xxx'
-		$this->picto = 'workstation'; // is fa-pallet TODO when add module to core add new supported font awesom, 
+		$this->picto = 'workstation'; // is fa-pallet TODO when add module to core add new supported font awesom,
 
 		// Define some features supported by module (triggers, login, substitutions, menus, css, etc...)
 		$this->module_parts = array(
@@ -357,7 +357,6 @@ class modPackage extends DolibarrModules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
-		
 
 		/* END MODULEBUILDER LEFTMENU EXPEDITIONPACKAGE */
 		// Exports profiles provided by this module
