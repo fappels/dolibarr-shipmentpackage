@@ -197,13 +197,9 @@ if (empty($reshook)) {
 		}
 
 		if (!$error) {
-			$line = new ExpeditionPackageLine($db);
-			$line->fk_expedition_package = $id;
-			$line->fk_product = $fk_product;
-			$line->qty = $qty;
-			$result = $line->create($user);
+			$result = $object->addLine($user, $qty, $fk_product);
 			if ($result <= 0) {
-				setEventMessages($line->error, $line->errors, 'errors');
+				setEventMessages($this->error, $this->errors, 'errors');
 				$action = '';
 			} else {
 				unset($_POST['fk_product']);
@@ -229,17 +225,14 @@ if (empty($reshook)) {
 			$error++;
 		}
 
-		$line = new ExpeditionPackageLine($db);
-		$line->fetch($lineid);
-		$line->fk_product = $fk_product;
-		$line->qty = $qty;
-
-		$result = $line->update($user);
-		if ($result <= 0) {
-			setEventMessages($line->error, $line->errors, 'errors');
-			$action = '';
-		} else {
-			unset($_POST['fk_product']);
+		if (!$error) {
+			$result = $object->updateLine($user, $lineid, $qty, $fk_product);
+			if ($result <= 0) {
+				setEventMessages($this->error, $this->errors, 'errors');
+				$action = '';
+			} else {
+				unset($_POST['fk_product']);
+			}
 		}
 	}
 

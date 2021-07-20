@@ -25,7 +25,7 @@
 // Put here all includes required by your class file
 require_once DOL_DOCUMENT_ROOT.'/core/class/commonobject.class.php';
 //require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-//require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
+require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 /**
  * Class for ExpeditionPackage
@@ -109,7 +109,7 @@ class ExpeditionPackage extends CommonObject
 		'fk_supplier' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'TransportSupplier', 'enabled'=>'1', 'position'=>45, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToTransporter",),
 		'fk_project' => array('type'=>'integer:Project:projet/class/project.class.php:1', 'label'=>'Project', 'enabled'=>'1', 'position'=>50, 'notnull'=>-1, 'visible'=>-1, 'index'=>1,),
 		'description' => array('type'=>'varchar(255)', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>-1,),
-		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>-1,),
+		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>-1, 'default'=>0),
 		'fk_parcel_type' => array('type'=>'sellist:c_parcel_type:label:rowid::active=1', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1,),
 		'height' => array('type'=>'real', 'label'=>'Height', 'enabled'=>'1', 'position'=>90, 'notnull'=>0, 'visible'=>-1,),
 		'width' => array('type'=>'real', 'label'=>'Width', 'enabled'=>'1', 'position'=>100, 'notnull'=>0, 'visible'=>-1,),
@@ -356,6 +356,71 @@ class ExpeditionPackage extends CommonObject
 	}
 
 	/**
+	 * add line to package
+	 *
+	 * @param user	$user					User that do the action
+	 * @param int	$qty					Quantity
+	 * @param int	$fk_product				product id
+	 * @param int	$fk_product_lot			product lot id
+	 * @param int	$fk_origin_line			Corresponds with the line of the origin object (shipping)
+	 * @param int	$fk_origin_batch_line	Corresponds with the lot id line of the origin object (shipping line batch)
+	 *
+	 * @return	int NOK < 0 > lineid
+	 */
+	public function addLine($user, $qty, $fk_product, $fk_product_lot = null, $fk_origin_line = null, $fk_origin_batch_line = null)
+	{
+		$line = new ExpeditionPackageLine($this->db);
+		$line->fk_expedition_package = $this->id;
+		$line->qty = $qty;
+		$line->fk_product = $fk_product;
+		$line->fk_product_lot = $fk_product_lot;
+		$line->fk_origin_line = $fk_origin_line;
+		$line->fk_origin_batch_line = $fk_origin_batch_line;
+
+		$lineid = $line->create($user);
+		if ($lineid < 0) {
+			$this->error = $line->error;
+		} else {
+			$line->updatePackageValue($user, $this, 'increase');
+		}
+		return $lineid;
+	}
+
+	/**
+	 * update line to package
+	 *
+	 * @param user	$user					User that do the action
+	 * @param int	$lineid					line id
+	 * @param int	$qty					Quantity
+	 * @param int	$fk_product				product id
+	 * @param int	$fk_product_lot			product lot id
+	 * @param int	$fk_origin_line			Corresponds with the line of the origin object (shipping)
+	 * @param int	$fk_origin_batch_line	Corresponds with the lot id line of the origin object (shipping line batch)
+	 *
+	 * @return	int NOK < 0 > lineid
+	 */
+	public function updateLine($user, $lineid, $qty, $fk_product, $fk_product_lot = null, $fk_origin_line = null, $fk_origin_batch_line = null)
+	{
+		$line = new ExpeditionPackageLine($this->db);
+		$line->fetch($lineid);
+		$line->updatePackageValue($user, $this, 'decrease');
+		$line->fk_expedition_package = $this->id;
+		$line->qty = $qty;
+		$line->fk_product = $fk_product;
+		if (isset($fk_product_lot)) $line->fk_product_lot = $fk_product_lot;
+		if (isset($fk_origin_line)) $line->fk_origin_line = $fk_origin_line;
+		if (isset($fk_origin_batch_line)) $line->fk_origin_batch_line = $fk_origin_batch_line;
+
+		$lineid = $line->update($user);
+		if ($lineid < 0) {
+			$this->error = $line->error;
+		} else {
+			$line->updatePackageValue($user, $this, 'increase');
+		}
+		return $lineid;
+	}
+
+	/**
 	 * Load object in memory from the database
 	 *
 	 * @param int    $id   Id object
@@ -505,6 +570,9 @@ class ExpeditionPackage extends CommonObject
 			return -2;
 		}
 
+		$line = new ExpeditionPackageLine($this->db);
+		$line->fetch($idline);
+		$line->updatePackageValue($user, $this, 'decrease');
 		return $this->deleteLineCommon($user, $idline, $notrigger);
 	}
 
@@ -1310,5 +1378,33 @@ class ExpeditionPackageLine extends CommonObjectLine
 	{
 		return $this->deleteCommon($user, $notrigger);
 		//return $this->deleteCommon($user, $notrigger, 1);
+	}
+
+	/**
+	 * update package value with product pmp
+	 *
+	 * @param user				$user		User that do the action
+	 * @param ExpeditionPackage	$package	package to update value
+	 * @param string 			$mode		'increase' or 'decrease'
+	 * @return int NOK < 0 > OK
+	 */
+	public function updatePackageValue($user, $package, $mode = 'increase')
+	{
+		// update package value
+		$product = new Product($this->db);
+		$result = $product->fetch($this->fk_product);
+		if ($result > 0) {
+			$value = $product->pmp * $this->qty;
+			if ($mode == 'increase') {
+				$package->value += $value;
+			} else {
+				$package->value -= $value;
+			}
+			$result = $package->update($user);
+		} else {
+			$this->error = $product->error;
+		}
+
+		return $result;
 	}
 }
