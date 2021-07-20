@@ -383,10 +383,10 @@ class modPackage extends DolibarrModules
 		//$this->export_examplevalues_array[$r] = array('t.field'=>'Example');
 		//$this->export_help_array[$r] = array('t.field'=>'FieldDescHelp');
 		$this->export_sql_start[$r]='SELECT DISTINCT ';
-		$this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'expeditionpackage as t';
-		//$this->export_sql_end[$r]  =' LEFT JOIN '.MAIN_DB_PREFIX.'expeditionpackage_line as tl ON tl.fk_expeditionpackage = t.rowid';
+		$this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'expedition_package as t';
+		//$this->export_sql_end[$r]  =' LEFT JOIN '.MAIN_DB_PREFIX.'expedition_packagedet as tl ON tl.fk_expedition_package = t.rowid';
 		$this->export_sql_end[$r] .=' WHERE 1 = 1';
-		$this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('expeditionpackage').')';
+		$this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('expedition_package').')';
 		$r++; */
 		/* END MODULEBUILDER EXPORT EXPEDITIONPACKAGE */
 
@@ -404,7 +404,7 @@ class modPackage extends DolibarrModules
 		 include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
 		 //$this->export_dependencies_array[$r]=array('mysubobject'=>'ts.rowid', 't.myfield'=>array('t.myfield2','t.myfield3')); // To force to activate one or several fields if we select some fields that need same (like to select a unique key if we ask a field of a child to avoid the DISTINCT to discard them, or for computed field than need several other fields)
 		 $this->export_sql_start[$r]='SELECT DISTINCT ';
-		 $this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'expeditionpackage as t';
+		 $this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'expedition_package as t';
 		 $this->export_sql_end[$r] .=' WHERE 1 = 1';
 		 $this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('expeditionpackage').')';
 		 $r++; */

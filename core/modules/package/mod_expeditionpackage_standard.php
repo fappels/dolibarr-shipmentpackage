@@ -36,7 +36,7 @@ class mod_expeditionpackage_standard extends ModeleNumRefExpeditionPackage
 	 */
 	public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
 
-	public $prefix = 'EXPEDITIONPACKAGE';
+	public $prefix = 'PC';
 
 	/**
 	 * @var string Error code (or message)
@@ -87,7 +87,7 @@ class mod_expeditionpackage_standard extends ModeleNumRefExpeditionPackage
 
 		$posindice = strlen($this->prefix) + 6;
 		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
-		$sql .= " FROM ".MAIN_DB_PREFIX."package_expeditionpackage";
+		$sql .= " FROM ".MAIN_DB_PREFIX."expedition_package";
 		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."____-%'";
 		if ($object->ismultientitymanaged == 1) {
 			$sql .= " AND entity = ".$conf->entity;
@@ -124,7 +124,7 @@ class mod_expeditionpackage_standard extends ModeleNumRefExpeditionPackage
 		// first we get the max value
 		$posindice = strlen($this->prefix) + 6;
 		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
-		$sql .= " FROM ".MAIN_DB_PREFIX."package_expeditionpackage";
+		$sql .= " FROM ".MAIN_DB_PREFIX."expedition_package";
 		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."____-%'";
 		if ($object->ismultientitymanaged == 1) {
 			$sql .= " AND entity = ".$conf->entity;

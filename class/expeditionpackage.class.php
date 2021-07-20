@@ -117,8 +117,8 @@ class ExpeditionPackage extends CommonObject
 		'size_units' => array('type'=>'int', 'label'=>'Sizeunits', 'enabled'=>'1', 'position'=>120, 'notnull'=>0, 'visible'=>-1,),
 		'weight' => array('type'=>'real', 'label'=>'Weight', 'enabled'=>'1', 'position'=>130, 'notnull'=>0, 'visible'=>-1,),
 		'weight_units' => array('type'=>'int', 'label'=>'Weightunits', 'enabled'=>'1', 'position'=>140, 'notnull'=>0, 'visible'=>-1,),
-		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>150, 'notnull'=>0, 'visible'=>1,'arrayofkeyval'=>array('0'=>'NoDangerousGoods', '1'=>'Explosives', '2'=>'FlammableGases', '3'=>'FlammableLiquids', '4'=>'FlammableSolids', '5'=>'Oxidizing', '6'=>'ToxicAndInfectious', '7'=>'Radioactive', '8'=>'Corrosives', '9'=>'Miscellaneous')),
-		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>160, 'notnull'=>0, 'visible'=>1, 'arrayofkeyval'=>array('0'=>'NoTailLiftRequired', '1'=>'TailLiftRequired')),
+		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>150, 'notnull'=>0, 'visible'=>1,'arrayofkeyval'=>array('0'=>'', '1'=>'Explosives', '2'=>'FlammableGases', '3'=>'FlammableLiquids', '4'=>'FlammableSolids', '5'=>'Oxidizing', '6'=>'ToxicAndInfectious', '7'=>'Radioactive', '8'=>'Corrosives', '9'=>'Miscellaneous')),
+		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>160, 'notnull'=>0, 'visible'=>1, 'arrayofkeyval'=>array('0'=>'', '1'=>'TailLiftRequired')),
 		'note_public' => array('type'=>'html', 'label'=>'NotePublic', 'enabled'=>'1', 'position'=>170, 'notnull'=>0, 'visible'=>0,),
 		'note_private' => array('type'=>'html', 'label'=>'NotePrivate', 'enabled'=>'1', 'position'=>180, 'notnull'=>0, 'visible'=>0,),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>'1', 'position'=>190, 'notnull'=>1, 'visible'=>-2,),
@@ -128,7 +128,7 @@ class ExpeditionPackage extends CommonObject
 		'last_main_doc' => array('type'=>'varchar(255)', 'label'=>'LastMainDoc', 'enabled'=>'1', 'position'=>230, 'notnull'=>0, 'visible'=>0,),
 		'import_key' => array('type'=>'varchar(14)', 'label'=>'ImportId', 'enabled'=>'1', 'position'=>240, 'notnull'=>-1, 'visible'=>-2,),
 		'model_pdf' => array('type'=>'varchar(255)', 'label'=>'Model pdf', 'enabled'=>'1', 'position'=>250, 'notnull'=>-1, 'visible'=>0,),
-		'status' => array('type'=>'smallint', 'label'=>'Status', 'enabled'=>'1', 'position'=>260, 'notnull'=>1, 'visible'=>5, 'index'=>1, 'arrayofkeyval'=>array('0'=>'Draft', '1'=>'Validated', '9'=>'Canceled'),),
+		'status' => array('type'=>'smallint', 'label'=>'Status', 'enabled'=>'1', 'position'=>260, 'notnull'=>1, 'visible'=>5, 'index'=>1, 'default'=>0, 'arrayofkeyval'=>array('0'=>'Draft', '1'=>'Validated', '9'=>'Canceled'),),
 	);
 	public $rowid;
 	public $ref;
@@ -171,7 +171,7 @@ class ExpeditionPackage extends CommonObject
 	// /**
 	//  * @var string    Field with ID of parent key if this object has a parent
 	//  */
-	public $fk_element = 'fk_expeditionpackage';
+	public $fk_element = 'fk_expedition_package';
 
 	// /**
 	//  * @var string    Name of subtable class that manage subtable lines
@@ -915,11 +915,11 @@ class ExpeditionPackage extends CommonObject
 			global $langs;
 			//$langs->load("package@package");
 			$this->labelStatus[self::STATUS_DRAFT] = $langs->trans('Draft');
-			$this->labelStatus[self::STATUS_VALIDATED] = $langs->trans('Enabled');
-			$this->labelStatus[self::STATUS_CANCELED] = $langs->trans('Disabled');
+			$this->labelStatus[self::STATUS_VALIDATED] = $langs->trans('Validated');
+			$this->labelStatus[self::STATUS_CANCELED] = $langs->trans('Canceled');
 			$this->labelStatusShort[self::STATUS_DRAFT] = $langs->trans('Draft');
-			$this->labelStatusShort[self::STATUS_VALIDATED] = $langs->trans('Enabled');
-			$this->labelStatusShort[self::STATUS_CANCELED] = $langs->trans('Disabled');
+			$this->labelStatusShort[self::STATUS_VALIDATED] = $langs->trans('Validated');
+			$this->labelStatusShort[self::STATUS_CANCELED] = $langs->trans('Canceled');
 		}
 
 		$statusType = 'status'.$status;
@@ -1148,7 +1148,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/commonobjectline.class.php';
 class ExpeditionPackageLine extends CommonObjectLine
 {
 	// To complete with content of an object ExpeditionPackageLine
-	// We should have a field rowid, fk_expeditionpackage and position
+	// We should have a field rowid, fk_expedition_package and position
 
 	/**
 	 *  'type' if the field format ('integer', 'integer:ObjectClass:PathToClass[:AddCreateButtonOrNot[:Filter]]', 'varchar(x)', 'double(24,8)', 'real', 'price', 'text', 'html', 'date', 'datetime', 'timestamp', 'duration', 'mail', 'phone', 'url', 'password')
