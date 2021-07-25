@@ -93,6 +93,17 @@ $coldisplay++;
 print '<td class="bordertop nobottom linecolqty"><input type="text" size="2" name="qty" id="qty" class="flat right" value="'.$line->qty.'">';
 print '</td>';
 
+if (!empty($conf->productbatch->enabled)) {
+	$coldisplay++;
+	if (empty($line->product_lot_batch)) {
+		$value = $langs->trans('NA');
+	} else {
+		$value = $line->product_lot_batch;
+	}
+	print '<td class="bordertop nobottom linecolqty">' . $value;
+	print '</td>';
+}
+
 
 $coldisplay+=$colspan;
 print '<td class="nobottom linecoledit center valignmiddle" colspan="'.$colspan.'">';

@@ -53,6 +53,7 @@ if ($nolinesbefore) {
 	print '</td>';
 	print '<td class="linecol">'.$langs->trans('Product').'</td>';
 	print '<td class="linecoldescription minwidth200imp">'.$langs->trans('Quantity').'</td>';
+	if (!empty($conf->productbatch->enabled)) print '<td class="linecoldescription minwidth200imp">'.$langs->trans('ProductLotBatch').'</td>';
 	print '<td class="linecoledit" colspan="'.$colspan.'">&nbsp;</td>';
 	print '</tr>';
 }
@@ -100,6 +101,10 @@ $coldisplay++;
 print '<td class="bordertop nobottom linecolqty"><input type="text" size="2" name="qty" id="qty" class="flat right" value="'.(isset($_POST["qty"]) ?GETPOST("qty", 'alpha', 2) : 1).'">';
 print '</td>';
 
+if (!empty($conf->productbatch->enabled)) {
+	$coldisplay++;
+	print '<td class="bordertop nobottom linecolqty"></td>';
+}
 $coldisplay += $colspan;
 print '<td class="bordertop nobottom linecoledit center valignmiddle" colspan="'.$colspan.'">';
 print '<input type="submit" class="button" value="'.$langs->trans('Add').'" name="addline" id="addline">';

@@ -46,6 +46,7 @@ print '<td class="linecoldescription minwidth200imp"></td>';
 
 print '<td class="linecol">'.$langs->trans('Product').'</td>';
 print '<td class="linecoldescription minwidth200imp">'.$langs->trans('Quantity').'</td>';
+if (!empty($conf->productbatch->enabled)) print '<td class="linecoldescription minwidth200imp">'.$langs->trans('ProductLotBatch').'</td>';
 
 print '<td class="linecoledit"></td>';  // No width to allow autodim
 

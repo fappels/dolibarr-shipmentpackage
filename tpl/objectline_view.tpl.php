@@ -69,7 +69,16 @@ $coldisplay++;
 print '<td class="linecolqty minwidth200imp">' . $line->qty;
 print '</td>';
 
-
+if (!empty($conf->productbatch->enabled)) {
+	$coldisplay++;
+	if (empty($line->product_lot_batch)) {
+		$value = $langs->trans('NA');
+	} else {
+		$value = $line->product_lot_batch;
+	}
+	print '<td class="linecolqty minwidth200imp">' . $value;
+	print '</td>';
+}
 
 print '<td class="linecol nowrap right">';
 $coldisplay++;

@@ -94,6 +94,9 @@ $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'ex
 $backtopage = GETPOST('backtopage', 'alpha');
 $backtopageforcancel = GETPOST('backtopageforcancel', 'alpha');
 $lineid   = GETPOST('lineid', 'int');
+$origin = GETPOST('origin', 'alpha');
+$originid = GETPOST('originid', 'int');
+$toSelect = GETPOST('toselect', 'array');
 
 // Initialize technical objects
 $object = new ExpeditionPackage($db);
@@ -162,6 +165,10 @@ if (empty($reshook)) {
 				$backtopage = dol_buildpath('/package/expeditionpackage_card.php', 1).'?id='.($id > 0 ? $id : '__ID__');
 			}
 		}
+	} elseif (is_array($toSelect) && count($toSelect) > 0) {
+		foreach ($toSelect as $expeditionDetId) {
+			$backtopage .= '&toselect[]=' . $expeditionDetId;
+		}
 	}
 
 	$triggermodname = 'PACKAGE_EXPEDITIONPACKAGE_MODIFY'; // Name of trigger action code to execute when we modify record
@@ -177,6 +184,54 @@ if (empty($reshook)) {
 
 	// Action to move up and down lines of object
 	include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';
+
+	// link object and replicate extrafield, contacts and lines
+	if ($action == 'add_object_linked' && $origin == 'shipping' && !empty($originid)) {
+		// link object
+		if ($object->add_object_linked($origin, $originid, $user) > 0) {
+			dol_include_once('/expedition/class/expedition.class.php');
+			dol_include_once('/commande/class/commande.class.php');
+
+			$objectsrc = new Expedition($db);
+			$objectsrc->fetch($originid);
+
+			// Replicate extrafields
+			$objectsrc->fetch_optionals();
+			$object->array_options = $objectsrc->array_options;
+
+			// Repicate notes
+			$object->note_private = $object->getDefaultCreateValueFor('note_private', (!empty($objectsrc->note_private) ? $objectsrc->note_private : null));
+			$object->note_public = $object->getDefaultCreateValueFor('note_public', (!empty($objectsrc->note_public) ? $objectsrc->note_public : null));
+
+			// Replicate source contacts list
+			// TODO add package type contact
+			/*$objectsrc->fetch_origin();
+			$srccontactslist = $objectsrc->commande->liste_contact(-1, 'external', 0, 'SHIPPING');
+			if (is_array($srccontactslist) && count($srccontactslist) > 0) {
+				foreach ($srccontactslist as $key => $srccontact) {
+					$object->add_contact($srccontact['id'], $srccontact['code'], 'external');
+				}
+			}*/
+		}
+		if (is_array($toSelect) && count($toSelect) > 0) {
+			if (empty($objectsrc->lines) && method_exists($objectsrc, 'fetch_lines')) {
+				$objectsrc->fetch_lines();
+			}
+			foreach ($toSelect as $expeditionDetId) {
+				foreach ($objectsrc->lines as $key => $line) {
+					if ($line->id == $expeditionDetId) {
+						if (!empty($line->detail_batch)) {
+							foreach ($line->detail_batch as $key => $batch) {
+								$object->addLine($user, $batch->qty, $line->fk_product, $line->id, $batch->batch, $batch->id);
+							}
+						} else {
+							$object->addLine($user, $line->qty, $line->fk_product, $line->id);
+						}
+					}
+				}
+			}
+		}
+	}
 
 	// Add line
 	if ($action == 'addline' && $permissiontoadd) {
@@ -288,12 +343,26 @@ llxHeader('', $title, $help_url);
 
 // Part to create
 if ($action == 'create') {
+	if ($origin == 'shipping' && !empty($originid)) {
+		dol_include_once('/expedition/class/expedition.class.php');
+
+		$objectsrc = new Expedition($db);
+		$objectsrc->fetch($originid);
+		if (empty($objectsrc->lines) && method_exists($objectsrc, 'fetch_lines')) {
+			$objectsrc->fetch_lines();
+		}
+	}
+
 	print load_fiche_titre($langs->trans("NewObject", $langs->transnoentitiesnoconv("ExpeditionPackage")), '', 'object_'.$object->picto);
 
 	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
+
 	if ($backtopage) {
+		if ($origin == 'shipping' && !empty($originid)) {
+			$backtopage .= '&origin=' . $origin . '&originid=' . $objectsrc->id . '&action=add_object_linked';
+		}
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 	}
 	if ($backtopageforcancel) {
@@ -306,6 +375,8 @@ if ($action == 'create') {
 	//if (! GETPOSTISSET('fieldname')) $_POST['fieldname'] = 'myvalue';
 
 	print '<table class="border centpercent tableforfieldcreate">'."\n";
+
+	if ($objectsrc->id) print '<tr><td>'.$langs->trans($classname).'</td><td>'.$objectsrc->getNomUrl(1).'</td></tr>';
 
 	// Common attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_add.tpl.php';
@@ -322,6 +393,18 @@ if ($action == 'create') {
 	print '&nbsp; ';
 	print '<input type="'.($backtopage ? "submit" : "button").'" class="button button-cancel" name="cancel" value="'.dol_escape_htmltag($langs->trans("Cancel")).'"'.($backtopage ? '' : ' onclick="javascript:history.go(-1)"').'>'; // Cancel for create does not post form if we don't know the backtopage
 	print '</div>';
+
+	// Show origin lines
+	if (!empty($origin) && !empty($originid) && is_object($objectsrc)) {
+		$title = $langs->trans('ProductsAndServices');
+		print load_fiche_titre($title);
+
+		print '<table class="noborder centpercent">';
+
+		$objectsrc->printOriginLinesList('', $selectedLines);
+
+		print '</table>';
+	}
 
 	print '</form>';
 
