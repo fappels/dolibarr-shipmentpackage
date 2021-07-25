@@ -104,7 +104,6 @@ class ExpeditionPackage extends CommonObject
 		'entity' => array('type'=>'integer', 'label'=>'Entity', 'enabled'=>'1', 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>15),
 		'ref' => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>'1', 'position'=>20, 'notnull'=>1, 'visible'=>4, 'noteditable'=>'1', 'default'=>'(PROV)', 'index'=>1, 'searchall'=>1, 'showoncombobox'=>'1', 'comment'=>"Reference of object"),
 		'ref_supplier' => array('type'=>'varchar(128)', 'label'=>'RefSupplier', 'enabled'=>'1', 'position'=>25, 'notnull'=>0, 'visible'=>1, 'index'=>1, 'searchall'=>1, 'showoncombobox'=>'1', 'help'=>"PackageRefSupplier"),
-		'fk_expedition' => array('type'=>'int', 'label'=>'Fkexpedition', 'enabled'=>'1', 'position'=>30, 'notnull'=>0, 'visible'=>5,),
 		'fk_soc' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'ThirdParty', 'enabled'=>'1', 'position'=>40, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToThirparty",),
 		'fk_supplier' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'TransportSupplier', 'enabled'=>'1', 'position'=>45, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToTransporter",),
 		'fk_project' => array('type'=>'integer:Project:projet/class/project.class.php:1', 'label'=>'Project', 'enabled'=>'1', 'position'=>50, 'notnull'=>-1, 'visible'=>-1, 'index'=>1,),
@@ -361,19 +360,19 @@ class ExpeditionPackage extends CommonObject
 	 * @param user	$user					User that do the action
 	 * @param int	$qty					Quantity
 	 * @param int	$fk_product				product id
-	 * @param int	$fk_product_lot			product lot id
 	 * @param int	$fk_origin_line			Corresponds with the line of the origin object (shipping)
+	 * @param int	$product_lot_batch		product lot batch value
 	 * @param int	$fk_origin_batch_line	Corresponds with the lot id line of the origin object (shipping line batch)
 	 *
 	 * @return	int NOK < 0 > lineid
 	 */
-	public function addLine($user, $qty, $fk_product, $fk_product_lot = null, $fk_origin_line = null, $fk_origin_batch_line = null)
+	public function addLine($user, $qty, $fk_product, $fk_origin_line = null, $product_lot_batch = '', $fk_origin_batch_line = null)
 	{
 		$line = new ExpeditionPackageLine($this->db);
 		$line->fk_expedition_package = $this->id;
 		$line->qty = $qty;
 		$line->fk_product = $fk_product;
-		$line->fk_product_lot = $fk_product_lot;
+		$line->product_lot_batch = $product_lot_batch;
 		$line->fk_origin_line = $fk_origin_line;
 		$line->fk_origin_batch_line = $fk_origin_batch_line;
 
@@ -393,13 +392,12 @@ class ExpeditionPackage extends CommonObject
 	 * @param int	$lineid					line id
 	 * @param int	$qty					Quantity
 	 * @param int	$fk_product				product id
-	 * @param int	$fk_product_lot			product lot id
 	 * @param int	$fk_origin_line			Corresponds with the line of the origin object (shipping)
+	 * @param int	$product_lot_batch		product lot batch value
 	 * @param int	$fk_origin_batch_line	Corresponds with the lot id line of the origin object (shipping line batch)
-	 *
 	 * @return	int NOK < 0 > lineid
 	 */
-	public function updateLine($user, $lineid, $qty, $fk_product, $fk_product_lot = null, $fk_origin_line = null, $fk_origin_batch_line = null)
+	public function updateLine($user, $lineid, $qty, $fk_product, $fk_origin_line = null, $product_lot_batch = '', $fk_origin_batch_line = null)
 	{
 		$line = new ExpeditionPackageLine($this->db);
 		$line->fetch($lineid);
@@ -407,7 +405,7 @@ class ExpeditionPackage extends CommonObject
 		$line->fk_expedition_package = $this->id;
 		$line->qty = $qty;
 		$line->fk_product = $fk_product;
-		if (isset($fk_product_lot)) $line->fk_product_lot = $fk_product_lot;
+		if (!empty($product_lot_batch)) $line->product_lot_batch = $product_lot_batch;
 		if (isset($fk_origin_line)) $line->fk_origin_line = $fk_origin_line;
 		if (isset($fk_origin_batch_line)) $line->fk_origin_batch_line = $fk_origin_batch_line;
 
@@ -1182,7 +1180,7 @@ class ExpeditionPackageLine extends CommonObjectLine
 		'fk_origin_line' => array('type'=>'integer', 'label'=>'OriginLine', 'enabled'=>'1', 'position'=>20, 'notnull'=>1, 'visible'=>0),
 		'fk_origin_batch_line' => array('type'=>'integer', 'label'=>'OriginBatchLine', 'enabled'=>'1', 'position'=>30, 'notnull'=>1, 'visible'=>0),
 		'fk_product' => array('type'=>'integer:Product:product/class/product.class.php', 'label'=>'Product', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>1),
-		'fk_product_lot' => array('type'=>'integer:ProductLot:product/stock/class/product_lot.class.php', 'label'=>'ProductLot', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>1),
+		'product_lot_batch' => array('type'=>'varchar(128)', 'label'=>'ProductLotBatch', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>1),
 		'qty' => array('type'=>'real', 'label'=>'Quantity', 'enabled'=>'1', 'notnull'=>1, 'visible'=>1),
 		'rang' => array('type'=>'integer', 'label'=>'Rang', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>0)
 	);

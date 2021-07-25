@@ -19,7 +19,6 @@ CREATE TABLE llx_expedition_package(
 	entity integer DEFAULT 1 NOT NULL, 
 	ref varchar(128) DEFAULT '(PROV)' NOT NULL, 
 	ref_supplier varchar(128),		-- package ref supplier who handles package (tracking number)
-	fk_expedition integer, 			-- when package from shipment, can be null for a free package not related to order
 	fk_soc integer, 				-- customer
 	fk_supplier,					-- supplier who handles package
 	fk_project integer,
