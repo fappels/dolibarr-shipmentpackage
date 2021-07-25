@@ -57,6 +57,8 @@ require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 dol_include_once('/package/class/expeditionpackage.class.php');
 dol_include_once('/package/lib/package_expeditionpackage.lib.php');
+dol_include_once('/expedition/class/expedition.class.php');
+dol_include_once('/commande/class/commande.class.php');
 
 // Load translation files required by the page
 $langs->loadLangs(array("package@package", "companies", "other", "mails"));
@@ -79,6 +81,21 @@ $extrafields->fetch_name_optionals_label($object->table_element);
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 
 $permission = $user->rights->package->expeditionpackage->write;
+$origin = 'shipping';
+$object->origin = $origin;
+$object->fetchObjectLinked();
+$originid = array_pop(array_reverse($object->linkedObjectsIds[$origin]));
+$object->origin_id = $originid;
+$object->fetch_origin();
+$expedition = $object->expedition;
+$origin = 'commande';
+$expedition->origin = $origin;
+$expedition->fetchObjectLinked();
+$originid = array_pop(array_reverse($expedition->linkedObjectsIds[$origin]));
+$expedition->origin_id = $originid;
+$expedition->fetch_origin();
+$objectsrc = $expedition->commande;
+
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
@@ -203,6 +220,9 @@ if ($object->id) {
 	print '<br>';
 
 	// Contacts lines (modules that overwrite templates must declare this into descriptor)
+	// workaround to contacts like expedition contacts
+	$object->socid = $object->fk_soc;
+	$object->element = 'shipping';
 	$dirtpls = array_merge($conf->modules_parts['tpl'], array('/core/tpl'));
 	foreach ($dirtpls as $reldir) {
 		$res = @include dol_buildpath($reldir.'/contacts.tpl.php');
