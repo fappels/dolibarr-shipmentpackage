@@ -25,7 +25,7 @@
 // Put here all includes required by your class file
 require_once DOL_DOCUMENT_ROOT.'/core/class/commonobject.class.php';
 //require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
-//require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
+require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 /**
  * Class for ExpeditionPackage
@@ -101,12 +101,14 @@ class ExpeditionPackage extends CommonObject
 	 */
 	public $fields=array(
 		'rowid' => array('type'=>'int', 'label'=>'TechnicalID', 'enabled'=>'1', 'position'=>10, 'notnull'=>1, 'visible'=>0,),
+		'entity' => array('type'=>'integer', 'label'=>'Entity', 'enabled'=>'1', 'visible'=>0, 'notnull'=> 1, 'default'=>1, 'index'=>1, 'position'=>15),
 		'ref' => array('type'=>'varchar(128)', 'label'=>'Ref', 'enabled'=>'1', 'position'=>20, 'notnull'=>1, 'visible'=>4, 'noteditable'=>'1', 'default'=>'(PROV)', 'index'=>1, 'searchall'=>1, 'showoncombobox'=>'1', 'comment'=>"Reference of object"),
-		'fk_expedition' => array('type'=>'int', 'label'=>'Fkexpedition', 'enabled'=>'1', 'position'=>30, 'notnull'=>1, 'visible'=>-1,),
+		'ref_supplier' => array('type'=>'varchar(128)', 'label'=>'RefSupplier', 'enabled'=>'1', 'position'=>25, 'notnull'=>0, 'visible'=>1, 'index'=>1, 'searchall'=>1, 'showoncombobox'=>'1', 'help'=>"PackageRefSupplier"),
 		'fk_soc' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'ThirdParty', 'enabled'=>'1', 'position'=>40, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToThirparty",),
+		'fk_supplier' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'TransportSupplier', 'enabled'=>'1', 'position'=>45, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToTransporter",),
 		'fk_project' => array('type'=>'integer:Project:projet/class/project.class.php:1', 'label'=>'Project', 'enabled'=>'1', 'position'=>50, 'notnull'=>-1, 'visible'=>-1, 'index'=>1,),
 		'description' => array('type'=>'varchar(255)', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>-1,),
-		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>-1,),
+		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>-1, 'default'=>0),
 		'fk_parcel_type' => array('type'=>'sellist:c_parcel_type:label:rowid::active=1', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1,),
 		'height' => array('type'=>'real', 'label'=>'Height', 'enabled'=>'1', 'position'=>90, 'notnull'=>0, 'visible'=>-1,),
 		'width' => array('type'=>'real', 'label'=>'Width', 'enabled'=>'1', 'position'=>100, 'notnull'=>0, 'visible'=>-1,),
@@ -114,8 +116,8 @@ class ExpeditionPackage extends CommonObject
 		'size_units' => array('type'=>'int', 'label'=>'Sizeunits', 'enabled'=>'1', 'position'=>120, 'notnull'=>0, 'visible'=>-1,),
 		'weight' => array('type'=>'real', 'label'=>'Weight', 'enabled'=>'1', 'position'=>130, 'notnull'=>0, 'visible'=>-1,),
 		'weight_units' => array('type'=>'int', 'label'=>'Weightunits', 'enabled'=>'1', 'position'=>140, 'notnull'=>0, 'visible'=>-1,),
-		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>150, 'notnull'=>0, 'visible'=>1,'arrayofkeyval'=>array('0'=>'NoDangerousGoods', '1'=>'Explosives', '2'=>'FlammableGases', '3'=>'FlammableLiquids', '4'=>'FlammableSolids', '5'=>'Oxidizing', '6'=>'ToxicAndInfectious', '7'=>'Radioactive', '8'=>'Corrosives', '9'=>'Miscellaneous')),
-		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>160, 'notnull'=>0, 'visible'=>1, 'arrayofkeyval'=>array('0'=>'NoTailLiftRequired', '1'=>'TailLiftRequired')),
+		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>150, 'notnull'=>0, 'visible'=>1,'arrayofkeyval'=>array('0'=>'', '1'=>'Explosives', '2'=>'FlammableGases', '3'=>'FlammableLiquids', '4'=>'FlammableSolids', '5'=>'Oxidizing', '6'=>'ToxicAndInfectious', '7'=>'Radioactive', '8'=>'Corrosives', '9'=>'Miscellaneous')),
+		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>160, 'notnull'=>0, 'visible'=>1, 'arrayofkeyval'=>array('0'=>'', '1'=>'TailLiftRequired')),
 		'note_public' => array('type'=>'html', 'label'=>'NotePublic', 'enabled'=>'1', 'position'=>170, 'notnull'=>0, 'visible'=>0,),
 		'note_private' => array('type'=>'html', 'label'=>'NotePrivate', 'enabled'=>'1', 'position'=>180, 'notnull'=>0, 'visible'=>0,),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>'1', 'position'=>190, 'notnull'=>1, 'visible'=>-2,),
@@ -125,12 +127,14 @@ class ExpeditionPackage extends CommonObject
 		'last_main_doc' => array('type'=>'varchar(255)', 'label'=>'LastMainDoc', 'enabled'=>'1', 'position'=>230, 'notnull'=>0, 'visible'=>0,),
 		'import_key' => array('type'=>'varchar(14)', 'label'=>'ImportId', 'enabled'=>'1', 'position'=>240, 'notnull'=>-1, 'visible'=>-2,),
 		'model_pdf' => array('type'=>'varchar(255)', 'label'=>'Model pdf', 'enabled'=>'1', 'position'=>250, 'notnull'=>-1, 'visible'=>0,),
-		'status' => array('type'=>'smallint', 'label'=>'Status', 'enabled'=>'1', 'position'=>260, 'notnull'=>1, 'visible'=>1, 'index'=>1, 'arrayofkeyval'=>array('0'=>'Draft', '1'=>'Validated', '9'=>'Canceled'),),
+		'status' => array('type'=>'smallint', 'label'=>'Status', 'enabled'=>'1', 'position'=>260, 'notnull'=>1, 'visible'=>5, 'index'=>1, 'default'=>0, 'arrayofkeyval'=>array('0'=>'Draft', '1'=>'Validated', '9'=>'Canceled'),),
 	);
 	public $rowid;
 	public $ref;
+	public $ref_supplier;
 	public $fk_expedition;
 	public $fk_soc;
+	public $fk_supplier;
 	public $fk_project;
 	public $description;
 	public $value;
@@ -166,7 +170,7 @@ class ExpeditionPackage extends CommonObject
 	// /**
 	//  * @var string    Field with ID of parent key if this object has a parent
 	//  */
-	public $fk_element = 'fk_expeditionpackage';
+	public $fk_element = 'fk_expedition_package';
 
 	// /**
 	//  * @var string    Name of subtable class that manage subtable lines
@@ -351,6 +355,70 @@ class ExpeditionPackage extends CommonObject
 	}
 
 	/**
+	 * add line to package
+	 *
+	 * @param user	$user					User that do the action
+	 * @param int	$qty					Quantity
+	 * @param int	$fk_product				product id
+	 * @param int	$fk_origin_line			Corresponds with the line of the origin object (shipping)
+	 * @param int	$product_lot_batch		product lot batch value
+	 * @param int	$fk_origin_batch_line	Corresponds with the lot id line of the origin object (shipping line batch)
+	 *
+	 * @return	int NOK < 0 > lineid
+	 */
+	public function addLine($user, $qty, $fk_product, $fk_origin_line = null, $product_lot_batch = '', $fk_origin_batch_line = null)
+	{
+		$line = new ExpeditionPackageLine($this->db);
+		$line->fk_expedition_package = $this->id;
+		$line->qty = $qty;
+		$line->fk_product = $fk_product;
+		$line->product_lot_batch = $product_lot_batch;
+		$line->fk_origin_line = $fk_origin_line;
+		$line->fk_origin_batch_line = $fk_origin_batch_line;
+
+		$lineid = $line->create($user);
+		if ($lineid < 0) {
+			$this->error = $line->error;
+		} else {
+			$line->updatePackageValue($user, $this, 'increase');
+		}
+		return $lineid;
+	}
+
+	/**
+	 * update line to package
+	 *
+	 * @param user	$user					User that do the action
+	 * @param int	$lineid					line id
+	 * @param int	$qty					Quantity
+	 * @param int	$fk_product				product id
+	 * @param int	$fk_origin_line			Corresponds with the line of the origin object (shipping)
+	 * @param int	$product_lot_batch		product lot batch value
+	 * @param int	$fk_origin_batch_line	Corresponds with the lot id line of the origin object (shipping line batch)
+	 * @return	int NOK < 0 > lineid
+	 */
+	public function updateLine($user, $lineid, $qty, $fk_product, $fk_origin_line = null, $product_lot_batch = '', $fk_origin_batch_line = null)
+	{
+		$line = new ExpeditionPackageLine($this->db);
+		$line->fetch($lineid);
+		$line->updatePackageValue($user, $this, 'decrease');
+		$line->fk_expedition_package = $this->id;
+		$line->qty = $qty;
+		$line->fk_product = $fk_product;
+		if (!empty($product_lot_batch)) $line->product_lot_batch = $product_lot_batch;
+		if (isset($fk_origin_line)) $line->fk_origin_line = $fk_origin_line;
+		if (isset($fk_origin_batch_line)) $line->fk_origin_batch_line = $fk_origin_batch_line;
+
+		$lineid = $line->update($user);
+		if ($lineid < 0) {
+			$this->error = $line->error;
+		} else {
+			$line->updatePackageValue($user, $this, 'increase');
+		}
+		return $lineid;
+	}
+
+	/**
 	 * Load object in memory from the database
 	 *
 	 * @param int    $id   Id object
@@ -500,6 +568,9 @@ class ExpeditionPackage extends CommonObject
 			return -2;
 		}
 
+		$line = new ExpeditionPackageLine($this->db);
+		$line->fetch($idline);
+		$line->updatePackageValue($user, $this, 'decrease');
 		return $this->deleteLineCommon($user, $idline, $notrigger);
 	}
 
@@ -842,11 +913,11 @@ class ExpeditionPackage extends CommonObject
 			global $langs;
 			//$langs->load("package@package");
 			$this->labelStatus[self::STATUS_DRAFT] = $langs->trans('Draft');
-			$this->labelStatus[self::STATUS_VALIDATED] = $langs->trans('Enabled');
-			$this->labelStatus[self::STATUS_CANCELED] = $langs->trans('Disabled');
+			$this->labelStatus[self::STATUS_VALIDATED] = $langs->trans('Validated');
+			$this->labelStatus[self::STATUS_CANCELED] = $langs->trans('Canceled');
 			$this->labelStatusShort[self::STATUS_DRAFT] = $langs->trans('Draft');
-			$this->labelStatusShort[self::STATUS_VALIDATED] = $langs->trans('Enabled');
-			$this->labelStatusShort[self::STATUS_CANCELED] = $langs->trans('Disabled');
+			$this->labelStatusShort[self::STATUS_VALIDATED] = $langs->trans('Validated');
+			$this->labelStatusShort[self::STATUS_CANCELED] = $langs->trans('Canceled');
 		}
 
 		$statusType = 'status'.$status;
@@ -929,7 +1000,7 @@ class ExpeditionPackage extends CommonObject
 		$this->lines = array();
 
 		$objectline = new ExpeditionPackageLine($this->db);
-		$result = $objectline->fetchAll('ASC', 'position', 0, 0, array('customsql'=>'fk_expeditionpackage = '.$this->id));
+		$result = $objectline->fetchAll('ASC', 'rang', 0, 0, array('customsql'=>'fk_expedition_package = '.$this->id));
 
 		if (is_numeric($result)) {
 			$this->error = $this->error;
@@ -1064,6 +1135,27 @@ class ExpeditionPackage extends CommonObject
 
 		return $error;
 	}
+
+	// workaround for dolibarr 13
+	/**
+	 * Function to concat keys of fields
+	 *
+	 * @param   string   $alias   	String of alias of table for fields. For example 't'.
+	 * @return  string				list of alias fields
+	 */
+	public function getFieldList($alias = '')
+	{
+		$keys = array_keys($this->fields);
+		if (!empty($alias)) {
+			$keys_with_alias = array();
+			foreach ($keys as $fieldname) {
+				$keys_with_alias[] = $alias . '.' . $fieldname;
+			}
+			return implode(',', $keys_with_alias);
+		} else {
+			return implode(',', $keys);
+		}
+	}
 }
 
 
@@ -1075,7 +1167,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/commonobjectline.class.php';
 class ExpeditionPackageLine extends CommonObjectLine
 {
 	// To complete with content of an object ExpeditionPackageLine
-	// We should have a field rowid, fk_expeditionpackage and position
+	// We should have a field rowid, fk_expedition_package and position
 
 	/**
 	 *  'type' if the field format ('integer', 'integer:ObjectClass:PathToClass[:AddCreateButtonOrNot[:Filter]]', 'varchar(x)', 'double(24,8)', 'real', 'price', 'text', 'html', 'date', 'datetime', 'timestamp', 'duration', 'mail', 'phone', 'url', 'password')
@@ -1109,7 +1201,7 @@ class ExpeditionPackageLine extends CommonObjectLine
 		'fk_origin_line' => array('type'=>'integer', 'label'=>'OriginLine', 'enabled'=>'1', 'position'=>20, 'notnull'=>1, 'visible'=>0),
 		'fk_origin_batch_line' => array('type'=>'integer', 'label'=>'OriginBatchLine', 'enabled'=>'1', 'position'=>30, 'notnull'=>1, 'visible'=>0),
 		'fk_product' => array('type'=>'integer:Product:product/class/product.class.php', 'label'=>'Product', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>1),
-		'fk_product_lot' => array('type'=>'integer:ProductLot:product/stock/class/product_lot.class.php', 'label'=>'ProductLot', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>1),
+		'product_lot_batch' => array('type'=>'varchar(128)', 'label'=>'ProductLotBatch', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>1),
 		'qty' => array('type'=>'real', 'label'=>'Quantity', 'enabled'=>'1', 'notnull'=>1, 'visible'=>1),
 		'rang' => array('type'=>'integer', 'label'=>'Rang', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>0)
 	);
@@ -1136,7 +1228,7 @@ class ExpeditionPackageLine extends CommonObjectLine
 	/**
 	 * @var int  Does support multicompany module ? 0=No test on entity, 1=Test with field entity, 2=Test with link by societe
 	 */
-	public $ismultientitymanaged = 1;
+	public $ismultientitymanaged = 0;
 
 	/**
 	 * @var int  Does object support extrafields ? 0=No, 1=Yes
@@ -1267,7 +1359,7 @@ class ExpeditionPackageLine extends CommonObjectLine
 				$record = new self($this->db);
 				$record->setVarsFromFetchObj($obj);
 
-				$records[$record->sync_trigger] = $record;
+				$records[] = $record;
 
 				$i++;
 			}
@@ -1305,5 +1397,33 @@ class ExpeditionPackageLine extends CommonObjectLine
 	{
 		return $this->deleteCommon($user, $notrigger);
 		//return $this->deleteCommon($user, $notrigger, 1);
+	}
+
+	/**
+	 * update package value with product pmp
+	 *
+	 * @param user				$user		User that do the action
+	 * @param ExpeditionPackage	$package	package to update value
+	 * @param string 			$mode		'increase' or 'decrease'
+	 * @return int NOK < 0 > OK
+	 */
+	public function updatePackageValue($user, $package, $mode = 'increase')
+	{
+		// update package value
+		$product = new Product($this->db);
+		$result = $product->fetch($this->fk_product);
+		if ($result > 0) {
+			$value = $product->pmp * $this->qty;
+			if ($mode == 'increase') {
+				$package->value += $value;
+			} else {
+				$package->value -= $value;
+			}
+			$result = $package->update($user);
+		} else {
+			$this->error = $product->error;
+		}
+
+		return $result;
 	}
 }

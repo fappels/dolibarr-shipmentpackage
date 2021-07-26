@@ -83,7 +83,7 @@ class modPackage extends DolibarrModules
 		// If file is in theme/yourtheme/img directory under name object_pictovalue.png, use this->picto='pictovalue'
 		// If file is in module/img directory under name object_pictovalue.png, use this->picto='pictovalue@module'
 		// To use a supported fa-xxx css style of font awesome, use this->picto='xxx'
-		$this->picto = 'archive';
+		$this->picto = 'workstation'; // is fa-pallet TODO when add module to core add new supported font awesom,
 
 		// Define some features supported by module (triggers, login, substitutions, menus, css, etc...)
 		$this->module_parts = array(
@@ -115,11 +115,11 @@ class modPackage extends DolibarrModules
 			),
 			// Set here all hooks context managed by module. To find available hook context, make a "grep -r '>initHooks(' *" on source code. You can also set hook context to 'all'
 			'hooks' => array(
-				//   'data' => array(
-				//       'hookcontext1',
-				//       'hookcontext2',
-				//   ),
-				//   'entity' => '0',
+				'data' => array(
+					'expeditioncard',
+					'shipmentlist',
+				),
+				'entity' => '0',
 			),
 			// Set this to 1 if features of module are opened to external users
 			'moduleforexternal' => 0,
@@ -296,7 +296,7 @@ class modPackage extends DolibarrModules
 		$this->menu = array();
 		$r = 0;
 		// Add here entries to declare new menus
-		/* BEGIN MODULEBUILDER TOPMENU */
+		/* BEGIN MODULEBUILDER TOPMENU
 		$this->menu[$r++] = array(
 			'fk_menu'=>'', // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'top', // This is a Top menu entry
@@ -312,14 +312,14 @@ class modPackage extends DolibarrModules
 			'target'=>'',
 			'user'=>2, // 0=Menu for internal users, 1=external users, 2=both
 		);
-		/* END MODULEBUILDER TOPMENU */
-		/* BEGIN MODULEBUILDER LEFTMENU EXPEDITIONPACKAGE
+		END MODULEBUILDER TOPMENU */
+		/* BEGIN MODULEBUILDER LEFTMENU EXPEDITIONPACKAGE */
 		$this->menu[$r++]=array(
-			'fk_menu'=>'fk_mainmenu=package',      // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+			'fk_menu'=>'fk_mainmenu=products',      // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',                          // This is a Top menu entry
 			'titre'=>'ExpeditionPackage',
 			'prefix' => img_picto('', $this->picto, 'class="paddingright pictofixedwidth valignmiddle"'),
-			'mainmenu'=>'package',
+			'mainmenu'=>'products',
 			'leftmenu'=>'expeditionpackage',
 			'url'=>'/package/packageindex.php',
 			'langs'=>'package@package',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
@@ -327,14 +327,28 @@ class modPackage extends DolibarrModules
 			'enabled'=>'$conf->package->enabled',  // Define condition to show or hide menu entry. Use '$conf->package->enabled' if entry must be visible if module is enabled.
 			'perms'=>'$user->rights->package->expeditionpackage->read',			                // Use 'perms'=>'$user->rights->package->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
-			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
+			'user'=>0,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
 		$this->menu[$r++]=array(
-			'fk_menu'=>'fk_mainmenu=package,fk_leftmenu=expeditionpackage',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+			'fk_menu'=>'fk_mainmenu=products,fk_leftmenu=expeditionpackage',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+			'type'=>'left',			                // This is a Left menu entry
+			'titre'=>'New_ExpeditionPackage',
+			'mainmenu'=>'products',
+			'leftmenu'=>'expeditionpackage_create',
+			'url'=>'/package/expeditionpackage_card.php?action=create',
+			'langs'=>'package@package',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+			'position'=>1000+$r,
+			'enabled'=>'$conf->package->enabled',  // Define condition to show or hide menu entry. Use '$conf->package->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+			'perms'=>'$user->rights->package->expeditionpackage->write',			                // Use 'perms'=>'$user->rights->package->level1->level2' if you want your menu with a permission rules
+			'target'=>'',
+			'user'=>0,				                // 0=Menu for internal users, 1=external users, 2=both
+		);
+		$this->menu[$r++]=array(
+			'fk_menu'=>'fk_mainmenu=products,fk_leftmenu=expeditionpackage',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
 			'titre'=>'List_ExpeditionPackage',
-			'mainmenu'=>'package',
-			'leftmenu'=>'package_expeditionpackage_list',
+			'mainmenu'=>'products',
+			'leftmenu'=>'expeditionpackage_list',
 			'url'=>'/package/expeditionpackage_list.php',
 			'langs'=>'package@package',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
@@ -343,62 +357,6 @@ class modPackage extends DolibarrModules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
-		$this->menu[$r++]=array(
-			'fk_menu'=>'fk_mainmenu=package,fk_leftmenu=expeditionpackage',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'New_ExpeditionPackage',
-			'mainmenu'=>'package',
-			'leftmenu'=>'package_expeditionpackage_new',
-			'url'=>'/package/expeditionpackage_card.php?action=create',
-			'langs'=>'package@package',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-			'position'=>1000+$r,
-			'enabled'=>'$conf->package->enabled',  // Define condition to show or hide menu entry. Use '$conf->package->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'$user->rights->package->expeditionpackage->write',			                // Use 'perms'=>'$user->rights->package->level1->level2' if you want your menu with a permission rules
-			'target'=>'',
-			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
-		);
-		*/
-
-        $this->menu[$r++]=array(
-            // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-            'fk_menu'=>'fk_mainmenu=package',
-            // This is a Left menu entry
-            'type'=>'left',
-            'titre'=>'List ExpeditionPackage',
-            'mainmenu'=>'package',
-            'leftmenu'=>'package_expeditionpackage',
-            'url'=>'/package/expeditionpackage_list.php',
-            // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-            'langs'=>'package@package',
-            'position'=>1100+$r,
-            // Define condition to show or hide menu entry. Use '$conf->package->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-            'enabled'=>'$conf->package->enabled',
-            // Use 'perms'=>'$user->rights->package->level1->level2' if you want your menu with a permission rules
-            'perms'=>'1',
-            'target'=>'',
-            // 0=Menu for internal users, 1=external users, 2=both
-            'user'=>2,
-        );
-        $this->menu[$r++]=array(
-            // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-            'fk_menu'=>'fk_mainmenu=package,fk_leftmenu=package_expeditionpackage',
-            // This is a Left menu entry
-            'type'=>'left',
-            'titre'=>'New ExpeditionPackage',
-            'mainmenu'=>'package',
-            'leftmenu'=>'package_expeditionpackage',
-            'url'=>'/package/expeditionpackage_card.php?action=create',
-            // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-            'langs'=>'package@package',
-            'position'=>1100+$r,
-            // Define condition to show or hide menu entry. Use '$conf->package->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-            'enabled'=>'$conf->package->enabled',
-            // Use 'perms'=>'$user->rights->package->level1->level2' if you want your menu with a permission rules
-            'perms'=>'1',
-            'target'=>'',
-            // 0=Menu for internal users, 1=external users, 2=both
-            'user'=>2
-        );
 
 		/* END MODULEBUILDER LEFTMENU EXPEDITIONPACKAGE */
 		// Exports profiles provided by this module
@@ -425,10 +383,10 @@ class modPackage extends DolibarrModules
 		//$this->export_examplevalues_array[$r] = array('t.field'=>'Example');
 		//$this->export_help_array[$r] = array('t.field'=>'FieldDescHelp');
 		$this->export_sql_start[$r]='SELECT DISTINCT ';
-		$this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'expeditionpackage as t';
-		//$this->export_sql_end[$r]  =' LEFT JOIN '.MAIN_DB_PREFIX.'expeditionpackage_line as tl ON tl.fk_expeditionpackage = t.rowid';
+		$this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'expedition_package as t';
+		//$this->export_sql_end[$r]  =' LEFT JOIN '.MAIN_DB_PREFIX.'expedition_packagedet as tl ON tl.fk_expedition_package = t.rowid';
 		$this->export_sql_end[$r] .=' WHERE 1 = 1';
-		$this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('expeditionpackage').')';
+		$this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('expedition_package').')';
 		$r++; */
 		/* END MODULEBUILDER EXPORT EXPEDITIONPACKAGE */
 
@@ -446,7 +404,7 @@ class modPackage extends DolibarrModules
 		 include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
 		 //$this->export_dependencies_array[$r]=array('mysubobject'=>'ts.rowid', 't.myfield'=>array('t.myfield2','t.myfield3')); // To force to activate one or several fields if we select some fields that need same (like to select a unique key if we ask a field of a child to avoid the DISTINCT to discard them, or for computed field than need several other fields)
 		 $this->export_sql_start[$r]='SELECT DISTINCT ';
-		 $this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'expeditionpackage as t';
+		 $this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'expedition_package as t';
 		 $this->export_sql_end[$r] .=' WHERE 1 = 1';
 		 $this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('expeditionpackage').')';
 		 $r++; */

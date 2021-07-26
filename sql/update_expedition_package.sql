@@ -14,8 +14,12 @@
 -- along with this program.  If not, see http://www.gnu.org/licenses/.
 
 ALTER TABLE llx_expedition_package MODIFY COLUMN rowid integer AUTO_INCREMENT PRIMARY KEY NOT NULL;
-ALTER TABLE llx_expedition_package ADD COLUMN ref varchar(128) DEFAULT '(PROV)' NOT NULL AFTER rowid;
-ALTER TABLE llx_expedition_package ADD COLUMN fk_soc integer AFTER fk_expedition;
+ALTER TABLE llx_expedition_package drop COLUMN fk_expedition;
+ALTER TABLE llx_expedition_package ADD COLUMN entity integer DEFAULT 1 NOT NULL AFTER rowid;
+ALTER TABLE llx_expedition_package ADD COLUMN ref varchar(128) DEFAULT '(PROV)' NOT NULL;
+ALTER TABLE llx_expedition_package ADD COLUMN ref_supplier varchar(128);
+ALTER TABLE llx_expedition_package ADD COLUMN fk_soc integer;
+ALTER TABLE llx_expedition_package ADD COLUMN fk_supplier integer;
 ALTER TABLE llx_expedition_package ADD COLUMN fk_project integer;
 ALTER TABLE llx_expedition_package ADD COLUMN note_public text AFTER tail_lift;
 ALTER TABLE llx_expedition_package ADD COLUMN note_private text;
@@ -28,5 +32,8 @@ ALTER TABLE llx_expedition_package ADD COLUMN import_key varchar(14);
 ALTER TABLE llx_expedition_package ADD COLUMN model_pdf varchar(255);
 ALTER TABLE llx_expedition_package ADD COLUMN status smallint NOT NULL;
 ALTER TABLE llx_expedition_package DROP COLUMN rang;
+ALTER TABLE llx_expedition_packagedet DROP COLUMN fk_product_lot;
+ALTER TABLE llx_expedition_packagedet ADD COLUMN product_lot_batch varchar(128);
+
 
 

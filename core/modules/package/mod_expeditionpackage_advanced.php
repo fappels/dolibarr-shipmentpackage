@@ -141,7 +141,7 @@ class mod_expeditionpackage_advanced extends ModeleNumRefExpeditionPackage
 
 		$date = $object->date;
 
-		$numFinal = get_next_value($db, $mask, 'package_expeditionpackage', 'ref', '', null, $date);
+		$numFinal = get_next_value($db, $mask, 'expedition_package', 'ref', '', null, $date);
 
 		return  $numFinal;
 	}

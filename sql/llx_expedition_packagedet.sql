@@ -19,7 +19,7 @@ create table llx_expedition_packagedet
   fk_origin_line            integer,           -- Corresponds with the line of the origin object (shipping)
   fk_origin_batch_line      integer,           -- Corresponds with the lot id line of the origin object (shipping line batch)
   fk_product                integer,           -- product id
-  fk_product_lot            integer,           -- product lot id
+  product_lot_batch         varchar(128),      -- product lot batch value
   qty                       real,              -- Quantity
   rang                      integer  DEFAULT 0
 )ENGINE=innodb;

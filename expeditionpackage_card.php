@@ -77,6 +77,7 @@ if (!$res) {
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
+require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 dol_include_once('/package/class/expeditionpackage.class.php');
 dol_include_once('/package/lib/package_expeditionpackage.lib.php');
 
@@ -92,7 +93,10 @@ $cancel = GETPOST('cancel', 'aZ09');
 $contextpage = GETPOST('contextpage', 'aZ') ? GETPOST('contextpage', 'aZ') : 'expeditionpackagecard'; // To manage different context of search
 $backtopage = GETPOST('backtopage', 'alpha');
 $backtopageforcancel = GETPOST('backtopageforcancel', 'alpha');
-//$lineid   = GETPOST('lineid', 'int');
+$lineid   = GETPOST('lineid', 'int');
+$origin = GETPOST('origin', 'alpha');
+$originid = GETPOST('originid', 'int');
+$toSelect = GETPOST('toselect', 'array');
 
 // Initialize technical objects
 $object = new ExpeditionPackage($db);
@@ -161,6 +165,10 @@ if (empty($reshook)) {
 				$backtopage = dol_buildpath('/package/expeditionpackage_card.php', 1).'?id='.($id > 0 ? $id : '__ID__');
 			}
 		}
+	} elseif (is_array($toSelect) && count($toSelect) > 0) {
+		foreach ($toSelect as $expeditionDetId) {
+			$backtopage .= '&toselect[]=' . $expeditionDetId;
+		}
 	}
 
 	$triggermodname = 'PACKAGE_EXPEDITIONPACKAGE_MODIFY'; // Name of trigger action code to execute when we modify record
@@ -175,7 +183,113 @@ if (empty($reshook)) {
 	include DOL_DOCUMENT_ROOT.'/core/actions_printing.inc.php';
 
 	// Action to move up and down lines of object
-	//include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';
+	include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';
+
+	// link object and replicate extrafield, contacts and lines
+	if ($action == 'add_object_linked' && $origin == 'shipping' && !empty($originid)) {
+		// link object
+		if ($object->add_object_linked($origin, $originid, $user) > 0) {
+			dol_include_once('/expedition/class/expedition.class.php');
+			dol_include_once('/commande/class/commande.class.php');
+
+			$objectsrc = new Expedition($db);
+			$objectsrc->fetch($originid);
+
+			// Replicate extrafields
+			$objectsrc->fetch_optionals();
+			$object->array_options = $objectsrc->array_options;
+
+			// Repicate notes
+			$object->note_private = $object->getDefaultCreateValueFor('note_private', (!empty($objectsrc->note_private) ? $objectsrc->note_private : null));
+			$object->note_public = $object->getDefaultCreateValueFor('note_public', (!empty($objectsrc->note_public) ? $objectsrc->note_public : null));
+
+			// Replicate source contacts list
+			// TODO add package type contact
+			/*$objectsrc->fetch_origin();
+			$srccontactslist = $objectsrc->commande->liste_contact(-1, 'external', 0, 'SHIPPING');
+			if (is_array($srccontactslist) && count($srccontactslist) > 0) {
+				foreach ($srccontactslist as $key => $srccontact) {
+					$object->add_contact($srccontact['id'], $srccontact['code'], 'external');
+				}
+			}*/
+		}
+		if (is_array($toSelect) && count($toSelect) > 0) {
+			if (empty($objectsrc->lines) && method_exists($objectsrc, 'fetch_lines')) {
+				$objectsrc->fetch_lines();
+			}
+			foreach ($toSelect as $expeditionDetId) {
+				foreach ($objectsrc->lines as $key => $line) {
+					if ($line->id == $expeditionDetId) {
+						if (!empty($line->detail_batch)) {
+							foreach ($line->detail_batch as $key => $batch) {
+								$object->addLine($user, $batch->qty, $line->fk_product, $line->id, $batch->batch, $batch->id);
+							}
+						} else {
+							$object->addLine($user, $line->qty, $line->fk_product, $line->id);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Add line
+	if ($action == 'addline' && $permissiontoadd) {
+		$langs->load('errors');
+		$error = 0;
+
+		$fk_product = GETPOST('fk_product', 'int');
+		$qty = GETPOST('qty', 'alpha');
+
+		if (empty($fk_product)) {
+			setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Product')), null, 'errors');
+			$error++;
+		}
+
+		if (empty($qty)) {
+			setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Quantity')), null, 'errors');
+			$error++;
+		}
+
+		if (!$error) {
+			$result = $object->addLine($user, $qty, $fk_product);
+			if ($result <= 0) {
+				setEventMessages($this->error, $this->errors, 'errors');
+				$action = '';
+			} else {
+				unset($_POST['fk_product']);
+			}
+		}
+	}
+
+	// update line
+	if ($action == 'updateline' && $permissiontoadd) {
+		$langs->load('errors');
+		$error = 0;
+
+		$fk_product = GETPOST('fk_product', 'int');
+		$qty = GETPOST('qty', 'alpha');
+
+		if (empty($fk_product)) {
+			setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Product')), null, 'errors');
+			$error++;
+		}
+
+		if (empty($qty)) {
+			setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Quantity')), null, 'errors');
+			$error++;
+		}
+
+		if (!$error) {
+			$result = $object->updateLine($user, $lineid, $qty, $fk_product);
+			if ($result <= 0) {
+				setEventMessages($this->error, $this->errors, 'errors');
+				$action = '';
+			} else {
+				unset($_POST['fk_product']);
+			}
+		}
+	}
 
 	// Action to build doc
 	include DOL_DOCUMENT_ROOT.'/core/actions_builddoc.inc.php';
@@ -229,12 +343,26 @@ llxHeader('', $title, $help_url);
 
 // Part to create
 if ($action == 'create') {
+	if ($origin == 'shipping' && !empty($originid)) {
+		dol_include_once('/expedition/class/expedition.class.php');
+
+		$objectsrc = new Expedition($db);
+		$objectsrc->fetch($originid);
+		if (empty($objectsrc->lines) && method_exists($objectsrc, 'fetch_lines')) {
+			$objectsrc->fetch_lines();
+		}
+	}
+
 	print load_fiche_titre($langs->trans("NewObject", $langs->transnoentitiesnoconv("ExpeditionPackage")), '', 'object_'.$object->picto);
 
 	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
 	print '<input type="hidden" name="action" value="add">';
+
 	if ($backtopage) {
+		if ($origin == 'shipping' && !empty($originid)) {
+			$backtopage .= '&origin=' . $origin . '&originid=' . $objectsrc->id . '&action=add_object_linked';
+		}
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 	}
 	if ($backtopageforcancel) {
@@ -247,6 +375,8 @@ if ($action == 'create') {
 	//if (! GETPOSTISSET('fieldname')) $_POST['fieldname'] = 'myvalue';
 
 	print '<table class="border centpercent tableforfieldcreate">'."\n";
+
+	if ($objectsrc->id) print '<tr><td>'.$langs->trans($classname).'</td><td>'.$objectsrc->getNomUrl(1).'</td></tr>';
 
 	// Common attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_add.tpl.php';
@@ -263,6 +393,18 @@ if ($action == 'create') {
 	print '&nbsp; ';
 	print '<input type="'.($backtopage ? "submit" : "button").'" class="button button-cancel" name="cancel" value="'.dol_escape_htmltag($langs->trans("Cancel")).'"'.($backtopage ? '' : ' onclick="javascript:history.go(-1)"').'>'; // Cancel for create does not post form if we don't know the backtopage
 	print '</div>';
+
+	// Show origin lines
+	if (!empty($origin) && !empty($originid) && is_object($objectsrc)) {
+		$title = $langs->trans('ProductsAndServices');
+		print load_fiche_titre($title);
+
+		print '<table class="noborder centpercent">';
+
+		$objectsrc->printOriginLinesList('', $selectedLines);
+
+		print '</table>';
+	}
 
 	print '</form>';
 
@@ -452,7 +594,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		}
 
 		if (!empty($object->lines)) {
-			$object->printObjectLines($action, $mysoc, null, GETPOST('lineid', 'int'), 1);
+			$object->printObjectLines($action, $mysoc, null, GETPOST('lineid', 'int'), 1, '/custom/package/tpl'); // TODO find solution to not need to use this
 		}
 
 		// Form to add new line
@@ -464,7 +606,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 				$reshook = $hookmanager->executeHooks('formAddObjectLine', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 				if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 				if (empty($reshook))
-					$object->formAddObjectLine(1, $mysoc, $soc);
+					$object->formAddObjectLine(1, $mysoc, $soc, '/custom/package/tpl');  // TODO find solution to not need to use this
 			}
 		}
 
