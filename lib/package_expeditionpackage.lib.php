@@ -43,7 +43,7 @@ function expeditionpackagePrepareHead($object)
 
 	$head[$h][0] = dol_buildpath("/package/expeditionpackage_contact.php", 1).'?id='.$object->id.'&socid='.$object->fk_soc;
 	$head[$h][1] = $langs->trans("Contacts");
-	$head[$h][2] = 'agenda';
+	$head[$h][2] = 'contact';
 	$h++;
 
 	if (isset($object->fields['note_public']) || isset($object->fields['note_private'])) {
