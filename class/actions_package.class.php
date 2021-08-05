@@ -138,6 +138,61 @@ class ActionsPackage
 		return $error;
 	}
 
+	/**
+	 * Overloading the printOriginObjectLine function : replacing the parent's function with the one below
+	 *
+	 * @param   array           $parameters     Hook metadatas (context, etc...)
+	 * @param   CommonObject    $object         The object to process (an invoice if you are in invoice module, a propale in propale's module, etc...)
+	 * @param   string          $action         Current action (if set). Generally create or edit or null
+	 * @param   HookManager     $hookmanager    Hook manager propagated to allow calling another hook
+	 * @return  int                             < 0 on error, 0 on success, 1 to replace standard code
+	 */
+	public function printOriginObjectLine($parameters, &$object, &$action, $hookmanager)
+	{
+		global $user;
+
+		$error = 0; // Error counter
+
+		if (in_array($parameters['currentcontext'], array('expeditionpackagecard'))) {
+			if ($user->rights->package->expeditionpackage->write) {
+				dol_include_once('/package/class/expeditionpackage.class.php');
+				$packageLine = new ExpeditionPackageLine($this->db);
+				$selectedLines = array(0);
+				$originLine = $parameters['line'];
+				$pattern = '/'.preg_quote(DOL_URL_ROOT, '/').'(.*)/';
+				if (preg_match($pattern, dol_buildpath('/package/tpl', 1), $matches)) {
+					$packagePath = $matches[1];
+				} else {
+					$packagePath = '/core/tpl';
+				}
+				if (!empty($originLine->detail_batch)) {
+					foreach ($originLine->detail_batch as $batch) {
+						$originLine->qty = $batch->qty;
+						$packagedQty = $packageLine->getQtyPackaged($originLine->id, $batch->id);
+						if ($packagedQty > 0) {
+							$originLine->qty -= $packagedQty;
+						}
+						if ($originLine->qty > 0) {
+							$selectedLines[] = $originLine->id;
+						}
+						$originLine->id = $batch->id;
+						$originLine->desc = $batch->batch;
+						$object->printOriginLine($originLine, '', '', $packagePath, $selectedLines);
+					}
+				} else {
+					$packagedQty = $packageLine->getQtyPackaged($originLine->id);
+					if ($packagedQty > 0) {
+						$originLine->qty -= $packagedQty;
+					}
+					if ($originLine->qty > 0) {
+						$selectedLines[] = $originLine->id;
+					}
+					$object->printOriginLine($originLine, '', '', $packagePath, $selectedLines);
+				}
+			}
+		}
+		return $error;
+	}
 
 	/**
 	 * Overloading the doMassActions function : replacing the parent's function with the one below

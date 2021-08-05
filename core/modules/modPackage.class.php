@@ -118,6 +118,7 @@ class modPackage extends DolibarrModules
 				'data' => array(
 					'expeditioncard',
 					'shipmentlist',
+					'expeditionpackagecard'
 				),
 				'entity' => '0',
 			),

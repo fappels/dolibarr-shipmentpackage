@@ -97,6 +97,8 @@ $lineid   = GETPOST('lineid', 'int');
 $origin = GETPOST('origin', 'alpha');
 $originid = GETPOST('originid', 'int');
 $toSelect = GETPOST('toselect', 'array');
+$lineQtys = GETPOST('qty', 'array');
+$originLineIds = GETPOST('ol', 'array');
 
 // Initialize technical objects
 $object = new ExpeditionPackage($db);
@@ -169,6 +171,12 @@ if (empty($reshook)) {
 		foreach ($toSelect as $expeditionDetId) {
 			$backtopage .= '&toselect[]=' . $expeditionDetId;
 		}
+		foreach ($lineQtys as $lineQty) {
+			$backtopage .= '&qty[]=' . $lineQty;
+		}
+		foreach ($originLineIds as $originLineId) {
+			$backtopage .= '&ol[]=' . $originLineId;
+		}
 	}
 
 	$triggermodname = 'PACKAGE_EXPEDITIONPACKAGE_MODIFY'; // Name of trigger action code to execute when we modify record
@@ -219,13 +227,23 @@ if (empty($reshook)) {
 			}
 			foreach ($toSelect as $expeditionDetId) {
 				foreach ($objectsrc->lines as $key => $line) {
-					if ($line->id == $expeditionDetId) {
-						if (!empty($line->detail_batch)) {
-							foreach ($line->detail_batch as $key => $batch) {
-								$object->addLine($user, $batch->qty, $line->fk_product, $line->id, $batch->batch, $batch->id);
+					if (!empty($line->detail_batch)) {
+						foreach ($line->detail_batch as $batch) {
+							if ($batch->id == $expeditionDetId) {
+								foreach ($originLineIds as $key => $originLineId) {
+									if ($originLineId == $expeditionDetId) {
+										$object->addLine($user, $lineQtys[$key], $line->fk_product, $line->id, $batch->batch, $batch->id);
+									}
+								}
 							}
-						} else {
-							$object->addLine($user, $line->qty, $line->fk_product, $line->id);
+						}
+					} else {
+						if ($line->id == $expeditionDetId) {
+							foreach ($originLineIds as $key => $originLineId) {
+								if ($originLineId == $expeditionDetId) {
+									$object->addLine($user, $lineQtys[$key], $line->fk_product, $line->id);
+								}
+							}
 						}
 					}
 				}
@@ -400,6 +418,14 @@ if ($action == 'create') {
 		print load_fiche_titre($title);
 
 		print '<table class="noborder centpercent">';
+
+		// workaround to have hook 'printOriginObjectLine'
+		if (!empty($objectsrc->lines)) {
+			foreach ($objectsrc->lines as &$line) {
+				$line->product_type = 9;
+				$line->special_code = 1;
+			}
+		}
 
 		$objectsrc->printOriginLinesList('', $selectedLines);
 

@@ -1426,4 +1426,43 @@ class ExpeditionPackageLine extends CommonObjectLine
 
 		return $result;
 	}
+
+	/**
+	 * get qty packaged for shipment line
+	 *
+	 * @param int			$fk_origin_line			shipment line id
+	 * @param int			$fk_origin_batch_line	shipment batch line id
+	 *
+	 * @return float NOK < 0 > qty packaged
+	 */
+	public function getQtyPackaged($fk_origin_line, $fk_origin_batch_line = null)
+	{
+		$qtyPackaged = 0;
+
+		$sql = 'SELECT t.qty';
+		$sql .= ' FROM '.MAIN_DB_PREFIX.$this->table_element.' as t';
+		if (isset($this->ismultientitymanaged) && $this->ismultientitymanaged == 1) $sql .= ' WHERE t.entity IN ('.getEntity($this->table_element).')';
+		else $sql .= ' WHERE 1 = 1';
+		$sql .= ' AND fk_origin_line = '. $fk_origin_line;
+		if (isset($fk_origin_batch_line)) $sql .= ' AND fk_origin_batch_line = '. $fk_origin_batch_line;
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			$num = $this->db->num_rows($resql);
+			$i = 0;
+			while ($i < $num) {
+				$obj = $this->db->fetch_object($resql);
+				$qtyPackaged += $obj->qty;
+				$i++;
+			}
+			$this->db->free($resql);
+
+			return $qtyPackaged;
+		} else {
+			$this->errors[] = 'Error '.$this->db->lasterror();
+			dol_syslog(__METHOD__.' '.join(',', $this->errors), LOG_ERR);
+
+			return -1;
+		}
+	}
 }
