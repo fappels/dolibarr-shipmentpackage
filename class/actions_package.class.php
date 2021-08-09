@@ -151,7 +151,7 @@ class ActionsPackage
 	{
 		global $user;
 
-		$error = 0; // Error counter
+		$result = 0;
 
 		if (in_array($parameters['currentcontext'], array('expeditionpackagecard'))) {
 			if ($user->rights->package->expeditionpackage->write) {
@@ -172,26 +172,36 @@ class ActionsPackage
 						if ($packagedQty > 0) {
 							$originLine->qty -= $packagedQty;
 						}
-						if ($originLine->qty > 0) {
-							$selectedLines[] = $originLine->id;
+						if ($packagedQty < 0) {
+							$result = $packagedQty;
+						} else {
+							if ($originLine->qty > 0) {
+								$selectedLines[] = $originLine->id;
+							}
+							$originLine->id = $batch->id;
+							$originLine->desc = $batch->batch;
+							$object->printOriginLine($originLine, '', '', $packagePath, $selectedLines);
+							$result = 1;
 						}
-						$originLine->id = $batch->id;
-						$originLine->desc = $batch->batch;
-						$object->printOriginLine($originLine, '', '', $packagePath, $selectedLines);
 					}
 				} else {
 					$packagedQty = $packageLine->getQtyPackaged($originLine->id);
 					if ($packagedQty > 0) {
 						$originLine->qty -= $packagedQty;
 					}
-					if ($originLine->qty > 0) {
-						$selectedLines[] = $originLine->id;
+					if ($packagedQty < 0) {
+						$result = $packagedQty;
+					} else {
+						if ($originLine->qty > 0) {
+							$selectedLines[] = $originLine->id;
+						}
+						$object->printOriginLine($originLine, '', '', $packagePath, $selectedLines);
+						$result = 1;
 					}
-					$object->printOriginLine($originLine, '', '', $packagePath, $selectedLines);
 				}
 			}
 		}
-		return $error;
+		return $result;
 	}
 
 	/**
