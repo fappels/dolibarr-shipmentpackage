@@ -21,18 +21,18 @@
  */
 
 /**
- * \file       htdocs/core/modules/package/mod_expeditionpackage_advanced.php
- * \ingroup    package
- * \brief      File containing class for advanced numbering model of ExpeditionPackage
+ * \file       htdocs/core/modules/shipmentpackage/mod_shipmentpackage_advanced.php
+ * \ingroup    shipmentpackage
+ * \brief      File containing class for advanced numbering model of ShipmentPackage
  */
 
-dol_include_once('/package/core/modules/package/modules_expeditionpackage.php');
+dol_include_once('/shipmentpackage/core/modules/shipmentpackage/modules_shipmentpackage.php');
 
 
 /**
  *	Class to manage customer Bom numbering rules advanced
  */
-class mod_expeditionpackage_advanced extends ModeleNumRefExpeditionPackage
+class mod_shipmentpackage_advanced extends ModeleNumRefShipmentPackage
 {
 	/**
 	 * Dolibarr version of the loaded document
@@ -68,18 +68,18 @@ class mod_expeditionpackage_advanced extends ModeleNumRefExpeditionPackage
 		$texte .= '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';
 		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
 		$texte .= '<input type="hidden" name="action" value="updateMask">';
-		$texte .= '<input type="hidden" name="maskconstBom" value="PACKAGE_EXPEDITIONPACKAGE_ADVANCED_MASK">';
+		$texte .= '<input type="hidden" name="maskconstBom" value="SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADVANCED_MASK">';
 		$texte .= '<table class="nobordernopadding" width="100%">';
 
-		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("ExpeditionPackage"), $langs->transnoentities("ExpeditionPackage"));
+		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("ShipmentPackage"), $langs->transnoentities("ShipmentPackage"));
 		$tooltip .= $langs->trans("GenericMaskCodes2");
 		$tooltip .= $langs->trans("GenericMaskCodes3");
-		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("ExpeditionPackage"), $langs->transnoentities("ExpeditionPackage"));
+		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("ShipmentPackage"), $langs->transnoentities("ShipmentPackage"));
 		$tooltip .= $langs->trans("GenericMaskCodes5");
 
 		// Parametrage du prefix
 		$texte .= '<tr><td>'.$langs->trans("Mask").':</td>';
-		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskExpeditionPackage" value="'.$conf->global->PACKAGE_EXPEDITIONPACKAGE_ADVANCED_MASK.'">', $tooltip, 1, 1).'</td>';
+		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskShipmentPackage" value="'.$conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADVANCED_MASK.'">', $tooltip, 1, 1).'</td>';
 
 		$texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button" value="'.$langs->trans("Modify").'" name="Button"></td>';
 
@@ -100,7 +100,7 @@ class mod_expeditionpackage_advanced extends ModeleNumRefExpeditionPackage
 	{
 		global $conf, $db, $langs, $mysoc;
 
-		$object = new ExpeditionPackage($db);
+		$object = new ShipmentPackage($db);
 		$object->initAsSpecimen();
 
 		/*$old_code_client = $mysoc->code_client;
@@ -132,7 +132,7 @@ class mod_expeditionpackage_advanced extends ModeleNumRefExpeditionPackage
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 
 		// We get cursor rule
-		$mask = $conf->global->PACKAGE_EXPEDITIONPACKAGE_ADVANCED_MASK;
+		$mask = $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADVANCED_MASK;
 
 		if (!$mask) {
 			$this->error = 'NotConfigured';

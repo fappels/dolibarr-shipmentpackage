@@ -18,7 +18,7 @@
 
 /**
  * \file    test/phpunit/PackageFunctionalTest.php
- * \ingroup package
+ * \ingroup shipmentpackage
  * \brief   Example Selenium test.
  *
  * Put detailed description here.
@@ -29,7 +29,7 @@ namespace test\functional;
 use PHPUnit_Extensions_Selenium2TestCase_WebDriverException;
 
 /**
- * Class PackageFunctionalTest
+ * Class ShipmentPackageFunctionalTest
  *
  * Requires chromedriver for Google Chrome
  * Requires geckodriver for Mozilla Firefox
@@ -41,7 +41,7 @@ use PHPUnit_Extensions_Selenium2TestCase_WebDriverException;
  *
  * @package Testpackage
  */
-class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
+class ShipmentPackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 {
 	// TODO: move to a global configuration file?
 	/** @var string Base URL of the webserver under test */
@@ -176,12 +176,12 @@ class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 		$module_status_image = $this->byXPath($module_status_image_path);
 		if (strstr($module_status_image->attribute('src'), 'switch_off.png')) {
 			// Enable the module
-			$this->byHref('modPackage')->click();
+			$this->byHref(' modShipmentPackage')->click();
 		} else {
 			// Disable the module
-			$this->byHref('modPackage')->click();
+			$this->byHref(' modShipmentPackage')->click();
 			// Reenable the module
-			$this->byHref('modPackage')->click();
+			$this->byHref(' modShipmentPackage')->click();
 		}
 		// Page reloaded, we need a new Xpath
 		$module_status_image = $this->byXPath($module_status_image_path);
@@ -196,9 +196,9 @@ class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 	 */
 	public function testConfigurationPage()
 	{
-		$this->url('/custom/package/admin/setup.php');
+		$this->url('/custom/shipmentpackage/admin/setup.php');
 		$this->authenticate();
-		return $this->assertContains('package/admin/setup.php', $this->url(), 'Configuration page');
+		return $this->assertContains('shipmentpackage/admin/setup.php', $this->url(), 'Configuration page');
 	}
 
 	/**
@@ -209,9 +209,9 @@ class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 	 */
 	public function testAboutPage()
 	{
-		$this->url('/custom/package/admin/about.php');
+		$this->url('/custom/shipmentpackage/admin/about.php');
 		$this->authenticate();
-		return $this->assertContains('package/admin/about.php', $this->url(), 'About page');
+		return $this->assertContains('shipmentpackage/admin/about.php', $this->url(), 'About page');
 	}
 
 	/**
@@ -222,7 +222,7 @@ class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 	 */
 	public function testAboutPageRendersMarkdownReadme()
 	{
-		$this->url('/custom/package/admin/about.php');
+		$this->url('/custom/shipmentpackage/admin/about.php');
 		$this->authenticate();
 		return $this->assertEquals(
 			'Dolibarr Module Template (aka My Module)',
@@ -255,7 +255,7 @@ class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 		$this->url('/admin/triggers.php');
 		$this->authenticate();
 		return $this->assertContains(
-			'interface_99_modPackage_PackageTriggers.class.php',
+			'interface_99_modShipmentPackage_PackageTriggers.class.php',
 			$this->byTag('body')->text(),
 			"Trigger declared"
 		);
@@ -273,7 +273,7 @@ class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 		$this->authenticate();
 		return $this->assertContains(
 			'tick.png',
-			$this->byXPath('//td[text()="interface_99_modPackage_MyTrigger.class.php"]/following::img')->attribute('src'),
+			$this->byXPath('//td[text()="interface_99_modShipmentPackage_MyTrigger.class.php"]/following::img')->attribute('src'),
 			"Trigger enabled"
 		);
 	}

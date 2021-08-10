@@ -17,9 +17,9 @@
  */
 
 /**
- * \file    package/admin/setup.php
- * \ingroup package
- * \brief   Package setup page.
+ * \file    shipmentpackage/admin/setup.php
+ * \ingroup shipmentpackage
+ * \brief   ShipmentPackage setup page.
  */
 
 // Load Dolibarr environment
@@ -54,11 +54,11 @@ global $langs, $user;
 
 // Libraries
 require_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
-require_once '../lib/package.lib.php';
+require_once '../lib/shipmentpackage.lib.php';
 //require_once "../class/myclass.class.php";
 
 // Translations
-$langs->loadLangs(array("admin", "package@package"));
+$langs->loadLangs(array("admin", "shipmentpackage@shipmentpackage"));
 
 // Access control
 if (!$user->admin) {
@@ -75,14 +75,14 @@ $scandir = GETPOST('scan_dir', 'alpha');
 $type = 'myobject';
 
 $arrayofparameters = array(
-	'PACKAGE_MYPARAM1'=>array('type'=>'string', 'css'=>'minwidth500' ,'enabled'=>1),
-	'PACKAGE_MYPARAM2'=>array('type'=>'textarea','enabled'=>1),
-	//'PACKAGE_MYPARAM3'=>array('type'=>'category:'.Categorie::TYPE_CUSTOMER, 'enabled'=>1),
-	//'PACKAGE_MYPARAM4'=>array('type'=>'emailtemplate:thirdparty', 'enabled'=>1),
-	//'PACKAGE_MYPARAM5'=>array('type'=>'yesno', 'enabled'=>1),
-	//'PACKAGE_MYPARAM5'=>array('type'=>'thirdparty_type', 'enabled'=>1),
-	//'PACKAGE_MYPARAM6'=>array('type'=>'securekey', 'enabled'=>1),
-	//'PACKAGE_MYPARAM7'=>array('type'=>'product', 'enabled'=>1),
+	'SHIPMENTPACKAGE_MYPARAM1'=>array('type'=>'string', 'css'=>'minwidth500' ,'enabled'=>1),
+	'SHIPMENTPACKAGE_MYPARAM2'=>array('type'=>'textarea','enabled'=>1),
+	//'SHIPMENTPACKAGE_MYPARAM3'=>array('type'=>'category:'.Categorie::TYPE_CUSTOMER, 'enabled'=>1),
+	//'SHIPMENTPACKAGE_MYPARAM4'=>array('type'=>'emailtemplate:thirdparty', 'enabled'=>1),
+	//'SHIPMENTPACKAGE_MYPARAM5'=>array('type'=>'yesno', 'enabled'=>1),
+	//'SHIPMENTPACKAGE_MYPARAM5'=>array('type'=>'thirdparty_type', 'enabled'=>1),
+	//'SHIPMENTPACKAGE_MYPARAM6'=>array('type'=>'securekey', 'enabled'=>1),
+	//'SHIPMENTPACKAGE_MYPARAM7'=>array('type'=>'product', 'enabled'=>1),
 );
 
 $error = 0;
@@ -126,7 +126,7 @@ if ($action == 'updateMask') {
 	$file = ''; $classname = ''; $filefound = 0;
 	$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
 	foreach ($dirmodels as $reldir) {
-		$file = dol_buildpath($reldir."core/modules/package/doc/pdf_".$modele."_".strtolower($tmpobjectkey).".modules.php", 0);
+		$file = dol_buildpath($reldir."core/modules/shipmentpackage/doc/pdf_".$modele."_".strtolower($tmpobjectkey).".modules.php", 0);
 		if (file_exists($file)) {
 			$filefound = 1;
 			$classname = "pdf_".$modele;
@@ -154,7 +154,7 @@ if ($action == 'updateMask') {
 	// TODO Check if numbering module chosen can be activated by calling method canBeActivated
 	$tmpobjectkey = GETPOST('object');
 	if (!empty($tmpobjectkey)) {
-		$constforval = 'PACKAGE_'.strtoupper($tmpobjectkey)."_ADDON";
+		$constforval = 'SHIPMENTPACKAGE_'.strtoupper($tmpobjectkey)."_ADDON";
 		dolibarr_set_const($db, $constforval, $value, 'chaine', 0, '', $conf->entity);
 	}
 } elseif ($action == 'set') {
@@ -165,7 +165,7 @@ if ($action == 'updateMask') {
 	if ($ret > 0) {
 		$tmpobjectkey = GETPOST('object');
 		if (!empty($tmpobjectkey)) {
-			$constforval = 'PACKAGE_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
+			$constforval = 'SHIPMENTPACKAGE_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
 			if ($conf->global->$constforval == "$value") {
 				dolibarr_del_const($db, $constforval, $conf->entity);
 			}
@@ -175,7 +175,7 @@ if ($action == 'updateMask') {
 	// Set or unset default model
 	$tmpobjectkey = GETPOST('object');
 	if (!empty($tmpobjectkey)) {
-		$constforval = 'PACKAGE_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
+		$constforval = 'SHIPMENTPACKAGE_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
 		if (dolibarr_set_const($db, $constforval, $value, 'chaine', 0, '', $conf->entity)) {
 			// The constant that was read before the new set
 			// We therefore requires a variable to have a coherent view
@@ -191,7 +191,7 @@ if ($action == 'updateMask') {
 } elseif ($action == 'unsetdoc') {
 	$tmpobjectkey = GETPOST('object');
 	if (!empty($tmpobjectkey)) {
-		$constforval = 'PACKAGE_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
+		$constforval = 'SHIPMENTPACKAGE_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
 		dolibarr_del_const($db, $constforval, $conf->entity);
 	}
 }
@@ -205,7 +205,7 @@ if ($action == 'updateMask') {
 $form = new Form($db);
 
 $help_url = '';
-$page_name = "PackageSetup";
+$page_name = "ShipmentPackageSetup";
 
 llxHeader('', $langs->trans($page_name), $help_url);
 
@@ -215,11 +215,11 @@ $linkback = '<a href="'.($backtopage ? $backtopage : DOL_URL_ROOT.'/admin/module
 print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 // Configuration header
-$head = packageAdminPrepareHead();
-print dol_get_fiche_head($head, 'settings', $langs->trans($page_name), -1, "package@package");
+$head = shipmentpackageAdminPrepareHead();
+print dol_get_fiche_head($head, 'settings', $langs->trans($page_name), -1, "shipmentpackage@shipmentpackage");
 
 // Setup page goes here
-echo '<span class="opacitymedium">'.$langs->trans("PackageSetupPage").'</span><br><br>';
+echo '<span class="opacitymedium">'.$langs->trans("ShipmentPackageSetupPage").'</span><br><br>';
 
 
 if ($action == 'edit') {
@@ -397,7 +397,7 @@ if ($action == 'edit') {
 }
 
 
-$moduledir = 'package';
+$moduledir = 'shipmentpackage';
 $myTmpObjects = array();
 $myTmpObjects['MyObject'] = array('includerefgeneration'=>0, 'includedocgeneration'=>0);
 
@@ -468,7 +468,7 @@ foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
 								print '</td>'."\n";
 
 								print '<td class="center">';
-								$constforvar = 'PACKAGE_'.strtoupper($myTmpObjectKey).'_ADDON';
+								$constforvar = 'SHIPMENTPACKAGE_'.strtoupper($myTmpObjectKey).'_ADDON';
 								if ($conf->global->$constforvar == $file) {
 									print img_picto($langs->trans("Activated"), 'switch_on');
 								} else {
@@ -610,7 +610,7 @@ foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
 
 										// Default
 										print '<td class="center">';
-										$constforvar = 'PACKAGE_'.strtoupper($myTmpObjectKey).'_ADDON';
+										$constforvar = 'SHIPMENTPACKAGE_'.strtoupper($myTmpObjectKey).'_ADDON';
 										if ($conf->global->$constforvar == $name) {
 											//print img_picto($langs->trans("Default"), 'on');
 											// Even if choice is the default value, we allow to disable it. Replace this with previous line if you need to disable unset

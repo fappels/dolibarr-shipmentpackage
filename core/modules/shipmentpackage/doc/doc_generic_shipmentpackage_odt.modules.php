@@ -22,12 +22,12 @@
  */
 
 /**
- *	\file       htdocs/core/modules/package/doc/doc_generic_expeditionpackage_odt.modules.php
- *	\ingroup    package
- *	\brief      File of class to build ODT documents for expeditionpackages
+ *	\file       htdocs/core/modules/shipmentpackage/doc/doc_generic_shipmentpackage_odt.modules.php
+ *	\ingroup    shipmentpackage
+ *	\brief      File of class to build ODT documents for shipmentpackages
  */
 
-dol_include_once('/package/core/modules/package/modules_expeditionpackage.php');
+dol_include_once('/shipmentpackage/core/modules/shipmentpackage/modules_shipmentpackage.php');
 require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
@@ -38,7 +38,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/doc.lib.php';
 /**
  *	Class to build documents using ODF templates generator
  */
-class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
+class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 {
 	/**
 	 * Issuer
@@ -73,7 +73,7 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 		$this->db = $db;
 		$this->name = "ODT templates";
 		$this->description = $langs->trans("DocumentModelOdt");
-		$this->scandir = 'PACKAGE_EXPEDITIONPACKAGE_ADDON_PDF_ODT_PATH'; // Name of constant that is used to save list of directories to scan
+		$this->scandir = 'SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH'; // Name of constant that is used to save list of directories to scan
 
 		// Page size for A4 format
 		$this->type = 'odt';
@@ -123,13 +123,13 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 		$texte .= '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';
 		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
 		$texte .= '<input type="hidden" name="action" value="setModuleOptions">';
-		$texte .= '<input type="hidden" name="param1" value="PACKAGE_EXPEDITIONPACKAGE_ADDON_PDF_ODT_PATH">';
+		$texte .= '<input type="hidden" name="param1" value="SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH">';
 		$texte .= '<table class="nobordernopadding" width="100%">';
 
 		// List of directories area
 		$texte .= '<tr><td>';
 		$texttitle = $langs->trans("ListOfDirectories");
-		$listofdir = explode(',', preg_replace('/[\r\n]+/', ',', trim($conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON_PDF_ODT_PATH)));
+		$listofdir = explode(',', preg_replace('/[\r\n]+/', ',', trim($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH)));
 		$listoffiles = array();
 		foreach ($listofdir as $key => $tmpdir) {
 			$tmpdir = trim($tmpdir);
@@ -155,7 +155,7 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 		$texte .= $form->textwithpicto($texttitle, $texthelp, 1, 'help', '', 1);
 		$texte .= '<div><div style="display: inline-block; min-width: 100px; vertical-align: middle;">';
 		$texte .= '<textarea class="flat" cols="60" name="value1">';
-		$texte .= $conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON_PDF_ODT_PATH;
+		$texte .= $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH;
 		$texte .= '</textarea>';
 		$texte .= '</div><div style="display: inline-block; vertical-align: middle;">';
 		$texte .= '<input type="submit" class="button small" value="'.$langs->trans("Modify").'" name="Button">';
@@ -163,7 +163,7 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 
 		// Scan directories
 		$nbofiles = count($listoffiles);
-		if (!empty($conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON_PDF_ODT_PATH)) {
+		if (!empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH)) {
 			$texte .= $langs->trans("NumberOfModelFilesFound").': <b>';
 			//$texte.=$nbofiles?'<a id="a_'.get_class($this).'" href="#">':'';
 			$texte .= count($listoffiles);
@@ -174,7 +174,7 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 		if ($nbofiles) {
 			$texte .= '<div id="div_'.get_class($this).'" class="hidden">';
 			foreach ($listoffiles as $file) {
-				$texte .= '- '.$file['name'].' <a href="'.DOL_URL_ROOT.'/document.php?modulepart=doctemplates&file=package_expeditionpackage/'.urlencode(basename($file['name'])).'">'.img_picto('', 'listlight').'</a><br>';
+				$texte .= '- '.$file['name'].' <a href="'.DOL_URL_ROOT.'/document.php?modulepart=doctemplates&file=shipmentpackage_shipmentpackage/'.urlencode(basename($file['name'])).'">'.img_picto('', 'listlight').'</a><br>';
 			}
 			$texte .= '</div>';
 		}
@@ -196,7 +196,7 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 	/**
 	 *  Function to build a document on disk using the generic odt module.
 	 *
-	 *	@param		ExpeditionPackage	$object				Object source to build document
+	 *	@param		ShipmentPackage	$object				Object source to build document
 	 *	@param		Translate	$outputlangs		Lang output object
 	 * 	@param		string		$srctemplatepath	Full path of source filename for generator using a template file
 	 *  @param		int			$hidedetails		Do not show line details
@@ -230,11 +230,11 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 
 		$outputlangs->loadLangs(array("main", "dict", "companies", "bills"));
 
-		if ($conf->package->dir_output) {
+		if ($conf->shipmentpackage->dir_output) {
 			// If $object is id instead of object
 			if (!is_object($object)) {
 				$id = $object;
-				$object = new ExpeditionPackage($this->db);
+				$object = new ShipmentPackage($this->db);
 				$result = $object->fetch($id);
 				if ($result < 0) {
 					dol_print_error($this->db, $object->error);
@@ -244,7 +244,7 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 
 			$object->fetch_thirdparty();
 
-			$dir = $conf->package->multidir_output[isset($object->entity) ? $object->entity : 1];
+			$dir = $conf->shipmentpackage->multidir_output[isset($object->entity) ? $object->entity : 1];
 			$objectref = dol_sanitizeFileName($object->ref);
 			if (!preg_match('/specimen/i', $objectref)) {
 				$dir .= "/".$objectref;
@@ -283,9 +283,9 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 				//print "file=".$file;
 				//print "conf->societe->dir_temp=".$conf->societe->dir_temp;
 
-				dol_mkdir($conf->package->dir_temp);
-				if (!is_writable($conf->package->dir_temp)) {
-					$this->error = "Failed to write in temp directory ".$conf->package->dir_temp;
+				dol_mkdir($conf->shipmentpackage->dir_temp);
+				if (!is_writable($conf->shipmentpackage->dir_temp)) {
+					$this->error = "Failed to write in temp directory ".$conf->shipmentpackage->dir_temp;
 					dol_syslog('Error in write_file: '.$this->error, LOG_ERR);
 					return -1;
 				}
@@ -338,7 +338,7 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 					$odfHandler = new odf(
 						$srctemplatepath,
 						array(
-						'PATH_TO_TMP'	  => $conf->package->dir_temp,
+						'PATH_TO_TMP'	  => $conf->shipmentpackage->dir_temp,
 						'ZIP_PROXY'		  => 'PclZipProxy', // PhpZipProxy or PclZipProxy. Got "bad compression method" error when using PhpZipProxy.
 						'DELIMITER_LEFT'  => '{',
 						'DELIMITER_RIGHT' => '}'

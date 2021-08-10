@@ -17,10 +17,31 @@
  */
 
 /**
- *  \file       expeditionpackage_contact.php
- *  \ingroup    package
- *  \brief      Tab for contacts linked to ExpeditionPackage
+ *  \file       shipmentpackage_note.php
+ *  \ingroup    shipmentpackage
+ *  \brief      Tab for notes on ShipmentPackage
  */
+
+//if (! defined('NOREQUIREDB'))              define('NOREQUIREDB', '1');				// Do not create database handler $db
+//if (! defined('NOREQUIREUSER'))            define('NOREQUIREUSER', '1');				// Do not load object $user
+//if (! defined('NOREQUIRESOC'))             define('NOREQUIRESOC', '1');				// Do not load object $mysoc
+//if (! defined('NOREQUIRETRAN'))            define('NOREQUIRETRAN', '1');				// Do not load object $langs
+//if (! defined('NOSCANGETFORINJECTION'))    define('NOSCANGETFORINJECTION', '1');		// Do not check injection attack on GET parameters
+//if (! defined('NOSCANPOSTFORINJECTION'))   define('NOSCANPOSTFORINJECTION', '1');		// Do not check injection attack on POST parameters
+//if (! defined('NOCSRFCHECK'))              define('NOCSRFCHECK', '1');				// Do not check CSRF attack (test on referer + on token if option MAIN_SECURITY_CSRF_WITH_TOKEN is on).
+//if (! defined('NOTOKENRENEWAL'))           define('NOTOKENRENEWAL', '1');				// Do not roll the Anti CSRF token (used if MAIN_SECURITY_CSRF_WITH_TOKEN is on)
+//if (! defined('NOSTYLECHECK'))             define('NOSTYLECHECK', '1');				// Do not check style html tag into posted data
+//if (! defined('NOREQUIREMENU'))            define('NOREQUIREMENU', '1');				// If there is no need to load and show top and left menu
+//if (! defined('NOREQUIREHTML'))            define('NOREQUIREHTML', '1');				// If we don't need to load the html.form.class.php
+//if (! defined('NOREQUIREAJAX'))            define('NOREQUIREAJAX', '1');       	  	// Do not load ajax.lib.php library
+//if (! defined("NOLOGIN"))                  define("NOLOGIN", '1');					// If this page is public (can be called outside logged session). This include the NOIPCHECK too.
+//if (! defined('NOIPCHECK'))                define('NOIPCHECK', '1');					// Do not check IP defined into conf $dolibarr_main_restrict_ip
+//if (! defined("MAIN_LANG_DEFAULT"))        define('MAIN_LANG_DEFAULT', 'auto');					// Force lang to a particular value
+//if (! defined("MAIN_AUTHENTICATION_MODE")) define('MAIN_AUTHENTICATION_MODE', 'aloginmodule');	// Force authentication handler
+//if (! defined("NOREDIRECTBYMAINTOLOGIN"))  define('NOREDIRECTBYMAINTOLOGIN', 1);		// The main.inc.php does not make a redirect if not logged, instead show simple error message
+//if (! defined("FORCECSP"))                 define('FORCECSP', 'none');				// Disable all Content Security Policies
+//if (! defined('CSRFCHECK_WITH_TOKEN'))     define('CSRFCHECK_WITH_TOKEN', '1');		// Force use of CSRF protection with tokens even for GET
+//if (! defined('NOBROWSERNOTIF'))     		 define('NOBROWSERNOTIF', '1');				// Disable browser notification
 
 // Load Dolibarr environment
 $res = 0;
@@ -53,125 +74,72 @@ if (!$res) {
 	die("Include of main fails");
 }
 
-require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-dol_include_once('/package/class/expeditionpackage.class.php');
-dol_include_once('/package/lib/package_expeditionpackage.lib.php');
-dol_include_once('/expedition/class/expedition.class.php');
-dol_include_once('/commande/class/commande.class.php');
+dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
+dol_include_once('/shipmentpackage/lib/shipmentpackage_shipmentpackage.lib.php');
 
 // Load translation files required by the page
-$langs->loadLangs(array("package@package", "companies", "other", "mails"));
+$langs->loadLangs(array("shipmentpackage@shipmentpackage", "companies"));
 
-$id     = (GETPOST('id') ?GETPOST('id', 'int') : GETPOST('facid', 'int')); // For backward compatibility
-$ref    = GETPOST('ref', 'alpha');
-$lineid = GETPOST('lineid', 'int');
-$socid  = GETPOST('socid', 'int');
+// Get parameters
+$id = GETPOST('id', 'int');
+$ref        = GETPOST('ref', 'alpha');
 $action = GETPOST('action', 'aZ09');
+$cancel     = GETPOST('cancel', 'aZ09');
+$backtopage = GETPOST('backtopage', 'alpha');
 
 // Initialize technical objects
-$object = new ExpeditionPackage($db);
+$object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->package->dir_output.'/temp/massgeneration/'.$user->id;
-$hookmanager->initHooks(array('expeditionpackagecontact', 'globalcard')); // Note that conf->hooks_modules contains array
+$diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
+$hookmanager->initHooks(array('shipmentpackagenote', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
 // Load object
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
+if ($id > 0 || !empty($ref)) {
+	$upload_dir = $conf->shipmentpackage->multidir_output[$object->entity]."/".$object->id;
+}
 
-$permission = $user->rights->package->expeditionpackage->write;
-$origin = 'shipping';
-$object->origin = $origin;
-$object->fetchObjectLinked();
-$originid = array_pop(array_reverse($object->linkedObjectsIds[$origin]));
-$object->origin_id = $originid;
-$object->fetch_origin();
-$expedition = $object->expedition;
-$origin = 'commande';
-$expedition->origin = $origin;
-$expedition->fetchObjectLinked();
-$originid = array_pop(array_reverse($expedition->linkedObjectsIds[$origin]));
-$expedition->origin_id = $originid;
-$expedition->fetch_origin();
-$objectsrc = $expedition->commande;
-
+$permissionnote = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_setnotes.inc.php
+$permissiontoadd = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_addupdatedelete.inc.php
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
 //if ($user->socid > 0) $socid = $user->socid;
 //$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 //restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
-//if (empty($conf->package->enabled)) accessforbidden();
+//if (empty($conf->shipmentpackage->enabled)) accessforbidden();
 //if (!$permissiontoread) accessforbidden();
 
 
 /*
- * Add a new contact
+ * Actions
  */
 
-if ($action == 'addcontact' && $permission) {
-	$contactid = (GETPOST('userid') ? GETPOST('userid', 'int') : GETPOST('contactid', 'int'));
-	$typeid = (GETPOST('typecontact') ? GETPOST('typecontact') : GETPOST('type'));
-	$result = $object->add_contact($contactid, $typeid, GETPOST("source", 'aZ09'));
-
-	if ($result >= 0) {
-		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
-		exit;
-	} else {
-		if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS') {
-			$langs->load("errors");
-			setEventMessages($langs->trans("ErrorThisContactIsAlreadyDefinedAsThisType"), null, 'errors');
-		} else {
-			setEventMessages($object->error, $object->errors, 'errors');
-		}
-	}
-} elseif ($action == 'swapstatut' && $permission) {
-	// Toggle the status of a contact
-	$result = $object->swapContactStatus(GETPOST('ligne', 'int'));
-} elseif ($action == 'deletecontact' && $permission) {
-	// Deletes a contact
-	$result = $object->delete_contact($lineid);
-
-	if ($result >= 0) {
-		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
-		exit;
-	} else {
-		dol_print_error($db);
-	}
-}
+include DOL_DOCUMENT_ROOT.'/core/actions_setnotes.inc.php'; // Must be include, not include_once
 
 
 /*
  * View
  */
 
-$title = $langs->trans('ExpeditionPackage')." - ".$langs->trans('ContactsAddresses');
-$help_url = '';
-//$help_url='EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
-llxHeader('', $title, $help_url);
-
 $form = new Form($db);
-$formcompany = new FormCompany($db);
-$contactstatic = new Contact($db);
-$userstatic = new User($db);
 
+//$help_url='EN:Customers_Orders|FR:Commandes_Clients|ES:Pedidos de clientes';
+$help_url = '';
+llxHeader('', $langs->trans('ShipmentPackage'), $help_url);
 
-/* *************************************************************************** */
-/*                                                                             */
-/* View and edit mode                                                         */
-/*                                                                             */
-/* *************************************************************************** */
+if ($id > 0 || !empty($ref)) {
+	$object->fetch_thirdparty();
 
-if ($object->id) {
-	/*
-	 * Show tabs
-	 */
-	$head = expeditionpackagePrepareHead($object);
+	$head = shipmentpackagePrepareHead($object);
 
-	print dol_get_fiche_head($head, 'contact', '', -1, $object->picto);
+	print dol_get_fiche_head($head, 'note', '', -1, $object->picto);
 
-	$linkback = '<a href="'.dol_buildpath('/package/expeditionpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	// Object card
+	// ------------------------------------------------------------
+	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/shipmentpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*
@@ -211,25 +179,22 @@ if ($object->id) {
 	 }
 	 }
 	 }*/
-	$morehtmlref .= '</div>';
+	 $morehtmlref .= '</div>';
 
-	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref, '', 0, '', '', 1);
+
+	dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', $morehtmlref);
+
+
+	print '<div class="fichecenter">';
+	print '<div class="underbanner clearboth"></div>';
+
+
+	$cssclass = "titlefield";
+	include DOL_DOCUMENT_ROOT.'/core/tpl/notes.tpl.php';
+
+	print '</div>';
 
 	print dol_get_fiche_end();
-
-	print '<br>';
-
-	// Contacts lines (modules that overwrite templates must declare this into descriptor)
-	// workaround to contacts like expedition contacts
-	$object->socid = $object->fk_soc;
-	$object->element = 'shipping';
-	$dirtpls = array_merge($conf->modules_parts['tpl'], array('/core/tpl'));
-	foreach ($dirtpls as $reldir) {
-		$res = @include dol_buildpath($reldir.'/contacts.tpl.php');
-		if ($res) {
-			break;
-		}
-	}
 }
 
 // End of page

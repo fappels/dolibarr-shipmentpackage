@@ -17,9 +17,9 @@
  */
 
 /**
- * \file    package/admin/about.php
- * \ingroup package
- * \brief   About page of module Package.
+ * \file    shipmentpackage/admin/about.php
+ * \ingroup shipmentpackage
+ * \brief   About page of module ShipmentPackage.
  */
 
 // Load Dolibarr environment
@@ -53,10 +53,10 @@ if (!$res) {
 // Libraries
 require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once '../lib/package.lib.php';
+require_once '../lib/shipmentpackage.lib.php';
 
 // Translations
-$langs->loadLangs(array("errors", "admin", "package@package"));
+$langs->loadLangs(array("errors", "admin", "shipmentpackage@shipmentpackage"));
 
 // Access control
 if (!$user->admin) {
@@ -82,7 +82,7 @@ $backtopage = GETPOST('backtopage', 'alpha');
 $form = new Form($db);
 
 $help_url = '';
-$page_name = "PackageAbout";
+$page_name = "ShipmentPackageAbout";
 
 llxHeader('', $langs->trans($page_name), $help_url);
 
@@ -92,11 +92,11 @@ $linkback = '<a href="'.($backtopage ? $backtopage : DOL_URL_ROOT.'/admin/module
 print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 // Configuration header
-$head = packageAdminPrepareHead();
-print dol_get_fiche_head($head, 'about', $langs->trans($page_name), 0, 'package@package');
+$head = shipmentpackageAdminPrepareHead();
+print dol_get_fiche_head($head, 'about', $langs->trans($page_name), 0, 'shipmentpackage@shipmentpackage');
 
-dol_include_once('/package/core/modules/modPackage.class.php');
-$tmpmodule = new modPackage($db);
+dol_include_once('/shipmentpackage/core/modules/modShipmentPackage.class.php');
+$tmpmodule = new  modShipmentPackage($db);
 print $tmpmodule->getDescLong();
 
 // Page end

@@ -23,9 +23,9 @@
  */
 
 /**
- *  \file			htdocs/core/modules/package/modules_expeditionpackage.php
- *  \ingroup		package
- *  \brief			File that contains parent class for expeditionpackages document models and parent class for expeditionpackages numbering models
+ *  \file			htdocs/core/modules/shipmentpackage/modules_shipmentpackage.php
+ *  \ingroup	 shipmentpackage
+ *  \brief			File that contains parent class for shipmentpackages document models and parent class for shipmentpackages numbering models
  */
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/commondocgenerator.class.php';
@@ -35,7 +35,7 @@ require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php'; // requir
 /**
  *	Parent class for documents models
  */
-abstract class ModelePDFExpeditionPackage extends CommonDocGenerator
+abstract class ModelePDFShipmentPackage extends CommonDocGenerator
 {
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
@@ -51,7 +51,7 @@ abstract class ModelePDFExpeditionPackage extends CommonDocGenerator
 		// phpcs:enable
 		global $conf;
 
-		$type = 'expeditionpackage';
+		$type = 'shipmentpackage';
 		$list = array();
 
 		include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
@@ -64,9 +64,9 @@ abstract class ModelePDFExpeditionPackage extends CommonDocGenerator
 
 
 /**
- *  Parent class to manage numbering of ExpeditionPackage
+ *  Parent class to manage numbering of ShipmentPackage
  */
-abstract class ModeleNumRefExpeditionPackage
+abstract class ModeleNumRefShipmentPackage
 {
 	/**
 	 * @var string Error code (or message)

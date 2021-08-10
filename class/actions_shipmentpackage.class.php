@@ -16,17 +16,17 @@
  */
 
 /**
- * \file    package/class/actions_package.class.php
- * \ingroup package
+ * \file    shipmentpackage/class/actions_package.class.php
+ * \ingroup shipmentpackage
  * \brief   Example hook overload.
  *
  * Put detailed description here.
  */
 
 /**
- * Class ActionsPackage
+ * Class ActionsShipmentPackage
  */
-class ActionsPackage
+class ActionsShipmentPackage
 {
 	/**
 	 * @var DoliDB Database handler.
@@ -130,14 +130,79 @@ class ActionsPackage
 		$error = 0; // Error counter
 
 		if (in_array($parameters['currentcontext'], array('expeditioncard'))) {
-			if ($user->rights->package->expeditionpackage->write && $object->statut == Expedition::STATUS_VALIDATED) {
-				$href = dol_buildpath('/package/expeditionpackage_card.php', 2);
+			if ($user->rights->shipmentpackage->shipmentpackage->write && $object->statut == Expedition::STATUS_VALIDATED) {
+				$href = dol_buildpath('/shipmentpackage/shipmentpackage_card.php', 2);
 				print '<div class="inline-block divButAction"><a class="butAction" href="' . $href . '?origin=shipping&originid=' . $object->id . '&fk_soc=' . $object->socid . '&action=create">' . $langs->trans('CreatePackage') . '</a></div>';
 			}
 		}
 		return $error;
 	}
 
+	/**
+	 * Overloading the printOriginObjectLine function : replacing the parent's function with the one below
+	 *
+	 * @param   array           $parameters     Hook metadatas (context, etc...)
+	 * @param   CommonObject    $object         The object to process (an invoice if you are in invoice module, a propale in propale's module, etc...)
+	 * @param   string          $action         Current action (if set). Generally create or edit or null
+	 * @param   HookManager     $hookmanager    Hook manager propagated to allow calling another hook
+	 * @return  int                             < 0 on error, 0 on success, 1 to replace standard code
+	 */
+	public function printOriginObjectLine($parameters, &$object, &$action, $hookmanager)
+	{
+		global $user;
+
+		$result = 0;
+
+		if (in_array($parameters['currentcontext'], array('shipmentpackagecard'))) {
+			if ($user->rights->shipmentpackage->shipmentpackage->write) {
+				dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
+				$packageLine = new ShipmentPackageLine($this->db);
+				$selectedLines = array(0);
+				$originLine = $parameters['line'];
+				$pattern = '/'.preg_quote(DOL_URL_ROOT, '/').'(.*)/';
+				if (preg_match($pattern, dol_buildpath('/shipmentpackage/tpl', 1), $matches)) {
+					$packagePath = $matches[1];
+				} else {
+					$packagePath = '/core/tpl';
+				}
+				if (!empty($originLine->detail_batch)) {
+					foreach ($originLine->detail_batch as $batch) {
+						$originLine->qty = $batch->qty;
+						$packagedQty = $packageLine->getQtyPackaged($originLine->id, $batch->id);
+						if ($packagedQty > 0) {
+							$originLine->qty -= $packagedQty;
+						}
+						if ($packagedQty < 0) {
+							$result = $packagedQty;
+						} else {
+							if ($originLine->qty > 0) {
+								$selectedLines[] = $originLine->id;
+							}
+							$originLine->id = $batch->id;
+							$originLine->desc = $batch->batch;
+							$object->printOriginLine($originLine, '', '', $packagePath, $selectedLines);
+							$result = 1;
+						}
+					}
+				} else {
+					$packagedQty = $packageLine->getQtyPackaged($originLine->id);
+					if ($packagedQty > 0) {
+						$originLine->qty -= $packagedQty;
+					}
+					if ($packagedQty < 0) {
+						$result = $packagedQty;
+					} else {
+						if ($originLine->qty > 0) {
+							$selectedLines[] = $originLine->id;
+						}
+						$object->printOriginLine($originLine, '', '', $packagePath, $selectedLines);
+						$result = 1;
+					}
+				}
+			}
+		}
+		return $result;
+	}
 
 	/**
 	 * Overloading the doMassActions function : replacing the parent's function with the one below
@@ -190,7 +255,7 @@ class ActionsPackage
 
 		/* print_r($parameters); print_r($object); echo "action: " . $action; */
 		if (in_array($parameters['currentcontext'], array('somecontext1', 'somecontext2'))) {		// do something only for the context 'somecontext1' or 'somecontext2'
-			$this->resprints = '<option value="0"'.($disabled ? ' disabled="disabled"' : '').'>'.$langs->trans("PackageMassAction").'</option>';
+			$this->resprints = '<option value="0"'.($disabled ? ' disabled="disabled"' : '').'>'.$langs->trans("ShipmentPackageMassAction").'</option>';
 		}
 
 		if (!$error) {
@@ -272,21 +337,21 @@ class ActionsPackage
 	{
 		global $conf, $user, $langs;
 
-		$langs->load("package@package");
+		$langs->load("shipmentpackage@shipmentpackage");
 
 		$this->results = array();
 
 		$head = array();
 		$h = 0;
 
-		if ($parameters['tabfamily'] == 'package') {
+		if ($parameters['tabfamily'] == 'shipmentpackage') {
 			$head[$h][0] = dol_buildpath('/module/index.php', 1);
 			$head[$h][1] = $langs->trans("Home");
 			$head[$h][2] = 'home';
 			$h++;
 
-			$this->results['title'] = $langs->trans("Package");
-			$this->results['picto'] = 'package@package';
+			$this->results['title'] = $langs->trans("ShipmentPackage");
+			$this->results['picto'] = 'shipmentpackage@shipmentpackage';
 		}
 
 		$head[$h][0] = 'customreports.php?objecttype='.$parameters['objecttype'].(empty($parameters['tabfamily']) ? '' : '&tabfamily='.$parameters['tabfamily']);
@@ -314,8 +379,8 @@ class ActionsPackage
 	{
 		global $user;
 
-		if ($parameters['features'] == 'myobject') {
-			if ($user->rights->package->myobject->read) {
+		if ($parameters['features'] == 'shipmentpackage') {
+			if ($user->rights->shipmentpackage->shipmentpackage->read) {
 				$this->results['result'] = 1;
 				return 1;
 			} else {
@@ -349,7 +414,7 @@ class ActionsPackage
 			// utilisé si on veut faire disparaitre des onglets.
 			return 0;
 		} elseif ($parameters['mode'] == 'add') {
-			$langs->load('package@package');
+			$langs->load('shipmentpackage@shipmentpackage');
 			// utilisé si on veut ajouter des onglets.
 			$counter = count($parameters['head']);
 			$element = $parameters['object']->element;
@@ -359,8 +424,8 @@ class ActionsPackage
 			if (in_array($element, ['context1', 'context2'])) {
 				$datacount = 0;
 
-				$parameters['head'][$counter][0] = dol_buildpath('/package/package_tab.php', 1) . '?id=' . $id . '&amp;module='.$element;
-				$parameters['head'][$counter][1] = $langs->trans('PackageTab');
+				$parameters['head'][$counter][0] = dol_buildpath('/shipmentpackage/shipmentpackage_tab.php', 1) . '?id=' . $id . '&amp;module='.$element;
+				$parameters['head'][$counter][1] = $langs->trans('ShipmentPackageTab');
 				if ($datacount > 0) {
 					$parameters['head'][$counter][1] .= '<span class="badge marginleftonlyshort">' . $datacount . '</span>';
 				}

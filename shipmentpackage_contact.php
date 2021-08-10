@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2007-2017 Laurent Destailleur  <eldy@users.sourceforge.net>
- * Copyright (C) 2021 SuperAdmin <francis.appels@z-application.com>
+ * Copyright (C) ---Put here your own copyright and developer email---
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,9 @@
  */
 
 /**
- *  \file       package/myobject_contact.php
- *  \ingroup    package
- *  \brief      Tab for contacts linked to MyObject
+ *  \file       shipmentpackage_contact.php
+ *  \ingroup    shipmentpackage
+ *  \brief      Tab for contacts linked to ShipmentPackage
  */
 
 // Load Dolibarr environment
@@ -55,11 +55,13 @@ if (!$res) {
 
 require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-dol_include_once('/package/class/myobject.class.php');
-dol_include_once('/package/lib/package_myobject.lib.php');
+dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
+dol_include_once('/shipmentpackage/lib/shipmentpackage_shipmentpackage.lib.php');
+dol_include_once('/expedition/class/expedition.class.php');
+dol_include_once('/commande/class/commande.class.php');
 
 // Load translation files required by the page
-$langs->loadLangs(array("package@package", "companies", "other", "mails"));
+$langs->loadLangs(array("shipmentpackage@shipmentpackage", "companies", "other", "mails"));
 
 $id     = (GETPOST('id') ?GETPOST('id', 'int') : GETPOST('facid', 'int')); // For backward compatibility
 $ref    = GETPOST('ref', 'alpha');
@@ -68,24 +70,39 @@ $socid  = GETPOST('socid', 'int');
 $action = GETPOST('action', 'aZ09');
 
 // Initialize technical objects
-$object = new MyObject($db);
+$object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->package->dir_output.'/temp/massgeneration/'.$user->id;
-$hookmanager->initHooks(array('myobjectcontact', 'globalcard')); // Note that conf->hooks_modules contains array
+$diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
+$hookmanager->initHooks(array('shipmentpackagecontact', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
 // Load object
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 
-$permission = $user->rights->package->myobject->write;
+$permission = $user->rights->shipmentpackage->shipmentpackage->write;
+$origin = 'shipping';
+$object->origin = $origin;
+$object->fetchObjectLinked();
+$originid = array_pop(array_reverse($object->linkedObjectsIds[$origin]));
+$object->origin_id = $originid;
+$object->fetch_origin();
+$expedition = $object->expedition;
+$origin = 'commande';
+$expedition->origin = $origin;
+$expedition->fetchObjectLinked();
+$originid = array_pop(array_reverse($expedition->linkedObjectsIds[$origin]));
+$expedition->origin_id = $originid;
+$expedition->fetch_origin();
+$objectsrc = $expedition->commande;
+
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
 //if ($user->socid > 0) $socid = $user->socid;
 //$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 //restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
-//if (empty($conf->package->enabled)) accessforbidden();
+//if (empty($conf->shipmentpackage->enabled)) accessforbidden();
 //if (!$permissiontoread) accessforbidden();
 
 
@@ -129,7 +146,7 @@ if ($action == 'addcontact' && $permission) {
  * View
  */
 
-$title = $langs->trans('MyObject')." - ".$langs->trans('ContactsAddresses');
+$title = $langs->trans('ShipmentPackage')." - ".$langs->trans('ContactsAddresses');
 $help_url = '';
 //$help_url='EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('', $title, $help_url);
@@ -150,11 +167,11 @@ if ($object->id) {
 	/*
 	 * Show tabs
 	 */
-	$head = myobjectPrepareHead($object);
+	$head = shipmentpackagePrepareHead($object);
 
 	print dol_get_fiche_head($head, 'contact', '', -1, $object->picto);
 
-	$linkback = '<a href="'.dol_buildpath('/package/myobject_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/shipmentpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*
@@ -203,6 +220,9 @@ if ($object->id) {
 	print '<br>';
 
 	// Contacts lines (modules that overwrite templates must declare this into descriptor)
+	// workaround to contacts like expedition contacts
+	$object->socid = $object->fk_soc;
+	$object->element = 'shipping';
 	$dirtpls = array_merge($conf->modules_parts['tpl'], array('/core/tpl'));
 	foreach ($dirtpls as $reldir) {
 		$res = @include dol_buildpath($reldir.'/contacts.tpl.php');

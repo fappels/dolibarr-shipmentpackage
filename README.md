@@ -1,11 +1,11 @@
-# PACKAGE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
+# SHIPMENTPACKAGE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
 ## Features
 
 Description of the module...
 
 <!--
-![Screenshot package](img/screenshot_package.png?raw=true "Package"){imgmd}
+![Screenshot shipmentpackage](img/screenshot_package.png?raw=true "ShipmentPackage"){imgmd}
 -->
 
 Other external modules are available on [Dolistore.com](https://www.dolistore.com).
@@ -58,11 +58,11 @@ Note: If this screen tell you there is no custom directory, check your setup is 
 
 ### From a GIT repository
 
-- Clone the repository in ```$dolibarr_main_document_root_alt/package```
+- Clone the repository in ```$dolibarr_main_document_root_alt/shipmentpackage```
 
 ```sh
 cd ....../custom
-git clone git@github.com:gitlogin/package.git package
+git clone git@github.com:gitlogin/shipmentpackage.git package
 ```
 
 ### <a name="final_steps"></a>Final steps

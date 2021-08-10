@@ -18,17 +18,17 @@
  */
 
 /**
- *  \file       htdocs/core/modules/package/mod_expeditionpackage_standard.php
- *  \ingroup    package
- *  \brief      File of class to manage ExpeditionPackage numbering rules standard
+ *  \file       htdocs/core/modules/shipmentpackage/mod_shipmentpackage_standard.php
+ *  \ingroup    shipmentpackage
+ *  \brief      File of class to manage ShipmentPackage numbering rules standard
  */
-dol_include_once('/package/core/modules/package/modules_expeditionpackage.php');
+dol_include_once('/shipmentpackage/core/modules/shipmentpackage/modules_shipmentpackage.php');
 
 
 /**
  *	Class to manage customer order numbering rules standard
  */
-class mod_expeditionpackage_standard extends ModeleNumRefExpeditionPackage
+class mod_shipmentpackage_standard extends ModeleNumRefShipmentPackage
 {
 	/**
 	 * Dolibarr version of the loaded document
@@ -141,7 +141,7 @@ class mod_expeditionpackage_standard extends ModeleNumRefExpeditionPackage
 				$max = 0;
 			}
 		} else {
-			dol_syslog("mod_expeditionpackage_standard::getNextValue", LOG_DEBUG);
+			dol_syslog("mod_shipmentpackage_standard::getNextValue", LOG_DEBUG);
 			return -1;
 		}
 
@@ -155,7 +155,7 @@ class mod_expeditionpackage_standard extends ModeleNumRefExpeditionPackage
 			$num = sprintf("%04s", $max + 1);
 		}
 
-		dol_syslog("mod_expeditionpackage_standard::getNextValue return ".$this->prefix.$yymm."-".$num);
+		dol_syslog("mod_shipmentpackage_standard::getNextValue return ".$this->prefix.$yymm."-".$num);
 		return $this->prefix.$yymm."-".$num;
 	}
 }

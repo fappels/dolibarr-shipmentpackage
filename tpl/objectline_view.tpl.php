@@ -50,7 +50,7 @@ $domData  = ' data-element="'.$line->element.'"';
 $domData .= ' data-id="'.$line->id.'"';
 
 // Lines for extrafield
-$objectline = new ExpeditionPackageLine($object->db);
+$objectline = new ShipmentPackageLine($object->db);
 
 $coldisplay = 0;
 print "<!-- BEGIN PHP TEMPLATE objectline_view.tpl.php -->\n";

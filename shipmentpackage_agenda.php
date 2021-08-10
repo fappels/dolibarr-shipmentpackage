@@ -17,9 +17,9 @@
  */
 
 /**
- *  \file       expeditionpackage_agenda.php
- *  \ingroup    package
- *  \brief      Tab of events on ExpeditionPackage
+ *  \file       shipmentpackage_agenda.php
+ *  \ingroup    shipmentpackage
+ *  \brief      Tab of events on ShipmentPackage
  */
 
 //if (! defined('NOREQUIREDB'))              define('NOREQUIREDB', '1');				// Do not create database handler $db
@@ -77,12 +77,12 @@ if (!$res) {
 require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-dol_include_once('/package/class/expeditionpackage.class.php');
-dol_include_once('/package/lib/package_expeditionpackage.lib.php');
+dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
+dol_include_once('/shipmentpackage/lib/shipmentpackage_shipmentpackage.lib.php');
 
 
 // Load translation files required by the page
-$langs->loadLangs(array("package@package", "other"));
+$langs->loadLangs(array("shipmentpackage@shipmentpackage", "other"));
 
 // Get parameters
 $id = GETPOST('id', 'int');
@@ -119,27 +119,27 @@ if (!$sortorder) {
 }
 
 // Initialize technical objects
-$object = new ExpeditionPackage($db);
+$object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->package->dir_output.'/temp/massgeneration/'.$user->id;
-$hookmanager->initHooks(array('expeditionpackageagenda', 'globalcard')); // Note that conf->hooks_modules contains array
+$diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
+$hookmanager->initHooks(array('shipmentpackageagenda', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
 // Load object
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = $conf->package->multidir_output[$object->entity]."/".$object->id;
+	$upload_dir = $conf->shipmentpackage->multidir_output[$object->entity]."/".$object->id;
 }
 
-$permissiontoadd = $user->rights->package->expeditionpackage->write; // Used by the include of actions_addupdatedelete.inc.php
+$permissiontoadd = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_addupdatedelete.inc.php
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
 //if ($user->socid > 0) $socid = $user->socid;
 //$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 //restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
-//if (empty($conf->package->enabled)) accessforbidden();
+//if (empty($conf->shipmentpackage->enabled)) accessforbidden();
 //if (!$permissiontoread) accessforbidden();
 
 
@@ -184,14 +184,14 @@ if ($object->id > 0) {
 	if (!empty($conf->notification->enabled)) {
 		$langs->load("mails");
 	}
-	$head = expeditionpackagePrepareHead($object);
+	$head = shipmentpackagePrepareHead($object);
 
 
 	print dol_get_fiche_head($head, 'agenda', '', -1, $object->picto);
 
 	// Object card
 	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/package/expeditionpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/shipmentpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*
@@ -290,7 +290,7 @@ if ($object->id > 0) {
 		}
 
 
-		//print load_fiche_titre($langs->trans("ActionsOnExpeditionPackage"), '', '');
+		//print load_fiche_titre($langs->trans("ActionsOnShipmentPackage"), '', '');
 
 		// List of all actions
 		$filters = array();

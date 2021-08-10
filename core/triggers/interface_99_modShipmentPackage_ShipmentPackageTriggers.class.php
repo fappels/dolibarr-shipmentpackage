@@ -16,15 +16,15 @@
  */
 
 /**
- * \file    core/triggers/interface_99_modPackage_PackageTriggers.class.php
- * \ingroup package
+ * \file    core/triggers/interface_99_modShipmentPackage_PackageTriggers.class.php
+ * \ingroup shipmentpackage
  * \brief   Example trigger.
  *
  * Put detailed description here.
  *
  * \remarks You can create other triggers by copying this one.
  * - File name should be either:
- *      - interface_99_modPackage_MyTrigger.class.php
+ *      - interface_99_modShipmentPackage_MyTrigger.class.php
  *      - interface_99_all_MyTrigger.class.php
  * - The file must stay in core/triggers
  * - The class name must be InterfaceMytrigger
@@ -36,7 +36,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
 
 
 /**
- *  Class of triggers for Package module
+ *  Class of triggers for ShipmentPackage module
  */
 class InterfacePackageTriggers extends DolibarrTriggers
 {
@@ -51,10 +51,10 @@ class InterfacePackageTriggers extends DolibarrTriggers
 
 		$this->name = preg_replace('/^Interface/i', '', get_class($this));
 		$this->family = "demo";
-		$this->description = "Package triggers.";
+		$this->description = "ShipmentPackage triggers.";
 		// 'development', 'experimental', 'dolibarr' or version
 		$this->version = 'development';
-		$this->picto = 'package@package';
+		$this->picto = 'shipmentpackage@shipmentpackage';
 	}
 
 	/**
@@ -92,7 +92,7 @@ class InterfacePackageTriggers extends DolibarrTriggers
 	 */
 	public function runTrigger($action, $object, User $user, Translate $langs, Conf $conf)
 	{
-		if (empty($conf->package) || empty($conf->package->enabled)) {
+		if (empty($conf->shipmentpackage) || empty($conf->shipmentpackage->enabled)) {
 			return 0; // If module is not enabled, we do nothing
 		}
 
@@ -310,11 +310,11 @@ class InterfacePackageTriggers extends DolibarrTriggers
 			//case 'SHIPPING_SENTBYMAIL':
 			//case 'SHIPPING_BILLED':
 			case 'SHIPPING_CLOSED':
-				// if package enabled and no package show warning
+				// if shipmentpackage enabled and no shipmentpackage show warning
 				break;
 			//case 'SHIPPING_REOPEN':
 			case 'SHIPPING_DELETE':
-				// check if package exist, if yes refuse delete
+				// check if shipmentpackage exist, if yes refuse delete
 				break;
 
 			// and more...

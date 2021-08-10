@@ -21,9 +21,9 @@
  */
 
 /**
- *      \file       admin/expeditionpackage_extrafields.php
- *		\ingroup    package
- *		\brief      Page to setup extra fields of expeditionpackage
+ *      \file       admin/shipmentpackage_extrafields.php
+ *		\ingroup    shipmentpackage
+ *		\brief      Page to setup extra fields of shipmentpackage
  */
 
 // Load Dolibarr environment
@@ -55,10 +55,10 @@ if (!$res) {
 }
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
-require_once '../lib/package.lib.php';
+require_once '../lib/shipmentpackage.lib.php';
 
 // Load translation files required by the page
-$langs->loadLangs(array('package@package', 'admin'));
+$langs->loadLangs(array('shipmentpackage@shipmentpackage', 'admin'));
 
 $extrafields = new ExtraFields($db);
 $form = new Form($db);
@@ -72,7 +72,7 @@ foreach ($tmptype2label as $key => $val) {
 
 $action = GETPOST('action', 'aZ09');
 $attrname = GETPOST('attrname', 'alpha');
-$elementtype = 'package_expeditionpackage'; //Must be the $table_element of the class that manage extrafield
+$elementtype = 'expedition_package'; //Must be the $table_element of the class that manage extrafield
 
 if (!$user->admin) {
 	accessforbidden();
@@ -92,18 +92,18 @@ require DOL_DOCUMENT_ROOT.'/core/actions_extrafields.inc.php';
  */
 
 $help_url = '';
-$page_name = "PackageSetup";
+$page_name = "ShipmentPackageSetup";
 
-llxHeader('', $langs->trans("PackageSetup"), $help_url);
+llxHeader('', $langs->trans("ShipmentPackageSetup"), $help_url);
 
 
 $linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';
 print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 
-$head = packageAdminPrepareHead();
+$head = shipmentpackageAdminPrepareHead();
 
-print dol_get_fiche_head($head, 'expeditionpackage_extrafields', $langs->trans($page_name), -1, 'package@package');
+print dol_get_fiche_head($head, 'shipmentpackage_extrafields', $langs->trans($page_name), -1, 'shipmentpackage@shipmentpackage');
 
 require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_view.tpl.php';
 

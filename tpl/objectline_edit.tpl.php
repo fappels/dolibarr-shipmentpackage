@@ -41,7 +41,7 @@ if (empty($forceall)) $forceall = 0;
 $colspan = 3; // Columns: total ht + col edit + col delete
 
 // Lines for extrafield
-$line = new ExpeditionPackageLine($this->db);
+$line = new ShipmentPackageLine($this->db);
 $line->fetch($lineid);
 
 print "<!-- BEGIN PHP TEMPLATE objectline_edit.tpl.php -->\n";
