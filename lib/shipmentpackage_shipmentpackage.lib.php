@@ -18,13 +18,13 @@
 /**
  * \file    lib/package_expeditionpackage.lib.php
  * \ingroup shipmentpackage
- * \brief   Library files with common functions for ExpeditionPackage
+ * \brief   Library files with common functions for ShipmentPackage
  */
 
 /**
- * Prepare array of tabs for ExpeditionPackage
+ * Prepare array of tabs for ShipmentPackage
  *
- * @param	ExpeditionPackage	$object		ExpeditionPackage
+ * @param	ShipmentPackage	$object		ShipmentPackage
  * @return 	array					Array of tabs
  */
 function expeditionpackagePrepareHead($object)

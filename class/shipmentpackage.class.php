@@ -19,7 +19,7 @@
 /**
  * \file        class/expeditionpackage.class.php
  * \ingroup     shipmentpackage
- * \brief       This file is a CRUD class file for ExpeditionPackage (Create/Read/Update/Delete)
+ * \brief       This file is a CRUD class file for ShipmentPackage (Create/Read/Update/Delete)
  */
 
 // Put here all includes required by your class file
@@ -28,9 +28,9 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/commonobject.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 /**
- * Class for ExpeditionPackage
+ * Class for ShipmentPackage
  */
-class ExpeditionPackage extends CommonObject
+class ShipmentPackage extends CommonObject
 {
 	/**
 	 * @var string ID of module.
@@ -792,7 +792,7 @@ class ExpeditionPackage extends CommonObject
 
 		$result = '';
 
-		$label = img_picto('', $this->picto).' <u>'.$langs->trans("ExpeditionPackage").'</u>';
+		$label = img_picto('', $this->picto).' <u>'.$langs->trans("ShipmentPackage").'</u>';
 		if (isset($this->status)) {
 			$label .= ' '.$this->getLibStatut(5);
 		}
@@ -1197,7 +1197,7 @@ class ExpeditionPackageLine extends CommonObjectLine
 	 */
 	public $fields=array(
 		'rowid' => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'position'=>1, 'notnull'=>1, 'visible'=>-1, 'noteditable'=>'1', 'index'=>1, 'comment'=>"Id"),
-		'fk_expedition_package' => array('type'=>'integer:ExpeditionPackage:shipmentpackage/class/expeditionpackage.class.php', 'label'=>'SyncApi', 'enabled'=>1, 'visible'=>1, 'position'=>10, 'notnull'=>1, 'index'=>1,),
+		'fk_expedition_package' => array('type'=>'integer:ShipmentPackage:shipmentpackage/class/expeditionpackage.class.php', 'label'=>'SyncApi', 'enabled'=>1, 'visible'=>1, 'position'=>10, 'notnull'=>1, 'index'=>1,),
 		'fk_origin_line' => array('type'=>'integer', 'label'=>'OriginLine', 'enabled'=>'1', 'position'=>20, 'notnull'=>1, 'visible'=>0),
 		'fk_origin_batch_line' => array('type'=>'integer', 'label'=>'OriginBatchLine', 'enabled'=>'1', 'position'=>30, 'notnull'=>1, 'visible'=>0),
 		'fk_product' => array('type'=>'integer:Product:product/class/product.class.php', 'label'=>'Product', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>1),
@@ -1403,7 +1403,7 @@ class ExpeditionPackageLine extends CommonObjectLine
 	 * update shipmentpackage value with product pmp
 	 *
 	 * @param user				$user		User that do the action
-	 * @param ExpeditionPackage	$package	package to update value
+	 * @param ShipmentPackage	$package	package to update value
 	 * @param string 			$mode		'increase' or 'decrease'
 	 * @return int NOK < 0 > OK
 	 */

@@ -23,7 +23,7 @@
 /**
  * \file       htdocs/core/modules/shipmentpackage/mod_expeditionpackage_advanced.php
  * \ingroup    shipmentpackage
- * \brief      File containing class for advanced numbering model of ExpeditionPackage
+ * \brief      File containing class for advanced numbering model of ShipmentPackage
  */
 
 dol_include_once('/shipmentpackage/core/modules/shipmentpackage/modules_expeditionpackage.php');
@@ -71,10 +71,10 @@ class mod_expeditionpackage_advanced extends ModeleNumRefExpeditionPackage
 		$texte .= '<input type="hidden" name="maskconstBom" value="PACKAGE_EXPEDITIONPACKAGE_ADVANCED_MASK">';
 		$texte .= '<table class="nobordernopadding" width="100%">';
 
-		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("ExpeditionPackage"), $langs->transnoentities("ExpeditionPackage"));
+		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("ShipmentPackage"), $langs->transnoentities("ShipmentPackage"));
 		$tooltip .= $langs->trans("GenericMaskCodes2");
 		$tooltip .= $langs->trans("GenericMaskCodes3");
-		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("ExpeditionPackage"), $langs->transnoentities("ExpeditionPackage"));
+		$tooltip .= $langs->trans("GenericMaskCodes4a", $langs->transnoentities("ShipmentPackage"), $langs->transnoentities("ShipmentPackage"));
 		$tooltip .= $langs->trans("GenericMaskCodes5");
 
 		// Parametrage du prefix
@@ -100,7 +100,7 @@ class mod_expeditionpackage_advanced extends ModeleNumRefExpeditionPackage
 	{
 		global $conf, $db, $langs, $mysoc;
 
-		$object = new ExpeditionPackage($db);
+		$object = new ShipmentPackage($db);
 		$object->initAsSpecimen();
 
 		/*$old_code_client = $mysoc->code_client;

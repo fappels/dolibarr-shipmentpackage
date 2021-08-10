@@ -113,7 +113,7 @@ $pageprev = $page - 1;
 $pagenext = $page + 1;
 
 // Initialize technical objects
-$object = new ExpeditionPackage($db);
+$object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('expeditionpackagelist')); // Note that conf->hooks_modules contains array
@@ -235,8 +235,8 @@ if (empty($reshook)) {
 	}
 
 	// Mass actions
-	$objectclass = 'ExpeditionPackage';
-	$objectlabel = 'ExpeditionPackage';
+	$objectclass = 'ShipmentPackage';
+	$objectlabel = 'ShipmentPackage';
 	$uploaddir = $conf->shipmentpackage->dir_output;
 	include DOL_DOCUMENT_ROOT.'/core/actions_massactions.inc.php';
 }
@@ -465,7 +465,7 @@ print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sort
 // Add code for pre mass action (confirmation or email presend form)
 $topicmail = "SendExpeditionPackageRef";
 $modelmail = "expeditionpackage";
-$objecttmp = new ExpeditionPackage($db);
+$objecttmp = new ShipmentPackage($db);
 $trackid = 'xxxx'.$object->id;
 include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';
 

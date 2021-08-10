@@ -19,7 +19,7 @@
 /**
  *  \file       expeditionpackage_note.php
  *  \ingroup    shipmentpackage
- *  \brief      Tab for notes on ExpeditionPackage
+ *  \brief      Tab for notes on ShipmentPackage
  */
 
 //if (! defined('NOREQUIREDB'))              define('NOREQUIREDB', '1');				// Do not create database handler $db
@@ -88,7 +88,7 @@ $cancel     = GETPOST('cancel', 'aZ09');
 $backtopage = GETPOST('backtopage', 'alpha');
 
 // Initialize technical objects
-$object = new ExpeditionPackage($db);
+$object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('expeditionpackagenote', 'globalcard')); // Note that conf->hooks_modules contains array
@@ -128,7 +128,7 @@ $form = new Form($db);
 
 //$help_url='EN:Customers_Orders|FR:Commandes_Clients|ES:Pedidos de clientes';
 $help_url = '';
-llxHeader('', $langs->trans('ExpeditionPackage'), $help_url);
+llxHeader('', $langs->trans('ShipmentPackage'), $help_url);
 
 if ($id > 0 || !empty($ref)) {
 	$object->fetch_thirdparty();

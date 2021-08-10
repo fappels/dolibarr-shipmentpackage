@@ -64,7 +64,7 @@ abstract class ModelePDFExpeditionPackage extends CommonDocGenerator
 
 
 /**
- *  Parent class to manage numbering of ExpeditionPackage
+ *  Parent class to manage numbering of ShipmentPackage
  */
 abstract class ModeleNumRefExpeditionPackage
 {

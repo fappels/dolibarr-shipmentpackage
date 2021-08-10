@@ -196,7 +196,7 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 	/**
 	 *  Function to build a document on disk using the generic odt module.
 	 *
-	 *	@param		ExpeditionPackage	$object				Object source to build document
+	 *	@param		ShipmentPackage	$object				Object source to build document
 	 *	@param		Translate	$outputlangs		Lang output object
 	 * 	@param		string		$srctemplatepath	Full path of source filename for generator using a template file
 	 *  @param		int			$hidedetails		Do not show line details
@@ -234,7 +234,7 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 			// If $object is id instead of object
 			if (!is_object($object)) {
 				$id = $object;
-				$object = new ExpeditionPackage($this->db);
+				$object = new ShipmentPackage($this->db);
 				$result = $object->fetch($id);
 				if ($result < 0) {
 					dol_print_error($this->db, $object->error);

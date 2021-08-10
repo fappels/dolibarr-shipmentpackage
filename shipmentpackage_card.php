@@ -101,7 +101,7 @@ $lineQtys = GETPOST('qty', 'array');
 $originLineIds = GETPOST('ol', 'array');
 
 // Initialize technical objects
-$object = new ExpeditionPackage($db);
+$object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('expeditionpackagecard', 'globalcard')); // Note that conf->hooks_modules contains array
@@ -339,7 +339,7 @@ $form = new Form($db);
 $formfile = new FormFile($db);
 $formproject = new FormProjets($db);
 
-$title = $langs->trans("ExpeditionPackage");
+$title = $langs->trans("ShipmentPackage");
 $help_url = '';
 llxHeader('', $title, $help_url);
 
@@ -371,7 +371,7 @@ if ($action == 'create') {
 		}
 	}
 
-	print load_fiche_titre($langs->trans("NewObject", $langs->transnoentitiesnoconv("ExpeditionPackage")), '', 'object_'.$object->picto);
+	print load_fiche_titre($langs->trans("NewObject", $langs->transnoentitiesnoconv("ShipmentPackage")), '', 'object_'.$object->picto);
 
 	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -439,7 +439,7 @@ if ($action == 'create') {
 
 // Part to edit record
 if (($id || $ref) && $action == 'edit') {
-	print load_fiche_titre($langs->trans("ExpeditionPackage"), '', 'object_'.$object->picto);
+	print load_fiche_titre($langs->trans("ShipmentPackage"), '', 'object_'.$object->picto);
 
 	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -724,7 +724,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
 			$genallowed = $user->rights->shipmentpackage->expeditionpackage->read; // If you can read, you can build the PDF to read content
 			$delallowed = $user->rights->shipmentpackage->expeditionpackage->write; // If you can create/edit, you can remove a file on card
-			print $formfile->showdocuments('shipmentpackage:ExpeditionPackage', $object->element.'/'.$objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang);
+			print $formfile->showdocuments('shipmentpackage:ShipmentPackage', $object->element.'/'.$objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang);
 		}
 
 		// Show links to link elements

@@ -19,7 +19,7 @@
 /**
  *  \file       expeditionpackage_contact.php
  *  \ingroup    shipmentpackage
- *  \brief      Tab for contacts linked to ExpeditionPackage
+ *  \brief      Tab for contacts linked to ShipmentPackage
  */
 
 // Load Dolibarr environment
@@ -70,7 +70,7 @@ $socid  = GETPOST('socid', 'int');
 $action = GETPOST('action', 'aZ09');
 
 // Initialize technical objects
-$object = new ExpeditionPackage($db);
+$object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('expeditionpackagecontact', 'globalcard')); // Note that conf->hooks_modules contains array
@@ -146,7 +146,7 @@ if ($action == 'addcontact' && $permission) {
  * View
  */
 
-$title = $langs->trans('ExpeditionPackage')." - ".$langs->trans('ContactsAddresses');
+$title = $langs->trans('ShipmentPackage')." - ".$langs->trans('ContactsAddresses');
 $help_url = '';
 //$help_url='EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('', $title, $help_url);

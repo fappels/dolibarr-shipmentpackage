@@ -20,7 +20,7 @@
 /**
  *  \file       htdocs/core/modules/shipmentpackage/mod_expeditionpackage_standard.php
  *  \ingroup    shipmentpackage
- *  \brief      File of class to manage ExpeditionPackage numbering rules standard
+ *  \brief      File of class to manage ShipmentPackage numbering rules standard
  */
 dol_include_once('/shipmentpackage/core/modules/package/modules_expeditionpackage.php');
 

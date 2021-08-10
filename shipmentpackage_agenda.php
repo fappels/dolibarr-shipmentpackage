@@ -19,7 +19,7 @@
 /**
  *  \file       expeditionpackage_agenda.php
  *  \ingroup    shipmentpackage
- *  \brief      Tab of events on ExpeditionPackage
+ *  \brief      Tab of events on ShipmentPackage
  */
 
 //if (! defined('NOREQUIREDB'))              define('NOREQUIREDB', '1');				// Do not create database handler $db
@@ -119,7 +119,7 @@ if (!$sortorder) {
 }
 
 // Initialize technical objects
-$object = new ExpeditionPackage($db);
+$object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('expeditionpackageagenda', 'globalcard')); // Note that conf->hooks_modules contains array

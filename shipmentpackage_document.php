@@ -19,7 +19,7 @@
 /**
  *  \file       expeditionpackage_document.php
  *  \ingroup    shipmentpackage
- *  \brief      Tab for documents linked to ExpeditionPackage
+ *  \brief      Tab for documents linked to ShipmentPackage
  */
 
 //if (! defined('NOREQUIREDB'))              define('NOREQUIREDB', '1');				// Do not create database handler $db
@@ -110,7 +110,7 @@ if (!$sortfield) {
 //if (! $sortfield) $sortfield="position_name";
 
 // Initialize technical objects
-$object = new ExpeditionPackage($db);
+$object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('expeditionpackagedocument', 'globalcard')); // Note that conf->hooks_modules contains array
@@ -148,7 +148,7 @@ include DOL_DOCUMENT_ROOT.'/core/actions_linkedfiles.inc.php';
 
 $form = new Form($db);
 
-$title = $langs->trans("ExpeditionPackage").' - '.$langs->trans("Files");
+$title = $langs->trans("ShipmentPackage").' - '.$langs->trans("Files");
 $help_url = '';
 //$help_url='EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('', $title, $help_url);
