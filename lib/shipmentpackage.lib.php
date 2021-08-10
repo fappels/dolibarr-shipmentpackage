@@ -18,7 +18,7 @@
 /**
  * \file    shipmentpackage/lib/shipmentpackage.lib.php
  * \ingroup shipmentpackage
- * \brief   Library files with common functions for Package
+ * \brief   Library files with common functions for ShipmentPackage
  */
 
 /**

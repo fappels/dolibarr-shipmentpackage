@@ -19,7 +19,7 @@
 /**
  * \file    shipmentpackage/admin/setup.php
  * \ingroup shipmentpackage
- * \brief   Package setup page.
+ * \brief   ShipmentPackage setup page.
  */
 
 // Load Dolibarr environment

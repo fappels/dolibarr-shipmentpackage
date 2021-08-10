@@ -350,7 +350,7 @@ class ActionsPackage
 			$head[$h][2] = 'home';
 			$h++;
 
-			$this->results['title'] = $langs->trans("Package");
+			$this->results['title'] = $langs->trans("ShipmentPackage");
 			$this->results['picto'] = 'shipmentpackage@shipmentpackage';
 		}
 

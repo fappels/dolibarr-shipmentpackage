@@ -36,7 +36,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
 
 
 /**
- *  Class of triggers for Package module
+ *  Class of triggers for ShipmentPackage module
  */
 class InterfacePackageTriggers extends DolibarrTriggers
 {
@@ -51,7 +51,7 @@ class InterfacePackageTriggers extends DolibarrTriggers
 
 		$this->name = preg_replace('/^Interface/i', '', get_class($this));
 		$this->family = "demo";
-		$this->description = "Package triggers.";
+		$this->description = "ShipmentPackage triggers.";
 		// 'development', 'experimental', 'dolibarr' or version
 		$this->version = 'development';
 		$this->picto = 'shipmentpackage@shipmentpackage';

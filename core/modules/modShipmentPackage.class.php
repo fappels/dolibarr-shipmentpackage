@@ -19,17 +19,17 @@
  */
 
 /**
- * 	\defgroup   shipmentpackage     Module Package
- *  \brief      Package module descriptor.
+ * 	\defgroup   shipmentpackage     Module ShipmentPackage
+ *  \brief      ShipmentPackage module descriptor.
  *
  *  \file       htdocs/shipmentpackage/core/modules/modPackage.class.php
  *  \ingroup    shipmentpackage
- *  \brief      Description and activation file for module Package
+ *  \brief      Description and activation file for module ShipmentPackage
  */
 include_once DOL_DOCUMENT_ROOT.'/core/modules/DolibarrModules.class.php';
 
 /**
- *  Description and activation class for module Package
+ *  Description and activation class for module ShipmentPackage
  */
 class modPackage extends DolibarrModules
 {
@@ -59,10 +59,10 @@ class modPackage extends DolibarrModules
 
 		// Gives the possibility for the module, to provide his own family info and position of this family (Overwrite $this->family and $this->module_position. Avoid this)
 		//$this->familyinfo = array('myownfamily' => array('position' => '01', 'label' => $langs->trans("MyOwnFamily")));
-		// Module label (no space allowed), used if translation string 'ModulePackageName' not found (Package is name of module).
+		// Module label (no space allowed), used if translation string 'ModulePackageName' not found (ShipmentPackage is name of module).
 		$this->name = preg_replace('/^mod/i', '', get_class($this));
 
-		// Module description, used if translation string 'ModulePackageDesc' not found (Package is name of module).
+		// Module description, used if translation string 'ModulePackageDesc' not found (ShipmentPackage is name of module).
 		$this->description = "PackageDescription";
 		// Used only if file README.md and README-LL.md not found.
 		$this->descriptionlong = "PackageDescription";
@@ -242,7 +242,7 @@ class modPackage extends DolibarrModules
 		$this->boxes = array(
 			//  0 => array(
 			//      'file' => 'packagewidget1.php@shipmentpackage',
-			//      'note' => 'Widget provided by Package',
+			//      'note' => 'Widget provided by ShipmentPackage',
 			//      'enabledbydefaulton' => 'Home',
 			//  ),
 			//  ...
@@ -277,17 +277,17 @@ class modPackage extends DolibarrModules
 		// Add here entries to declare new permissions
 		/* BEGIN MODULEBUILDER PERMISSIONS */
 		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Read objects of Package'; // Permission label
+		$this->rights[$r][1] = 'Read objects of ShipmentPackage'; // Permission label
 		$this->rights[$r][4] = 'expeditionpackage';
 		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->shipmentpackage->expeditionpackage->read)
 		$r++;
 		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Create/Update objects of Package'; // Permission label
+		$this->rights[$r][1] = 'Create/Update objects of ShipmentPackage'; // Permission label
 		$this->rights[$r][4] = 'expeditionpackage';
 		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->shipmentpackage->expeditionpackage->write)
 		$r++;
 		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Delete objects of Package'; // Permission label
+		$this->rights[$r][1] = 'Delete objects of ShipmentPackage'; // Permission label
 		$this->rights[$r][4] = 'expeditionpackage';
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->shipmentpackage->expeditionpackage->delete)
 		$r++;

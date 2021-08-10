@@ -5,7 +5,7 @@
 Description of the module...
 
 <!--
-![Screenshot shipmentpackage](img/screenshot_package.png?raw=true "Package"){imgmd}
+![Screenshot shipmentpackage](img/screenshot_package.png?raw=true "ShipmentPackage"){imgmd}
 -->
 
 Other external modules are available on [Dolistore.com](https://www.dolistore.com).
