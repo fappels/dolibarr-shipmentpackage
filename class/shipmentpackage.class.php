@@ -132,7 +132,6 @@ class ShipmentPackage extends CommonObject
 	public $rowid;
 	public $ref;
 	public $ref_supplier;
-	public $fk_expedition;
 	public $fk_soc;
 	public $fk_supplier;
 	public $fk_project;
