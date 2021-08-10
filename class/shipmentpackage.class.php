@@ -639,7 +639,7 @@ class ShipmentPackage extends CommonObject
 
 			if (!$error && !$notrigger) {
 				// Call trigger
-				$result = $this->call_trigger('EXPEDITIONPACKAGE_VALIDATE', $user);
+				$result = $this->call_trigger('SHIPMENTPACKAGE_VALIDATE', $user);
 				if ($result < 0) {
 					$error++;
 				}
@@ -721,7 +721,7 @@ class ShipmentPackage extends CommonObject
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'EXPEDITIONPACKAGE_UNVALIDATE');
+		return $this->setStatusCommon($user, self::STATUS_DRAFT, $notrigger, 'SHIPMENTPACKAGE_UNVALIDATE');
 	}
 
 	/**
@@ -745,7 +745,7 @@ class ShipmentPackage extends CommonObject
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'EXPEDITIONPACKAGE_CANCEL');
+		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'SHIPMENTPACKAGE_CANCEL');
 	}
 
 	/**
@@ -769,7 +769,7 @@ class ShipmentPackage extends CommonObject
 		 return -1;
 		 }*/
 
-		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'EXPEDITIONPACKAGE_REOPEN');
+		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'SHIPMENTPACKAGE_REOPEN');
 	}
 
 	/**
@@ -1022,15 +1022,15 @@ class ShipmentPackage extends CommonObject
 		global $langs, $conf;
 		$langs->load("shipmentpackage@shipmentpackage");
 
-		if (empty($conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON)) {
-			$conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON = 'mod_shipmentpackage_standard';
+		if (empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON)) {
+			$conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON = 'mod_shipmentpackage_standard';
 		}
 
-		if (!empty($conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON)) {
+		if (!empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON)) {
 			$mybool = false;
 
-			$file = $conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON.".php";
-			$classname = $conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON;
+			$file = $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON.".php";
+			$classname = $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON;
 
 			// Include file with class
 			$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
@@ -1092,8 +1092,8 @@ class ShipmentPackage extends CommonObject
 
 			if (!empty($this->model_pdf)) {
 				$modele = $this->model_pdf;
-			} elseif (!empty($conf->global->EXPEDITIONPACKAGE_ADDON_PDF)) {
-				$modele = $conf->global->EXPEDITIONPACKAGE_ADDON_PDF;
+			} elseif (!empty($conf->global->SHIPMENTPACKAGE_ADDON_PDF)) {
+				$modele = $conf->global->SHIPMENTPACKAGE_ADDON_PDF;
 			}
 		}
 

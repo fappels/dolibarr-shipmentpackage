@@ -232,7 +232,7 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 		$realpatharray = array();
 		$this->atleastonephoto = false;
 		/*
-		if (!empty($conf->global->MAIN_GENERATE_EXPEDITIONPACKAGE_WITH_PICTURE))
+		if (!empty($conf->global->MAIN_GENERATE_SHIPMENTPACKAGE_WITH_PICTURE))
 		{
 			$objphoto = new Product($this->db);
 
@@ -362,7 +362,7 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 					$info = array(
 						'Name' => $this->emetteur->name,
 						'Location' => getCountry($this->emetteur->country_code, 0),
-						'Reason' => 'EXPEDITIONPACKAGE',
+						'Reason' => 'SHIPMENTPACKAGE',
 						'ContactInfo' => $this->emetteur->email
 					);
 					$pdf->setSignature($cert, $cert, $this->emetteur->name, '', 2, $info);

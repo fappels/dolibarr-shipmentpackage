@@ -76,7 +76,7 @@ class modPackage extends DolibarrModules
 		// Url to the file with your last numberversion of this module
 		//$this->url_last_version = 'http://www.example.com/versionmodule.txt';
 
-		// Key used in llx_const table to save module status enabled/disabled (where PACKAGE is value of property name of module in uppercase)
+		// Key used in llx_const table to save module status enabled/disabled (where SHIPMENTPACKAGE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 
 		// Name of image file used for this module.
@@ -156,8 +156,8 @@ class modPackage extends DolibarrModules
 
 		// Constants
 		// List of particular constants to add when module is enabled (key, 'chaine', value, desc, visible, 'current' or 'allentities', deleteonunactive)
-		// Example: $this->const=array(1 => array('PACKAGE_MYNEWCONST1', 'chaine', 'myvalue', 'This is a constant to add', 1),
-		//                             2 => array('PACKAGE_MYNEWCONST2', 'chaine', 'myvalue', 'This is another constant to add', 0, 'current', 1)
+		// Example: $this->const=array(1 => array('SHIPMENTPACKAGE_MYNEWCONST1', 'chaine', 'myvalue', 'This is a constant to add', 1),
+		//                             2 => array('SHIPMENTPACKAGE_MYNEWCONST2', 'chaine', 'myvalue', 'This is another constant to add', 0, 'current', 1)
 		// );
 		$this->const = array();
 
@@ -314,7 +314,7 @@ class modPackage extends DolibarrModules
 			'user'=>2, // 0=Menu for internal users, 1=external users, 2=both
 		);
 		END MODULEBUILDER TOPMENU */
-		/* BEGIN MODULEBUILDER LEFTMENU EXPEDITIONPACKAGE */
+		/* BEGIN MODULEBUILDER LEFTMENU SHIPMENTPACKAGE */
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=products',      // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',                          // This is a Top menu entry
@@ -359,10 +359,10 @@ class modPackage extends DolibarrModules
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
 
-		/* END MODULEBUILDER LEFTMENU EXPEDITIONPACKAGE */
+		/* END MODULEBUILDER LEFTMENU SHIPMENTPACKAGE */
 		// Exports profiles provided by this module
 		$r = 1;
-		/* BEGIN MODULEBUILDER EXPORT EXPEDITIONPACKAGE */
+		/* BEGIN MODULEBUILDER EXPORT SHIPMENTPACKAGE */
 		/*
 		$langs->load("shipmentpackage@shipmentpackage");
 		$this->export_code[$r]=$this->rights_class.'_'.$r;
@@ -389,11 +389,11 @@ class modPackage extends DolibarrModules
 		$this->export_sql_end[$r] .=' WHERE 1 = 1';
 		$this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('expedition_package').')';
 		$r++; */
-		/* END MODULEBUILDER EXPORT EXPEDITIONPACKAGE */
+		/* END MODULEBUILDER EXPORT SHIPMENTPACKAGE */
 
 		// Imports profiles provided by this module
 		$r = 1;
-		/* BEGIN MODULEBUILDER IMPORT EXPEDITIONPACKAGE */
+		/* BEGIN MODULEBUILDER IMPORT SHIPMENTPACKAGE */
 		/*
 		 $langs->load("shipmentpackage@shipmentpackage");
 		 $this->export_code[$r]=$this->rights_class.'_'.$r;
@@ -409,7 +409,7 @@ class modPackage extends DolibarrModules
 		 $this->export_sql_end[$r] .=' WHERE 1 = 1';
 		 $this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('shipmentpackage').')';
 		 $r++; */
-		/* END MODULEBUILDER IMPORT EXPEDITIONPACKAGE */
+		/* END MODULEBUILDER IMPORT SHIPMENTPACKAGE */
 	}
 
 	/**

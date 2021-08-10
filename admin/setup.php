@@ -75,14 +75,14 @@ $scandir = GETPOST('scan_dir', 'alpha');
 $type = 'myobject';
 
 $arrayofparameters = array(
-	'PACKAGE_MYPARAM1'=>array('type'=>'string', 'css'=>'minwidth500' ,'enabled'=>1),
-	'PACKAGE_MYPARAM2'=>array('type'=>'textarea','enabled'=>1),
-	//'PACKAGE_MYPARAM3'=>array('type'=>'category:'.Categorie::TYPE_CUSTOMER, 'enabled'=>1),
-	//'PACKAGE_MYPARAM4'=>array('type'=>'emailtemplate:thirdparty', 'enabled'=>1),
-	//'PACKAGE_MYPARAM5'=>array('type'=>'yesno', 'enabled'=>1),
-	//'PACKAGE_MYPARAM5'=>array('type'=>'thirdparty_type', 'enabled'=>1),
-	//'PACKAGE_MYPARAM6'=>array('type'=>'securekey', 'enabled'=>1),
-	//'PACKAGE_MYPARAM7'=>array('type'=>'product', 'enabled'=>1),
+	'SHIPMENTPACKAGE_MYPARAM1'=>array('type'=>'string', 'css'=>'minwidth500' ,'enabled'=>1),
+	'SHIPMENTPACKAGE_MYPARAM2'=>array('type'=>'textarea','enabled'=>1),
+	//'SHIPMENTPACKAGE_MYPARAM3'=>array('type'=>'category:'.Categorie::TYPE_CUSTOMER, 'enabled'=>1),
+	//'SHIPMENTPACKAGE_MYPARAM4'=>array('type'=>'emailtemplate:thirdparty', 'enabled'=>1),
+	//'SHIPMENTPACKAGE_MYPARAM5'=>array('type'=>'yesno', 'enabled'=>1),
+	//'SHIPMENTPACKAGE_MYPARAM5'=>array('type'=>'thirdparty_type', 'enabled'=>1),
+	//'SHIPMENTPACKAGE_MYPARAM6'=>array('type'=>'securekey', 'enabled'=>1),
+	//'SHIPMENTPACKAGE_MYPARAM7'=>array('type'=>'product', 'enabled'=>1),
 );
 
 $error = 0;
@@ -154,7 +154,7 @@ if ($action == 'updateMask') {
 	// TODO Check if numbering module chosen can be activated by calling method canBeActivated
 	$tmpobjectkey = GETPOST('object');
 	if (!empty($tmpobjectkey)) {
-		$constforval = 'PACKAGE_'.strtoupper($tmpobjectkey)."_ADDON";
+		$constforval = 'SHIPMENTPACKAGE_'.strtoupper($tmpobjectkey)."_ADDON";
 		dolibarr_set_const($db, $constforval, $value, 'chaine', 0, '', $conf->entity);
 	}
 } elseif ($action == 'set') {
@@ -165,7 +165,7 @@ if ($action == 'updateMask') {
 	if ($ret > 0) {
 		$tmpobjectkey = GETPOST('object');
 		if (!empty($tmpobjectkey)) {
-			$constforval = 'PACKAGE_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
+			$constforval = 'SHIPMENTPACKAGE_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
 			if ($conf->global->$constforval == "$value") {
 				dolibarr_del_const($db, $constforval, $conf->entity);
 			}
@@ -175,7 +175,7 @@ if ($action == 'updateMask') {
 	// Set or unset default model
 	$tmpobjectkey = GETPOST('object');
 	if (!empty($tmpobjectkey)) {
-		$constforval = 'PACKAGE_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
+		$constforval = 'SHIPMENTPACKAGE_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
 		if (dolibarr_set_const($db, $constforval, $value, 'chaine', 0, '', $conf->entity)) {
 			// The constant that was read before the new set
 			// We therefore requires a variable to have a coherent view
@@ -191,7 +191,7 @@ if ($action == 'updateMask') {
 } elseif ($action == 'unsetdoc') {
 	$tmpobjectkey = GETPOST('object');
 	if (!empty($tmpobjectkey)) {
-		$constforval = 'PACKAGE_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
+		$constforval = 'SHIPMENTPACKAGE_'.strtoupper($tmpobjectkey).'_ADDON_PDF';
 		dolibarr_del_const($db, $constforval, $conf->entity);
 	}
 }
@@ -468,7 +468,7 @@ foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
 								print '</td>'."\n";
 
 								print '<td class="center">';
-								$constforvar = 'PACKAGE_'.strtoupper($myTmpObjectKey).'_ADDON';
+								$constforvar = 'SHIPMENTPACKAGE_'.strtoupper($myTmpObjectKey).'_ADDON';
 								if ($conf->global->$constforvar == $file) {
 									print img_picto($langs->trans("Activated"), 'switch_on');
 								} else {
@@ -610,7 +610,7 @@ foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
 
 										// Default
 										print '<td class="center">';
-										$constforvar = 'PACKAGE_'.strtoupper($myTmpObjectKey).'_ADDON';
+										$constforvar = 'SHIPMENTPACKAGE_'.strtoupper($myTmpObjectKey).'_ADDON';
 										if ($conf->global->$constforvar == $name) {
 											//print img_picto($langs->trans("Default"), 'on');
 											// Even if choice is the default value, we allow to disable it. Replace this with previous line if you need to disable unset

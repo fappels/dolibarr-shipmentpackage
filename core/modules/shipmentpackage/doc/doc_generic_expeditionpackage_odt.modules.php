@@ -73,7 +73,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 		$this->db = $db;
 		$this->name = "ODT templates";
 		$this->description = $langs->trans("DocumentModelOdt");
-		$this->scandir = 'PACKAGE_EXPEDITIONPACKAGE_ADDON_PDF_ODT_PATH'; // Name of constant that is used to save list of directories to scan
+		$this->scandir = 'SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH'; // Name of constant that is used to save list of directories to scan
 
 		// Page size for A4 format
 		$this->type = 'odt';
@@ -123,13 +123,13 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 		$texte .= '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';
 		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
 		$texte .= '<input type="hidden" name="action" value="setModuleOptions">';
-		$texte .= '<input type="hidden" name="param1" value="PACKAGE_EXPEDITIONPACKAGE_ADDON_PDF_ODT_PATH">';
+		$texte .= '<input type="hidden" name="param1" value="SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH">';
 		$texte .= '<table class="nobordernopadding" width="100%">';
 
 		// List of directories area
 		$texte .= '<tr><td>';
 		$texttitle = $langs->trans("ListOfDirectories");
-		$listofdir = explode(',', preg_replace('/[\r\n]+/', ',', trim($conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON_PDF_ODT_PATH)));
+		$listofdir = explode(',', preg_replace('/[\r\n]+/', ',', trim($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH)));
 		$listoffiles = array();
 		foreach ($listofdir as $key => $tmpdir) {
 			$tmpdir = trim($tmpdir);
@@ -155,7 +155,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 		$texte .= $form->textwithpicto($texttitle, $texthelp, 1, 'help', '', 1);
 		$texte .= '<div><div style="display: inline-block; min-width: 100px; vertical-align: middle;">';
 		$texte .= '<textarea class="flat" cols="60" name="value1">';
-		$texte .= $conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON_PDF_ODT_PATH;
+		$texte .= $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH;
 		$texte .= '</textarea>';
 		$texte .= '</div><div style="display: inline-block; vertical-align: middle;">';
 		$texte .= '<input type="submit" class="button small" value="'.$langs->trans("Modify").'" name="Button">';
@@ -163,7 +163,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 
 		// Scan directories
 		$nbofiles = count($listoffiles);
-		if (!empty($conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON_PDF_ODT_PATH)) {
+		if (!empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH)) {
 			$texte .= $langs->trans("NumberOfModelFilesFound").': <b>';
 			//$texte.=$nbofiles?'<a id="a_'.get_class($this).'" href="#">':'';
 			$texte .= count($listoffiles);

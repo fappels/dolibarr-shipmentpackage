@@ -68,7 +68,7 @@ class mod_shipmentpackage_advanced extends ModeleNumRefShipmentPackage
 		$texte .= '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';
 		$texte .= '<input type="hidden" name="token" value="'.newToken().'">';
 		$texte .= '<input type="hidden" name="action" value="updateMask">';
-		$texte .= '<input type="hidden" name="maskconstBom" value="PACKAGE_EXPEDITIONPACKAGE_ADVANCED_MASK">';
+		$texte .= '<input type="hidden" name="maskconstBom" value="SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADVANCED_MASK">';
 		$texte .= '<table class="nobordernopadding" width="100%">';
 
 		$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("ShipmentPackage"), $langs->transnoentities("ShipmentPackage"));
@@ -79,7 +79,7 @@ class mod_shipmentpackage_advanced extends ModeleNumRefShipmentPackage
 
 		// Parametrage du prefix
 		$texte .= '<tr><td>'.$langs->trans("Mask").':</td>';
-		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskShipmentPackage" value="'.$conf->global->PACKAGE_EXPEDITIONPACKAGE_ADVANCED_MASK.'">', $tooltip, 1, 1).'</td>';
+		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskShipmentPackage" value="'.$conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADVANCED_MASK.'">', $tooltip, 1, 1).'</td>';
 
 		$texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button" value="'.$langs->trans("Modify").'" name="Button"></td>';
 
@@ -132,7 +132,7 @@ class mod_shipmentpackage_advanced extends ModeleNumRefShipmentPackage
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 
 		// We get cursor rule
-		$mask = $conf->global->PACKAGE_EXPEDITIONPACKAGE_ADVANCED_MASK;
+		$mask = $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADVANCED_MASK;
 
 		if (!$mask) {
 			$this->error = 'NotConfigured';

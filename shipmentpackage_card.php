@@ -179,7 +179,7 @@ if (empty($reshook)) {
 		}
 	}
 
-	$triggermodname = 'PACKAGE_EXPEDITIONPACKAGE_MODIFY'; // Name of trigger action code to execute when we modify record
+	$triggermodname = 'SHIPMENTPACKAGE_SHIPMENTPACKAGE_MODIFY'; // Name of trigger action code to execute when we modify record
 
 	// Actions cancel, add, update, update_extras, confirm_validate, confirm_delete, confirm_deleteline, confirm_clone, confirm_close, confirm_setdraft, confirm_reopen
 	include DOL_DOCUMENT_ROOT.'/core/actions_addupdatedelete.inc.php';
@@ -320,8 +320,8 @@ if (empty($reshook)) {
 	}
 
 	// Actions to send emails
-	$triggersendname = 'PACKAGE_EXPEDITIONPACKAGE_SENTBYMAIL';
-	$autocopy = 'MAIN_MAIL_AUTOCOPY_EXPEDITIONPACKAGE_TO';
+	$triggersendname = 'SHIPMENTPACKAGE_SHIPMENTPACKAGE_SENTBYMAIL';
+	$autocopy = 'MAIN_MAIL_AUTOCOPY_SHIPMENTPACKAGE_TO';
 	$trackid = 'shipmentpackage'.$object->id;
 	include DOL_DOCUMENT_ROOT.'/core/actions_sendmails.inc.php';
 }

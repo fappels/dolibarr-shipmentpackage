@@ -28,10 +28,10 @@ ModulePackageDesc = ShipmentPackage description
 PackageSetup = ShipmentPackage setup
 Settings = Settings
 PackageSetupPage = ShipmentPackage setup page
-PACKAGE_MYPARAM1 = My param 1
-PACKAGE_MYPARAM1Tooltip = My param 1 tooltip
-PACKAGE_MYPARAM2=My param 2
-PACKAGE_MYPARAM2Tooltip=My param 2 tooltip
+SHIPMENTPACKAGE_MYPARAM1 = My param 1
+SHIPMENTPACKAGE_MYPARAM1Tooltip = My param 1 tooltip
+SHIPMENTPACKAGE_MYPARAM2=My param 2
+SHIPMENTPACKAGE_MYPARAM2Tooltip=My param 2 tooltip
 
 
 

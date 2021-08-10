@@ -1,4 +1,4 @@
-# PACKAGE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
+# SHIPMENTPACKAGE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
 ## Features
 
