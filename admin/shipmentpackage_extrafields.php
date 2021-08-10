@@ -92,9 +92,9 @@ require DOL_DOCUMENT_ROOT.'/core/actions_extrafields.inc.php';
  */
 
 $help_url = '';
-$page_name = "PackageSetup";
+$page_name = "ShipmentPackageSetup";
 
-llxHeader('', $langs->trans("PackageSetup"), $help_url);
+llxHeader('', $langs->trans("ShipmentPackageSetup"), $help_url);
 
 
 $linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_values=1">'.$langs->trans("BackToModuleList").'</a>';

@@ -91,9 +91,9 @@ $now = dol_now();
 $form = new Form($db);
 $formfile = new FormFile($db);
 
-llxHeader("", $langs->trans("PackageArea"));
+llxHeader("", $langs->trans("ShipmentPackageArea"));
 
-print load_fiche_titre($langs->trans("PackageArea"), '', 'shipmentpackage.png@shipmentpackage');
+print load_fiche_titre($langs->trans("ShipmentPackageArea"), '', 'shipmentpackage.png@shipmentpackage');
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
 

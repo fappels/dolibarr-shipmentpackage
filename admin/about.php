@@ -82,7 +82,7 @@ $backtopage = GETPOST('backtopage', 'alpha');
 $form = new Form($db);
 
 $help_url = '';
-$page_name = "PackageAbout";
+$page_name = "ShipmentPackageAbout";
 
 llxHeader('', $langs->trans($page_name), $help_url);
 

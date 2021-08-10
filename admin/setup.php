@@ -205,7 +205,7 @@ if ($action == 'updateMask') {
 $form = new Form($db);
 
 $help_url = '';
-$page_name = "PackageSetup";
+$page_name = "ShipmentPackageSetup";
 
 llxHeader('', $langs->trans($page_name), $help_url);
 
@@ -219,7 +219,7 @@ $head = shipmentpackageAdminPrepareHead();
 print dol_get_fiche_head($head, 'settings', $langs->trans($page_name), -1, "shipmentpackage@shipmentpackage");
 
 // Setup page goes here
-echo '<span class="opacitymedium">'.$langs->trans("PackageSetupPage").'</span><br><br>';
+echo '<span class="opacitymedium">'.$langs->trans("ShipmentPackageSetupPage").'</span><br><br>';
 
 
 if ($action == 'edit') {
