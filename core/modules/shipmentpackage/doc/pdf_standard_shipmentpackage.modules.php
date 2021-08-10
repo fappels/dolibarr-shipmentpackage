@@ -26,12 +26,12 @@
  */
 
 /**
- *  \file       core/modules/package/doc/pdf_standard.modules.php
+ *  \file       core/modules/shipmentpackage/doc/pdf_standard.modules.php
  *  \ingroup    shipmentpackage
  *  \brief      File of class to generate document from standard template
  */
 
-dol_include_once('/package/core/modules/package/modules_shipmentpackage.php');
+dol_include_once('/shipmentpackage/core/modules/shipmentpackage/modules_shipmentpackage.php');
 require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
@@ -284,16 +284,16 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 
 		//if (count($realpatharray) == 0) $this->posxpicture=$this->posxtva;
 
-		if ($conf->package->dir_output.'/shipmentpackage') {
+		if ($conf->shipmentpackage->dir_output.'/shipmentpackage') {
 			$object->fetch_thirdparty();
 
 			// Definition of $dir and $file
 			if ($object->specimen) {
-				$dir = $conf->package->dir_output.'/shipmentpackage';
+				$dir = $conf->shipmentpackage->dir_output.'/shipmentpackage';
 				$file = $dir."/SPECIMEN.pdf";
 			} else {
 				$objectref = dol_sanitizeFileName($object->ref);
-				$dir = $conf->package->dir_output.'/shipmentpackage/'.$objectref;
+				$dir = $conf->shipmentpackage->dir_output.'/shipmentpackage/'.$objectref;
 				$file = $dir."/".$objectref.".pdf";
 			}
 			if (!file_exists($dir)) {

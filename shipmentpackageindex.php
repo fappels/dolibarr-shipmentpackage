@@ -19,7 +19,7 @@
  */
 
 /**
- *	\file       shipmentpackage/packageindex.php
+ *	\file       shipmentpackage/shipmentpackageindex.php
  *	\ingroup    shipmentpackage
  *	\brief      Home page of shipmentpackage top menu
  */

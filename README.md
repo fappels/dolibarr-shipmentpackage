@@ -62,7 +62,7 @@ Note: If this screen tell you there is no custom directory, check your setup is 
 
 ```sh
 cd ....../custom
-git clone git@github.com:gitlogin/package.git package
+git clone git@github.com:gitlogin/shipmentpackage.git package
 ```
 
 ### <a name="final_steps"></a>Final steps

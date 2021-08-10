@@ -22,7 +22,7 @@
  *  \ingroup    shipmentpackage
  *  \brief      File of class to manage ShipmentPackage numbering rules standard
  */
-dol_include_once('/shipmentpackage/core/modules/package/modules_shipmentpackage.php');
+dol_include_once('/shipmentpackage/core/modules/shipmentpackage/modules_shipmentpackage.php');
 
 
 /**

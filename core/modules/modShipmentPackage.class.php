@@ -305,7 +305,7 @@ class  modShipmentPackage extends DolibarrModules
 			'prefix' => img_picto('', $this->picto, 'class="paddingright pictofixedwidth valignmiddle"'),
 			'mainmenu'=>'shipmentpackage',
 			'leftmenu'=>'',
-			'url'=>'/shipmentpackage/packageindex.php',
+			'url'=>'/shipmentpackage/shipmentpackageindex.php',
 			'langs'=>'shipmentpackage@shipmentpackage', // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000 + $r,
 			'enabled'=>'$conf->shipmentpackage->enabled', // Define condition to show or hide menu entry. Use '$conf->shipmentpackage->enabled' if entry must be visible if module is enabled.
@@ -322,7 +322,7 @@ class  modShipmentPackage extends DolibarrModules
 			'prefix' => img_picto('', $this->picto, 'class="paddingright pictofixedwidth valignmiddle"'),
 			'mainmenu'=>'products',
 			'leftmenu'=>'shipmentpackage',
-			'url'=>'/shipmentpackage/packageindex.php',
+			'url'=>'/shipmentpackage/shipmentpackageindex.php',
 			'langs'=>'shipmentpackage@shipmentpackage',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->shipmentpackage->enabled',  // Define condition to show or hide menu entry. Use '$conf->shipmentpackage->enabled' if entry must be visible if module is enabled.

@@ -95,7 +95,7 @@ print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 $head = shipmentpackageAdminPrepareHead();
 print dol_get_fiche_head($head, 'about', $langs->trans($page_name), 0, 'shipmentpackage@shipmentpackage');
 
-dol_include_once('/shipmentpackage/core/modules/ modShipmentPackage.class.php');
+dol_include_once('/shipmentpackage/core/modules/modShipmentPackage.class.php');
 $tmpmodule = new  modShipmentPackage($db);
 print $tmpmodule->getDescLong();
 

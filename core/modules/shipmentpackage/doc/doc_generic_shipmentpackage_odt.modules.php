@@ -22,12 +22,12 @@
  */
 
 /**
- *	\file       htdocs/core/modules/package/doc/doc_generic_shipmentpackage_odt.modules.php
+ *	\file       htdocs/core/modules/shipmentpackage/doc/doc_generic_shipmentpackage_odt.modules.php
  *	\ingroup    shipmentpackage
  *	\brief      File of class to build ODT documents for shipmentpackages
  */
 
-dol_include_once('/package/core/modules/package/modules_shipmentpackage.php');
+dol_include_once('/shipmentpackage/core/modules/shipmentpackage/modules_shipmentpackage.php');
 require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
@@ -230,7 +230,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 
 		$outputlangs->loadLangs(array("main", "dict", "companies", "bills"));
 
-		if ($conf->package->dir_output) {
+		if ($conf->shipmentpackage->dir_output) {
 			// If $object is id instead of object
 			if (!is_object($object)) {
 				$id = $object;
@@ -244,7 +244,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 
 			$object->fetch_thirdparty();
 
-			$dir = $conf->package->multidir_output[isset($object->entity) ? $object->entity : 1];
+			$dir = $conf->shipmentpackage->multidir_output[isset($object->entity) ? $object->entity : 1];
 			$objectref = dol_sanitizeFileName($object->ref);
 			if (!preg_match('/specimen/i', $objectref)) {
 				$dir .= "/".$objectref;
@@ -283,9 +283,9 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 				//print "file=".$file;
 				//print "conf->societe->dir_temp=".$conf->societe->dir_temp;
 
-				dol_mkdir($conf->package->dir_temp);
-				if (!is_writable($conf->package->dir_temp)) {
-					$this->error = "Failed to write in temp directory ".$conf->package->dir_temp;
+				dol_mkdir($conf->shipmentpackage->dir_temp);
+				if (!is_writable($conf->shipmentpackage->dir_temp)) {
+					$this->error = "Failed to write in temp directory ".$conf->shipmentpackage->dir_temp;
 					dol_syslog('Error in write_file: '.$this->error, LOG_ERR);
 					return -1;
 				}
@@ -338,7 +338,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 					$odfHandler = new odf(
 						$srctemplatepath,
 						array(
-						'PATH_TO_TMP'	  => $conf->package->dir_temp,
+						'PATH_TO_TMP'	  => $conf->shipmentpackage->dir_temp,
 						'ZIP_PROXY'		  => 'PclZipProxy', // PhpZipProxy or PclZipProxy. Got "bad compression method" error when using PhpZipProxy.
 						'DELIMITER_LEFT'  => '{',
 						'DELIMITER_RIGHT' => '}'

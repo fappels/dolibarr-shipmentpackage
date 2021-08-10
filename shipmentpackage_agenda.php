@@ -78,7 +78,7 @@ require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
-dol_include_once('/shipmentpackage/lib/package_shipmentpackage.lib.php');
+dol_include_once('/shipmentpackage/lib/shipmentpackage_shipmentpackage.lib.php');
 
 
 // Load translation files required by the page

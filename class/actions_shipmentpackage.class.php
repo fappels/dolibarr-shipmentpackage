@@ -24,9 +24,9 @@
  */
 
 /**
- * Class ActionsPackage
+ * Class ActionsShipmentPackage
  */
-class ActionsPackage
+class ActionsShipmentPackage
 {
 	/**
 	 * @var DoliDB Database handler.

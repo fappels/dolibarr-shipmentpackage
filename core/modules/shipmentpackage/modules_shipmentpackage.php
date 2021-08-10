@@ -23,7 +23,7 @@
  */
 
 /**
- *  \file			htdocs/core/modules/package/modules_shipmentpackage.php
+ *  \file			htdocs/core/modules/shipmentpackage/modules_shipmentpackage.php
  *  \ingroup	 shipmentpackage
  *  \brief			File that contains parent class for shipmentpackages document models and parent class for shipmentpackages numbering models
  */
