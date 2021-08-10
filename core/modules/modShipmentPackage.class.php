@@ -22,7 +22,7 @@
  * 	\defgroup   shipmentpackage     Module ShipmentPackage
  *  \brief      ShipmentPackage module descriptor.
  *
- *  \file       htdocs/shipmentpackage/core/modules/modPackage.class.php
+ *  \file       htdocs/shipmentpackage/core/modules/ modShipmentPackage.class.php
  *  \ingroup    shipmentpackage
  *  \brief      Description and activation file for module ShipmentPackage
  */
@@ -31,7 +31,7 @@ include_once DOL_DOCUMENT_ROOT.'/core/modules/DolibarrModules.class.php';
 /**
  *  Description and activation class for module ShipmentPackage
  */
-class modPackage extends DolibarrModules
+class  modShipmentPackage extends DolibarrModules
 {
 	/**
 	 * Constructor. Define names, constants, directories, boxes, permissions

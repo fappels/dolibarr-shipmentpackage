@@ -176,12 +176,12 @@ class ShipmentPackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCas
 		$module_status_image = $this->byXPath($module_status_image_path);
 		if (strstr($module_status_image->attribute('src'), 'switch_off.png')) {
 			// Enable the module
-			$this->byHref('modPackage')->click();
+			$this->byHref(' modShipmentPackage')->click();
 		} else {
 			// Disable the module
-			$this->byHref('modPackage')->click();
+			$this->byHref(' modShipmentPackage')->click();
 			// Reenable the module
-			$this->byHref('modPackage')->click();
+			$this->byHref(' modShipmentPackage')->click();
 		}
 		// Page reloaded, we need a new Xpath
 		$module_status_image = $this->byXPath($module_status_image_path);
