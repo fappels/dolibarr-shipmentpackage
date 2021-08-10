@@ -19,7 +19,7 @@
 /**
  *   	\file       expeditionpackage_list.php
  *		\ingroup    shipmentpackage
- *		\brief      List page for expeditionpackage
+ *		\brief      List page for shipmentpackage
  */
 
 //if (! defined('NOREQUIREDB'))              define('NOREQUIREDB', '1');				// Do not create database handler $db
@@ -79,7 +79,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 
 // load shipmentpackage libraries
-require_once __DIR__.'/class/expeditionpackage.class.php';
+require_once __DIR__.'/class/shipmentpackage.class.php';
 
 // for other modules
 //dol_include_once('/othermodule/class/otherobject.class.php');
@@ -175,9 +175,9 @@ include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_list_array_fields.tpl.php';
 $object->fields = dol_sort_array($object->fields, 'position');
 $arrayfields = dol_sort_array($arrayfields, 'position');
 
-$permissiontoread = $user->rights->shipmentpackage->expeditionpackage->read;
-$permissiontoadd = $user->rights->shipmentpackage->expeditionpackage->write;
-$permissiontodelete = $user->rights->shipmentpackage->expeditionpackage->delete;
+$permissiontoread = $user->rights->shipmentpackage->shipmentpackage->read;
+$permissiontoadd = $user->rights->shipmentpackage->shipmentpackage->write;
+$permissiontodelete = $user->rights->shipmentpackage->shipmentpackage->delete;
 
 // Security check
 if (empty($conf->shipmentpackage->enabled)) {
@@ -464,7 +464,7 @@ print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sort
 
 // Add code for pre mass action (confirmation or email presend form)
 $topicmail = "SendExpeditionPackageRef";
-$modelmail = "expeditionpackage";
+$modelmail = "shipmentpackage";
 $objecttmp = new ShipmentPackage($db);
 $trackid = 'xxxx'.$object->id;
 include DOL_DOCUMENT_ROOT.'/core/tpl/massactions_pre.tpl.php';

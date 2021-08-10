@@ -130,7 +130,7 @@ class ActionsPackage
 		$error = 0; // Error counter
 
 		if (in_array($parameters['currentcontext'], array('expeditioncard'))) {
-			if ($user->rights->shipmentpackage->expeditionpackage->write && $object->statut == Expedition::STATUS_VALIDATED) {
+			if ($user->rights->shipmentpackage->shipmentpackage->write && $object->statut == Expedition::STATUS_VALIDATED) {
 				$href = dol_buildpath('/shipmentpackage/expeditionpackage_card.php', 2);
 				print '<div class="inline-block divButAction"><a class="butAction" href="' . $href . '?origin=shipping&originid=' . $object->id . '&fk_soc=' . $object->socid . '&action=create">' . $langs->trans('CreatePackage') . '</a></div>';
 			}
@@ -154,8 +154,8 @@ class ActionsPackage
 		$result = 0;
 
 		if (in_array($parameters['currentcontext'], array('expeditionpackagecard'))) {
-			if ($user->rights->shipmentpackage->expeditionpackage->write) {
-				dol_include_once('/shipmentpackage/class/expeditionpackage.class.php');
+			if ($user->rights->shipmentpackage->shipmentpackage->write) {
+				dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
 				$packageLine = new ExpeditionPackageLine($this->db);
 				$selectedLines = array(0);
 				$originLine = $parameters['line'];

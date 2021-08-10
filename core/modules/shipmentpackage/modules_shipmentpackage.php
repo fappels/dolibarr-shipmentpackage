@@ -51,7 +51,7 @@ abstract class ModelePDFExpeditionPackage extends CommonDocGenerator
 		// phpcs:enable
 		global $conf;
 
-		$type = 'expeditionpackage';
+		$type = 'shipmentpackage';
 		$list = array();
 
 		include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';

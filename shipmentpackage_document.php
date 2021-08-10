@@ -78,7 +78,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-dol_include_once('/shipmentpackage/class/expeditionpackage.class.php');
+dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
 dol_include_once('/shipmentpackage/lib/package_expeditionpackage.lib.php');
 
 // Load translation files required by the page
@@ -121,10 +121,10 @@ $extrafields->fetch_name_optionals_label($object->table_element);
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = $conf->shipmentpackage->multidir_output[$object->entity ? $object->entity : $conf->entity]."/expeditionpackage/".get_exdir(0, 0, 0, 1, $object);
+	$upload_dir = $conf->shipmentpackage->multidir_output[$object->entity ? $object->entity : $conf->entity]."/shipmentpackage/".get_exdir(0, 0, 0, 1, $object);
 }
 
-$permissiontoadd = $user->rights->shipmentpackage->expeditionpackage->write; // Used by the include of actions_addupdatedelete.inc.php and actions_linkedfiles.inc.php
+$permissiontoadd = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_addupdatedelete.inc.php and actions_linkedfiles.inc.php
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
@@ -233,14 +233,14 @@ if ($object->id) {
 	print dol_get_fiche_end();
 
 	$modulepart = 'shipmentpackage';
-	//$permissiontoadd = $user->rights->shipmentpackage->expeditionpackage->write;
+	//$permissiontoadd = $user->rights->shipmentpackage->shipmentpackage->write;
 	$permissiontoadd = 1;
-	//$permtoedit = $user->rights->shipmentpackage->expeditionpackage->write;
+	//$permtoedit = $user->rights->shipmentpackage->shipmentpackage->write;
 	$permtoedit = 1;
 	$param = '&id='.$object->id;
 
-	//$relativepathwithnofile='expeditionpackage/' . dol_sanitizeFileName($object->id).'/';
-	$relativepathwithnofile = 'expeditionpackage/'.dol_sanitizeFileName($object->ref).'/';
+	//$relativepathwithnofile='shipmentpackage/' . dol_sanitizeFileName($object->id).'/';
+	$relativepathwithnofile = 'shipmentpackage/'.dol_sanitizeFileName($object->ref).'/';
 
 	include DOL_DOCUMENT_ROOT.'/core/tpl/document_actions_post_headers.tpl.php';
 } else {

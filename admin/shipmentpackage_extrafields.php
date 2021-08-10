@@ -23,7 +23,7 @@
 /**
  *      \file       admin/expeditionpackage_extrafields.php
  *		\ingroup    shipmentpackage
- *		\brief      Page to setup extra fields of expeditionpackage
+ *		\brief      Page to setup extra fields of shipmentpackage
  */
 
 // Load Dolibarr environment

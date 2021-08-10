@@ -19,7 +19,7 @@
 /**
  *   	\file       expeditionpackage_card.php
  *		\ingroup    shipmentpackage
- *		\brief      Page to create/edit/view expeditionpackage
+ *		\brief      Page to create/edit/view shipmentpackage
  */
 
 //if (! defined('NOREQUIREDB'))              define('NOREQUIREDB', '1');				// Do not create database handler $db
@@ -78,7 +78,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
 require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
-dol_include_once('/shipmentpackage/class/expeditionpackage.class.php');
+dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
 dol_include_once('/shipmentpackage/lib/package_expeditionpackage.lib.php');
 
 // Load translation files required by the page
@@ -128,12 +128,12 @@ if (empty($action) && empty($id) && empty($ref)) {
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once.
 
 
-$permissiontoread = $user->rights->shipmentpackage->expeditionpackage->read;
-$permissiontoadd = $user->rights->shipmentpackage->expeditionpackage->write; // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
-$permissiontodelete = $user->rights->shipmentpackage->expeditionpackage->delete || ($permissiontoadd && isset($object->status) && $object->status == $object::STATUS_DRAFT);
-$permissionnote = $user->rights->shipmentpackage->expeditionpackage->write; // Used by the include of actions_setnotes.inc.php
-$permissiondellink = $user->rights->shipmentpackage->expeditionpackage->write; // Used by the include of actions_dellink.inc.php
-$upload_dir = $conf->shipmentpackage->multidir_output[isset($object->entity) ? $object->entity : 1].'/expeditionpackage';
+$permissiontoread = $user->rights->shipmentpackage->shipmentpackage->read;
+$permissiontoadd = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
+$permissiontodelete = $user->rights->shipmentpackage->shipmentpackage->delete || ($permissiontoadd && isset($object->status) && $object->status == $object::STATUS_DRAFT);
+$permissionnote = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_setnotes.inc.php
+$permissiondellink = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_dellink.inc.php
+$upload_dir = $conf->shipmentpackage->multidir_output[isset($object->entity) ? $object->entity : 1].'/shipmentpackage';
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
@@ -322,7 +322,7 @@ if (empty($reshook)) {
 	// Actions to send emails
 	$triggersendname = 'PACKAGE_EXPEDITIONPACKAGE_SENTBYMAIL';
 	$autocopy = 'MAIN_MAIL_AUTOCOPY_EXPEDITIONPACKAGE_TO';
-	$trackid = 'expeditionpackage'.$object->id;
+	$trackid = 'shipmentpackage'.$object->id;
 	include DOL_DOCUMENT_ROOT.'/core/actions_sendmails.inc.php';
 }
 
@@ -722,13 +722,13 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			$relativepath = $objref.'/'.$objref.'.pdf';
 			$filedir = $conf->shipmentpackage->dir_output.'/'.$object->element.'/'.$objref;
 			$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
-			$genallowed = $user->rights->shipmentpackage->expeditionpackage->read; // If you can read, you can build the PDF to read content
-			$delallowed = $user->rights->shipmentpackage->expeditionpackage->write; // If you can create/edit, you can remove a file on card
+			$genallowed = $user->rights->shipmentpackage->shipmentpackage->read; // If you can read, you can build the PDF to read content
+			$delallowed = $user->rights->shipmentpackage->shipmentpackage->write; // If you can create/edit, you can remove a file on card
 			print $formfile->showdocuments('shipmentpackage:ShipmentPackage', $object->element.'/'.$objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang);
 		}
 
 		// Show links to link elements
-		$linktoelem = $form->showLinkToObjectBlock($object, null, array('expeditionpackage'));
+		$linktoelem = $form->showLinkToObjectBlock($object, null, array('shipmentpackage'));
 		$somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
 
 
@@ -754,10 +754,10 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	}
 
 	// Presend form
-	$modelmail = 'expeditionpackage';
+	$modelmail = 'shipmentpackage';
 	$defaulttopic = 'InformationMessage';
 	$diroutput = $conf->shipmentpackage->dir_output;
-	$trackid = 'expeditionpackage'.$object->id;
+	$trackid = 'shipmentpackage'.$object->id;
 
 	include DOL_DOCUMENT_ROOT.'/core/tpl/card_presend.tpl.php';
 }

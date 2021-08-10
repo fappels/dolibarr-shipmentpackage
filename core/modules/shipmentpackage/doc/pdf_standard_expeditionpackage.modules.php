@@ -284,16 +284,16 @@ class pdf_standard_expeditionpackage extends ModelePDFExpeditionPackage
 
 		//if (count($realpatharray) == 0) $this->posxpicture=$this->posxtva;
 
-		if ($conf->package->dir_output.'/expeditionpackage') {
+		if ($conf->package->dir_output.'/shipmentpackage') {
 			$object->fetch_thirdparty();
 
 			// Definition of $dir and $file
 			if ($object->specimen) {
-				$dir = $conf->package->dir_output.'/expeditionpackage';
+				$dir = $conf->package->dir_output.'/shipmentpackage';
 				$file = $dir."/SPECIMEN.pdf";
 			} else {
 				$objectref = dol_sanitizeFileName($object->ref);
-				$dir = $conf->package->dir_output.'/expeditionpackage/'.$objectref;
+				$dir = $conf->package->dir_output.'/shipmentpackage/'.$objectref;
 				$file = $dir."/".$objectref.".pdf";
 			}
 			if (!file_exists($dir)) {

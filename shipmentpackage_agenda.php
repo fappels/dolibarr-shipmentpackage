@@ -77,7 +77,7 @@ if (!$res) {
 require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-dol_include_once('/shipmentpackage/class/expeditionpackage.class.php');
+dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
 dol_include_once('/shipmentpackage/lib/package_expeditionpackage.lib.php');
 
 
@@ -132,7 +132,7 @@ if ($id > 0 || !empty($ref)) {
 	$upload_dir = $conf->shipmentpackage->multidir_output[$object->entity]."/".$object->id;
 }
 
-$permissiontoadd = $user->rights->shipmentpackage->expeditionpackage->write; // Used by the include of actions_addupdatedelete.inc.php
+$permissiontoadd = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_addupdatedelete.inc.php
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();

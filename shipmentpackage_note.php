@@ -74,7 +74,7 @@ if (!$res) {
 	die("Include of main fails");
 }
 
-dol_include_once('/shipmentpackage/class/expeditionpackage.class.php');
+dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
 dol_include_once('/shipmentpackage/lib/package_expeditionpackage.lib.php');
 
 // Load translation files required by the page
@@ -101,8 +101,8 @@ if ($id > 0 || !empty($ref)) {
 	$upload_dir = $conf->shipmentpackage->multidir_output[$object->entity]."/".$object->id;
 }
 
-$permissionnote = $user->rights->shipmentpackage->expeditionpackage->write; // Used by the include of actions_setnotes.inc.php
-$permissiontoadd = $user->rights->shipmentpackage->expeditionpackage->write; // Used by the include of actions_addupdatedelete.inc.php
+$permissionnote = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_setnotes.inc.php
+$permissiontoadd = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_addupdatedelete.inc.php
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
