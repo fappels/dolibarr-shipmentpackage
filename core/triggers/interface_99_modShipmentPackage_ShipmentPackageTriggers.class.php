@@ -17,7 +17,7 @@
 
 /**
  * \file    core/triggers/interface_99_modPackage_PackageTriggers.class.php
- * \ingroup package
+ * \ingroup shipmentpackage
  * \brief   Example trigger.
  *
  * Put detailed description here.
@@ -54,7 +54,7 @@ class InterfacePackageTriggers extends DolibarrTriggers
 		$this->description = "Package triggers.";
 		// 'development', 'experimental', 'dolibarr' or version
 		$this->version = 'development';
-		$this->picto = 'package@package';
+		$this->picto = 'shipmentpackage@shipmentpackage';
 	}
 
 	/**
@@ -92,7 +92,7 @@ class InterfacePackageTriggers extends DolibarrTriggers
 	 */
 	public function runTrigger($action, $object, User $user, Translate $langs, Conf $conf)
 	{
-		if (empty($conf->package) || empty($conf->package->enabled)) {
+		if (empty($conf->shipmentpackage) || empty($conf->shipmentpackage->enabled)) {
 			return 0; // If module is not enabled, we do nothing
 		}
 
@@ -310,11 +310,11 @@ class InterfacePackageTriggers extends DolibarrTriggers
 			//case 'SHIPPING_SENTBYMAIL':
 			//case 'SHIPPING_BILLED':
 			case 'SHIPPING_CLOSED':
-				// if package enabled and no package show warning
+				// if shipmentpackage enabled and no shipmentpackage show warning
 				break;
 			//case 'SHIPPING_REOPEN':
 			case 'SHIPPING_DELETE':
-				// check if package exist, if yes refuse delete
+				// check if shipmentpackage exist, if yes refuse delete
 				break;
 
 			// and more...

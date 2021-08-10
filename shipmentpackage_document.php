@@ -18,7 +18,7 @@
 
 /**
  *  \file       expeditionpackage_document.php
- *  \ingroup    package
+ *  \ingroup    shipmentpackage
  *  \brief      Tab for documents linked to ExpeditionPackage
  */
 
@@ -78,11 +78,11 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-dol_include_once('/package/class/expeditionpackage.class.php');
-dol_include_once('/package/lib/package_expeditionpackage.lib.php');
+dol_include_once('/shipmentpackage/class/expeditionpackage.class.php');
+dol_include_once('/shipmentpackage/lib/package_expeditionpackage.lib.php');
 
 // Load translation files required by the page
-$langs->loadLangs(array("package@package", "companies", "other", "mails"));
+$langs->loadLangs(array("shipmentpackage@shipmentpackage", "companies", "other", "mails"));
 
 
 $action = GETPOST('action', 'aZ09');
@@ -112,7 +112,7 @@ if (!$sortfield) {
 // Initialize technical objects
 $object = new ExpeditionPackage($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->package->dir_output.'/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('expeditionpackagedocument', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
@@ -121,17 +121,17 @@ $extrafields->fetch_name_optionals_label($object->table_element);
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 
 if ($id > 0 || !empty($ref)) {
-	$upload_dir = $conf->package->multidir_output[$object->entity ? $object->entity : $conf->entity]."/expeditionpackage/".get_exdir(0, 0, 0, 1, $object);
+	$upload_dir = $conf->shipmentpackage->multidir_output[$object->entity ? $object->entity : $conf->entity]."/expeditionpackage/".get_exdir(0, 0, 0, 1, $object);
 }
 
-$permissiontoadd = $user->rights->package->expeditionpackage->write; // Used by the include of actions_addupdatedelete.inc.php and actions_linkedfiles.inc.php
+$permissiontoadd = $user->rights->shipmentpackage->expeditionpackage->write; // Used by the include of actions_addupdatedelete.inc.php and actions_linkedfiles.inc.php
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
 //if ($user->socid > 0) $socid = $user->socid;
 //$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 //restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
-//if (empty($conf->package->enabled)) accessforbidden();
+//if (empty($conf->shipmentpackage->enabled)) accessforbidden();
 //if (!$permissiontoread) accessforbidden();
 
 
@@ -171,7 +171,7 @@ if ($object->id) {
 
 	// Object card
 	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/package/expeditionpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/expeditionpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*
@@ -232,10 +232,10 @@ if ($object->id) {
 
 	print dol_get_fiche_end();
 
-	$modulepart = 'package';
-	//$permissiontoadd = $user->rights->package->expeditionpackage->write;
+	$modulepart = 'shipmentpackage';
+	//$permissiontoadd = $user->rights->shipmentpackage->expeditionpackage->write;
 	$permissiontoadd = 1;
-	//$permtoedit = $user->rights->package->expeditionpackage->write;
+	//$permtoedit = $user->rights->shipmentpackage->expeditionpackage->write;
 	$permtoedit = 1;
 	$param = '&id='.$object->id;
 

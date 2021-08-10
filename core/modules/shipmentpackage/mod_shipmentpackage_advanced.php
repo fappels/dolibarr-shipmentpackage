@@ -21,12 +21,12 @@
  */
 
 /**
- * \file       htdocs/core/modules/package/mod_expeditionpackage_advanced.php
- * \ingroup    package
+ * \file       htdocs/core/modules/shipmentpackage/mod_expeditionpackage_advanced.php
+ * \ingroup    shipmentpackage
  * \brief      File containing class for advanced numbering model of ExpeditionPackage
  */
 
-dol_include_once('/package/core/modules/package/modules_expeditionpackage.php');
+dol_include_once('/shipmentpackage/core/modules/shipmentpackage/modules_expeditionpackage.php');
 
 
 /**

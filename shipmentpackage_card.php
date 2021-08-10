@@ -18,7 +18,7 @@
 
 /**
  *   	\file       expeditionpackage_card.php
- *		\ingroup    package
+ *		\ingroup    shipmentpackage
  *		\brief      Page to create/edit/view expeditionpackage
  */
 
@@ -78,11 +78,11 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
 require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
-dol_include_once('/package/class/expeditionpackage.class.php');
-dol_include_once('/package/lib/package_expeditionpackage.lib.php');
+dol_include_once('/shipmentpackage/class/expeditionpackage.class.php');
+dol_include_once('/shipmentpackage/lib/package_expeditionpackage.lib.php');
 
 // Load translation files required by the page
-$langs->loadLangs(array("package@package", "other"));
+$langs->loadLangs(array("shipmentpackage@shipmentpackage", "other"));
 
 // Get parameters
 $id = GETPOST('id', 'int');
@@ -103,7 +103,7 @@ $originLineIds = GETPOST('ol', 'array');
 // Initialize technical objects
 $object = new ExpeditionPackage($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->package->dir_output.'/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('expeditionpackagecard', 'globalcard')); // Note that conf->hooks_modules contains array
 
 // Fetch optionals attributes and labels
@@ -128,19 +128,19 @@ if (empty($action) && empty($id) && empty($ref)) {
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once.
 
 
-$permissiontoread = $user->rights->package->expeditionpackage->read;
-$permissiontoadd = $user->rights->package->expeditionpackage->write; // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
-$permissiontodelete = $user->rights->package->expeditionpackage->delete || ($permissiontoadd && isset($object->status) && $object->status == $object::STATUS_DRAFT);
-$permissionnote = $user->rights->package->expeditionpackage->write; // Used by the include of actions_setnotes.inc.php
-$permissiondellink = $user->rights->package->expeditionpackage->write; // Used by the include of actions_dellink.inc.php
-$upload_dir = $conf->package->multidir_output[isset($object->entity) ? $object->entity : 1].'/expeditionpackage';
+$permissiontoread = $user->rights->shipmentpackage->expeditionpackage->read;
+$permissiontoadd = $user->rights->shipmentpackage->expeditionpackage->write; // Used by the include of actions_addupdatedelete.inc.php and actions_lineupdown.inc.php
+$permissiontodelete = $user->rights->shipmentpackage->expeditionpackage->delete || ($permissiontoadd && isset($object->status) && $object->status == $object::STATUS_DRAFT);
+$permissionnote = $user->rights->shipmentpackage->expeditionpackage->write; // Used by the include of actions_setnotes.inc.php
+$permissiondellink = $user->rights->shipmentpackage->expeditionpackage->write; // Used by the include of actions_dellink.inc.php
+$upload_dir = $conf->shipmentpackage->multidir_output[isset($object->entity) ? $object->entity : 1].'/expeditionpackage';
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
 //if ($user->socid > 0) $socid = $user->socid;
 //$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 //restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
-//if (empty($conf->package->enabled)) accessforbidden();
+//if (empty($conf->shipmentpackage->enabled)) accessforbidden();
 //if (!$permissiontoread) accessforbidden();
 
 
@@ -157,14 +157,14 @@ if ($reshook < 0) {
 if (empty($reshook)) {
 	$error = 0;
 
-	$backurlforlist = dol_buildpath('/package/expeditionpackage_list.php', 1);
+	$backurlforlist = dol_buildpath('/shipmentpackage/expeditionpackage_list.php', 1);
 
 	if (empty($backtopage) || ($cancel && empty($id))) {
 		if (empty($backtopage) || ($cancel && strpos($backtopage, '__ID__'))) {
 			if (empty($id) && (($action != 'add' && $action != 'create') || $cancel)) {
 				$backtopage = $backurlforlist;
 			} else {
-				$backtopage = dol_buildpath('/package/expeditionpackage_card.php', 1).'?id='.($id > 0 ? $id : '__ID__');
+				$backtopage = dol_buildpath('/shipmentpackage/expeditionpackage_card.php', 1).'?id='.($id > 0 ? $id : '__ID__');
 			}
 		}
 	} elseif (is_array($toSelect) && count($toSelect) > 0) {
@@ -212,7 +212,7 @@ if (empty($reshook)) {
 			$object->note_public = $object->getDefaultCreateValueFor('note_public', (!empty($objectsrc->note_public) ? $objectsrc->note_public : null));
 
 			// Replicate source contacts list
-			// TODO add package type contact
+			// TODO add shipmentpackage type contact
 			/*$objectsrc->fetch_origin();
 			$srccontactslist = $objectsrc->commande->liste_contact(-1, 'external', 0, 'SHIPPING');
 			if (is_array($srccontactslist) && count($srccontactslist) > 0) {
@@ -528,7 +528,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	// Object card
 	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/package/expeditionpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/expeditionpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*
@@ -620,7 +620,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		}
 
 		if (!empty($object->lines)) {
-			$object->printObjectLines($action, $mysoc, null, GETPOST('lineid', 'int'), 1, '/custom/package/tpl'); // TODO find solution to not need to use this
+			$object->printObjectLines($action, $mysoc, null, GETPOST('lineid', 'int'), 1, '/custom/shipmentpackage/tpl'); // TODO find solution to not need to use this
 		}
 
 		// Form to add new line
@@ -632,7 +632,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 				$reshook = $hookmanager->executeHooks('formAddObjectLine', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 				if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 				if (empty($reshook))
-					$object->formAddObjectLine(1, $mysoc, $soc, '/custom/package/tpl');  // TODO find solution to not need to use this
+					$object->formAddObjectLine(1, $mysoc, $soc, '/custom/shipmentpackage/tpl');  // TODO find solution to not need to use this
 			}
 		}
 
@@ -720,11 +720,11 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		if ($includedocgeneration) {
 			$objref = dol_sanitizeFileName($object->ref);
 			$relativepath = $objref.'/'.$objref.'.pdf';
-			$filedir = $conf->package->dir_output.'/'.$object->element.'/'.$objref;
+			$filedir = $conf->shipmentpackage->dir_output.'/'.$object->element.'/'.$objref;
 			$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
-			$genallowed = $user->rights->package->expeditionpackage->read; // If you can read, you can build the PDF to read content
-			$delallowed = $user->rights->package->expeditionpackage->write; // If you can create/edit, you can remove a file on card
-			print $formfile->showdocuments('package:ExpeditionPackage', $object->element.'/'.$objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang);
+			$genallowed = $user->rights->shipmentpackage->expeditionpackage->read; // If you can read, you can build the PDF to read content
+			$delallowed = $user->rights->shipmentpackage->expeditionpackage->write; // If you can create/edit, you can remove a file on card
+			print $formfile->showdocuments('shipmentpackage:ExpeditionPackage', $object->element.'/'.$objref, $filedir, $urlsource, $genallowed, $delallowed, $object->model_pdf, 1, 0, 0, 28, 0, '', '', '', $langs->defaultlang);
 		}
 
 		// Show links to link elements
@@ -736,7 +736,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 		$MAXEVENT = 10;
 
-		$morehtmlright = '<a href="'.dol_buildpath('/package/expeditionpackage_agenda.php', 1).'?id='.$object->id.'">';
+		$morehtmlright = '<a href="'.dol_buildpath('/shipmentpackage/expeditionpackage_agenda.php', 1).'?id='.$object->id.'">';
 		$morehtmlright .= $langs->trans("SeeAll");
 		$morehtmlright .= '</a>';
 
@@ -756,7 +756,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	// Presend form
 	$modelmail = 'expeditionpackage';
 	$defaulttopic = 'InformationMessage';
-	$diroutput = $conf->package->dir_output;
+	$diroutput = $conf->shipmentpackage->dir_output;
 	$trackid = 'expeditionpackage'.$object->id;
 
 	include DOL_DOCUMENT_ROOT.'/core/tpl/card_presend.tpl.php';

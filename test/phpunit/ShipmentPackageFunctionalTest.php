@@ -18,7 +18,7 @@
 
 /**
  * \file    test/phpunit/PackageFunctionalTest.php
- * \ingroup package
+ * \ingroup shipmentpackage
  * \brief   Example Selenium test.
  *
  * Put detailed description here.
@@ -196,9 +196,9 @@ class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 	 */
 	public function testConfigurationPage()
 	{
-		$this->url('/custom/package/admin/setup.php');
+		$this->url('/custom/shipmentpackage/admin/setup.php');
 		$this->authenticate();
-		return $this->assertContains('package/admin/setup.php', $this->url(), 'Configuration page');
+		return $this->assertContains('shipmentpackage/admin/setup.php', $this->url(), 'Configuration page');
 	}
 
 	/**
@@ -209,9 +209,9 @@ class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 	 */
 	public function testAboutPage()
 	{
-		$this->url('/custom/package/admin/about.php');
+		$this->url('/custom/shipmentpackage/admin/about.php');
 		$this->authenticate();
-		return $this->assertContains('package/admin/about.php', $this->url(), 'About page');
+		return $this->assertContains('shipmentpackage/admin/about.php', $this->url(), 'About page');
 	}
 
 	/**
@@ -222,7 +222,7 @@ class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 	 */
 	public function testAboutPageRendersMarkdownReadme()
 	{
-		$this->url('/custom/package/admin/about.php');
+		$this->url('/custom/shipmentpackage/admin/about.php');
 		$this->authenticate();
 		return $this->assertEquals(
 			'Dolibarr Module Template (aka My Module)',

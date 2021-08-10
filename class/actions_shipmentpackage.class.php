@@ -16,8 +16,8 @@
  */
 
 /**
- * \file    package/class/actions_package.class.php
- * \ingroup package
+ * \file    shipmentpackage/class/actions_package.class.php
+ * \ingroup shipmentpackage
  * \brief   Example hook overload.
  *
  * Put detailed description here.
@@ -130,8 +130,8 @@ class ActionsPackage
 		$error = 0; // Error counter
 
 		if (in_array($parameters['currentcontext'], array('expeditioncard'))) {
-			if ($user->rights->package->expeditionpackage->write && $object->statut == Expedition::STATUS_VALIDATED) {
-				$href = dol_buildpath('/package/expeditionpackage_card.php', 2);
+			if ($user->rights->shipmentpackage->expeditionpackage->write && $object->statut == Expedition::STATUS_VALIDATED) {
+				$href = dol_buildpath('/shipmentpackage/expeditionpackage_card.php', 2);
 				print '<div class="inline-block divButAction"><a class="butAction" href="' . $href . '?origin=shipping&originid=' . $object->id . '&fk_soc=' . $object->socid . '&action=create">' . $langs->trans('CreatePackage') . '</a></div>';
 			}
 		}
@@ -154,13 +154,13 @@ class ActionsPackage
 		$result = 0;
 
 		if (in_array($parameters['currentcontext'], array('expeditionpackagecard'))) {
-			if ($user->rights->package->expeditionpackage->write) {
-				dol_include_once('/package/class/expeditionpackage.class.php');
+			if ($user->rights->shipmentpackage->expeditionpackage->write) {
+				dol_include_once('/shipmentpackage/class/expeditionpackage.class.php');
 				$packageLine = new ExpeditionPackageLine($this->db);
 				$selectedLines = array(0);
 				$originLine = $parameters['line'];
 				$pattern = '/'.preg_quote(DOL_URL_ROOT, '/').'(.*)/';
-				if (preg_match($pattern, dol_buildpath('/package/tpl', 1), $matches)) {
+				if (preg_match($pattern, dol_buildpath('/shipmentpackage/tpl', 1), $matches)) {
 					$packagePath = $matches[1];
 				} else {
 					$packagePath = '/core/tpl';
@@ -337,21 +337,21 @@ class ActionsPackage
 	{
 		global $conf, $user, $langs;
 
-		$langs->load("package@package");
+		$langs->load("shipmentpackage@shipmentpackage");
 
 		$this->results = array();
 
 		$head = array();
 		$h = 0;
 
-		if ($parameters['tabfamily'] == 'package') {
+		if ($parameters['tabfamily'] == 'shipmentpackage') {
 			$head[$h][0] = dol_buildpath('/module/index.php', 1);
 			$head[$h][1] = $langs->trans("Home");
 			$head[$h][2] = 'home';
 			$h++;
 
 			$this->results['title'] = $langs->trans("Package");
-			$this->results['picto'] = 'package@package';
+			$this->results['picto'] = 'shipmentpackage@shipmentpackage';
 		}
 
 		$head[$h][0] = 'customreports.php?objecttype='.$parameters['objecttype'].(empty($parameters['tabfamily']) ? '' : '&tabfamily='.$parameters['tabfamily']);
@@ -379,8 +379,8 @@ class ActionsPackage
 	{
 		global $user;
 
-		if ($parameters['features'] == 'myobject') {
-			if ($user->rights->package->myobject->read) {
+		if ($parameters['features'] == 'shipmentpackage') {
+			if ($user->rights->shipmentpackage->shipmentpackage->read) {
 				$this->results['result'] = 1;
 				return 1;
 			} else {
@@ -414,7 +414,7 @@ class ActionsPackage
 			// utilisé si on veut faire disparaitre des onglets.
 			return 0;
 		} elseif ($parameters['mode'] == 'add') {
-			$langs->load('package@package');
+			$langs->load('shipmentpackage@shipmentpackage');
 			// utilisé si on veut ajouter des onglets.
 			$counter = count($parameters['head']);
 			$element = $parameters['object']->element;
@@ -424,7 +424,7 @@ class ActionsPackage
 			if (in_array($element, ['context1', 'context2'])) {
 				$datacount = 0;
 
-				$parameters['head'][$counter][0] = dol_buildpath('/package/package_tab.php', 1) . '?id=' . $id . '&amp;module='.$element;
+				$parameters['head'][$counter][0] = dol_buildpath('/shipmentpackage/package_tab.php', 1) . '?id=' . $id . '&amp;module='.$element;
 				$parameters['head'][$counter][1] = $langs->trans('PackageTab');
 				if ($datacount > 0) {
 					$parameters['head'][$counter][1] .= '<span class="badge marginleftonlyshort">' . $datacount . '</span>';

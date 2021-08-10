@@ -18,7 +18,7 @@
 
 /**
  * \file        class/expeditionpackage.class.php
- * \ingroup     package
+ * \ingroup     shipmentpackage
  * \brief       This file is a CRUD class file for ExpeditionPackage (Create/Read/Update/Delete)
  */
 
@@ -35,7 +35,7 @@ class ExpeditionPackage extends CommonObject
 	/**
 	 * @var string ID of module.
 	 */
-	public $module = 'package';
+	public $module = 'shipmentpackage';
 
 	/**
 	 * @var string ID to identify managed object.
@@ -61,7 +61,7 @@ class ExpeditionPackage extends CommonObject
 	/**
 	 * @var string String with name of icon for expeditionpackage. Must be the part after the 'object_' into object_expeditionpackage.png
 	 */
-	public $picto = 'expeditionpackage@package';
+	public $picto = 'expeditionpackage@shipmentpackage';
 
 
 	const STATUS_DRAFT = 0;
@@ -215,7 +215,7 @@ class ExpeditionPackage extends CommonObject
 		}
 
 		// Example to show how to set values of fields definition dynamically
-		/*if ($user->rights->package->expeditionpackage->read) {
+		/*if ($user->rights->shipmentpackage->expeditionpackage->read) {
 			$this->fields['myfield']['visible'] = 1;
 			$this->fields['myfield']['noteditable'] = 0;
 		}*/
@@ -355,7 +355,7 @@ class ExpeditionPackage extends CommonObject
 	}
 
 	/**
-	 * add line to package
+	 * add line to shipmentpackage
 	 *
 	 * @param user	$user					User that do the action
 	 * @param int	$qty					Quantity
@@ -386,7 +386,7 @@ class ExpeditionPackage extends CommonObject
 	}
 
 	/**
-	 * update line to package
+	 * update line to shipmentpackage
 	 *
 	 * @param user	$user					User that do the action
 	 * @param int	$lineid					line id
@@ -596,8 +596,8 @@ class ExpeditionPackage extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->package->expeditionpackage->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->package->expeditionpackage->expeditionpackage_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->expeditionpackage->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->expeditionpackage->expeditionpackage_advance->validate))))
 		 {
 		 $this->error='NotEnoughPermissions';
 		 dol_syslog(get_class($this)."::valid ".$this->error, LOG_ERR);
@@ -663,15 +663,15 @@ class ExpeditionPackage extends CommonObject
 				// We rename directory ($this->ref = old ref, $num = new ref) in order not to lose the attachments
 				$oldref = dol_sanitizeFileName($this->ref);
 				$newref = dol_sanitizeFileName($num);
-				$dirsource = $conf->package->dir_output.'/expeditionpackage/'.$oldref;
-				$dirdest = $conf->package->dir_output.'/expeditionpackage/'.$newref;
+				$dirsource = $conf->shipmentpackage->dir_output.'/expeditionpackage/'.$oldref;
+				$dirdest = $conf->shipmentpackage->dir_output.'/expeditionpackage/'.$newref;
 				if (!$error && file_exists($dirsource)) {
 					dol_syslog(get_class($this)."::validate() rename dir ".$dirsource." into ".$dirdest);
 
 					if (@rename($dirsource, $dirdest)) {
 						dol_syslog("Rename ok");
 						// Rename docs starting with $oldref with $newref
-						$listoffiles = dol_dir_list($conf->package->dir_output.'/expeditionpackage/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
+						$listoffiles = dol_dir_list($conf->shipmentpackage->dir_output.'/expeditionpackage/'.$newref, 'files', 1, '^'.preg_quote($oldref, '/'));
 						foreach ($listoffiles as $fileentry) {
 							$dirsource = $fileentry['name'];
 							$dirdest = preg_replace('/^'.preg_quote($oldref, '/').'/', $newref, $dirsource);
@@ -714,8 +714,8 @@ class ExpeditionPackage extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->package->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->package->package_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->package_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
@@ -738,8 +738,8 @@ class ExpeditionPackage extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->package->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->package->package_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->package_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
@@ -762,8 +762,8 @@ class ExpeditionPackage extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->package->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->package->package_advance->validate))))
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->package_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
@@ -799,7 +799,7 @@ class ExpeditionPackage extends CommonObject
 		$label .= '<br>';
 		$label .= '<b>'.$langs->trans('Ref').':</b> '.$this->ref;
 
-		$url = dol_buildpath('/package/expeditionpackage_card.php', 1).'?id='.$this->id;
+		$url = dol_buildpath('/shipmentpackage/expeditionpackage_card.php', 1).'?id='.$this->id;
 
 		if ($option != 'nolink') {
 			// Add param to save lastsearch_values or not
@@ -911,7 +911,7 @@ class ExpeditionPackage extends CommonObject
 		// phpcs:enable
 		if (empty($this->labelStatus) || empty($this->labelStatusShort)) {
 			global $langs;
-			//$langs->load("package@package");
+			//$langs->load("shipmentpackage@shipmentpackage");
 			$this->labelStatus[self::STATUS_DRAFT] = $langs->trans('Draft');
 			$this->labelStatus[self::STATUS_VALIDATED] = $langs->trans('Validated');
 			$this->labelStatus[self::STATUS_CANCELED] = $langs->trans('Canceled');
@@ -1020,7 +1020,7 @@ class ExpeditionPackage extends CommonObject
 	public function getNextNumRef()
 	{
 		global $langs, $conf;
-		$langs->load("package@package");
+		$langs->load("shipmentpackage@shipmentpackage");
 
 		if (empty($conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON)) {
 			$conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON = 'mod_expeditionpackage_standard';
@@ -1035,7 +1035,7 @@ class ExpeditionPackage extends CommonObject
 			// Include file with class
 			$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
 			foreach ($dirmodels as $reldir) {
-				$dir = dol_buildpath($reldir."core/modules/package/");
+				$dir = dol_buildpath($reldir."core/modules/shipmentpackage/");
 
 				// Load file with numbering class (if found)
 				$mybool |= @include_once $dir.$file;
@@ -1085,7 +1085,7 @@ class ExpeditionPackage extends CommonObject
 		$result = 0;
 		$includedocgeneration = 1;
 
-		$langs->load("package@package");
+		$langs->load("shipmentpackage@shipmentpackage");
 
 		if (!dol_strlen($modele)) {
 			$modele = 'standard_expeditionpackage';
@@ -1097,7 +1097,7 @@ class ExpeditionPackage extends CommonObject
 			}
 		}
 
-		$modelpath = "core/modules/package/doc/";
+		$modelpath = "core/modules/shipmentpackage/doc/";
 
 		if ($includedocgeneration && !empty($modele)) {
 			$result = $this->commonGenerateDocument($modelpath, $modele, $outputlangs, $hidedetails, $hidedesc, $hideref, $moreparams);
@@ -1197,7 +1197,7 @@ class ExpeditionPackageLine extends CommonObjectLine
 	 */
 	public $fields=array(
 		'rowid' => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'position'=>1, 'notnull'=>1, 'visible'=>-1, 'noteditable'=>'1', 'index'=>1, 'comment'=>"Id"),
-		'fk_expedition_package' => array('type'=>'integer:ExpeditionPackage:package/class/expeditionpackage.class.php', 'label'=>'SyncApi', 'enabled'=>1, 'visible'=>1, 'position'=>10, 'notnull'=>1, 'index'=>1,),
+		'fk_expedition_package' => array('type'=>'integer:ExpeditionPackage:shipmentpackage/class/expeditionpackage.class.php', 'label'=>'SyncApi', 'enabled'=>1, 'visible'=>1, 'position'=>10, 'notnull'=>1, 'index'=>1,),
 		'fk_origin_line' => array('type'=>'integer', 'label'=>'OriginLine', 'enabled'=>'1', 'position'=>20, 'notnull'=>1, 'visible'=>0),
 		'fk_origin_batch_line' => array('type'=>'integer', 'label'=>'OriginBatchLine', 'enabled'=>'1', 'position'=>30, 'notnull'=>1, 'visible'=>0),
 		'fk_product' => array('type'=>'integer:Product:product/class/product.class.php', 'label'=>'Product', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>1),
@@ -1400,7 +1400,7 @@ class ExpeditionPackageLine extends CommonObjectLine
 	}
 
 	/**
-	 * update package value with product pmp
+	 * update shipmentpackage value with product pmp
 	 *
 	 * @param user				$user		User that do the action
 	 * @param ExpeditionPackage	$package	package to update value

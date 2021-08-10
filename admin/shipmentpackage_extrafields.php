@@ -22,7 +22,7 @@
 
 /**
  *      \file       admin/expeditionpackage_extrafields.php
- *		\ingroup    package
+ *		\ingroup    shipmentpackage
  *		\brief      Page to setup extra fields of expeditionpackage
  */
 
@@ -55,10 +55,10 @@ if (!$res) {
 }
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
-require_once '../lib/package.lib.php';
+require_once '../lib/shipmentpackage.lib.php';
 
 // Load translation files required by the page
-$langs->loadLangs(array('package@package', 'admin'));
+$langs->loadLangs(array('shipmentpackage@shipmentpackage', 'admin'));
 
 $extrafields = new ExtraFields($db);
 $form = new Form($db);
@@ -103,7 +103,7 @@ print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 $head = packageAdminPrepareHead();
 
-print dol_get_fiche_head($head, 'expeditionpackage_extrafields', $langs->trans($page_name), -1, 'package@package');
+print dol_get_fiche_head($head, 'expeditionpackage_extrafields', $langs->trans($page_name), -1, 'shipmentpackage@shipmentpackage');
 
 require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_view.tpl.php';
 

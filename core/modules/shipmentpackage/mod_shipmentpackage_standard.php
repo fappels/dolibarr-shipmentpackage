@@ -18,11 +18,11 @@
  */
 
 /**
- *  \file       htdocs/core/modules/package/mod_expeditionpackage_standard.php
- *  \ingroup    package
+ *  \file       htdocs/core/modules/shipmentpackage/mod_expeditionpackage_standard.php
+ *  \ingroup    shipmentpackage
  *  \brief      File of class to manage ExpeditionPackage numbering rules standard
  */
-dol_include_once('/package/core/modules/package/modules_expeditionpackage.php');
+dol_include_once('/shipmentpackage/core/modules/package/modules_expeditionpackage.php');
 
 
 /**

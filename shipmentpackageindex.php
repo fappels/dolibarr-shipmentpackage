@@ -19,9 +19,9 @@
  */
 
 /**
- *	\file       package/packageindex.php
- *	\ingroup    package
- *	\brief      Home page of package top menu
+ *	\file       shipmentpackage/packageindex.php
+ *	\ingroup    shipmentpackage
+ *	\brief      Home page of shipmentpackage top menu
  */
 
 // Load Dolibarr environment
@@ -58,13 +58,13 @@ if (!$res) {
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 
 // Load translation files required by the page
-$langs->loadLangs(array("package@package"));
+$langs->loadLangs(array("shipmentpackage@shipmentpackage"));
 
 $action = GETPOST('action', 'aZ09');
 
 
 // Security check
-// if (! $user->rights->package->myobject->read) {
+// if (! $user->rights->shipmentpackage->myobject->read) {
 // 	accessforbidden();
 // }
 $socid = GETPOST('socid', 'int');
@@ -93,14 +93,14 @@ $formfile = new FormFile($db);
 
 llxHeader("", $langs->trans("PackageArea"));
 
-print load_fiche_titre($langs->trans("PackageArea"), '', 'package.png@package');
+print load_fiche_titre($langs->trans("PackageArea"), '', 'shipmentpackage.png@shipmentpackage');
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
 
 
 /* BEGIN MODULEBUILDER DRAFT MYOBJECT
 // Draft MyObject
-if (! empty($conf->package->enabled) && $user->rights->package->read)
+if (! empty($conf->shipmentpackage->enabled) && $user->rights->shipmentpackage->read)
 {
 	$langs->load("orders");
 
@@ -181,7 +181,7 @@ $max = $conf->global->MAIN_SIZE_SHORTLIST_LIMIT;
 
 /* BEGIN MODULEBUILDER LASTMODIFIED MYOBJECT
 // Last modified myobject
-if (! empty($conf->package->enabled) && $user->rights->package->read)
+if (! empty($conf->shipmentpackage->enabled) && $user->rights->shipmentpackage->read)
 {
 	$sql = "SELECT s.rowid, s.ref, s.label, s.date_creation, s.tms";
 	$sql.= " FROM ".MAIN_DB_PREFIX."package_myobject as s";

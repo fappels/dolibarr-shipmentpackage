@@ -19,11 +19,11 @@
  */
 
 /**
- * 	\defgroup   package     Module Package
+ * 	\defgroup   shipmentpackage     Module Package
  *  \brief      Package module descriptor.
  *
- *  \file       htdocs/package/core/modules/modPackage.class.php
- *  \ingroup    package
+ *  \file       htdocs/shipmentpackage/core/modules/modPackage.class.php
+ *  \ingroup    shipmentpackage
  *  \brief      Description and activation file for module Package
  */
 include_once DOL_DOCUMENT_ROOT.'/core/modules/DolibarrModules.class.php';
@@ -48,7 +48,7 @@ class modPackage extends DolibarrModules
 		$this->numero = 202030; // TODO replace by dolibarr number when join into core
 
 		// Key text used to identify module (for permissions, menus, etc...)
-		$this->rights_class = 'package';
+		$this->rights_class = 'shipmentpackage';
 
 		// Family can be 'base' (core modules),'crm','financial','hr','projects','products','ecm','technic' (transverse modules),'interface' (link with external tools),'other','...'
 		// It is used to group modules by family in module setup page
@@ -107,11 +107,11 @@ class modPackage extends DolibarrModules
 			'theme' => 0,
 			// Set this to relative path of css file if module has its own css file
 			'css' => array(
-				//    '/package/css/package.css.php',
+				//    '/shipmentpackage/css/shipmentpackage.css.php',
 			),
 			// Set this to relative path of js file if module must load a js on all pages
 			'js' => array(
-				//   '/package/js/package.js.php',
+				//   '/shipmentpackage/js/shipmentpackage.js.php',
 			),
 			// Set here all hooks context managed by module. To find available hook context, make a "grep -r '>initHooks(' *" on source code. You can also set hook context to 'all'
 			'hooks' => array(
@@ -127,11 +127,11 @@ class modPackage extends DolibarrModules
 		);
 
 		// Data directories to create when module is enabled.
-		// Example: this->dirs = array("/package/temp","/package/subdir");
-		$this->dirs = array("/package/temp");
+		// Example: this->dirs = array("/shipmentpackage/temp","/shipmentpackage/subdir");
+		$this->dirs = array("/shipmentpackage/temp");
 
-		// Config pages. Put here list of php page, stored into package/admin directory, to use to setup module.
-		$this->config_page_url = array("setup.php@package");
+		// Config pages. Put here list of php page, stored into shipmentpackage/admin directory, to use to setup module.
+		$this->config_page_url = array("setup.php@shipmentpackage");
 
 		// Dependencies
 		// A condition to hide module
@@ -142,7 +142,7 @@ class modPackage extends DolibarrModules
 		$this->conflictwith = array(); // List of module class names as string this module is in conflict with. Example: array('modModuleToDisable1', ...)
 
 		// The language file dedicated to your module
-		$this->langfiles = array("package@package");
+		$this->langfiles = array("shipmentpackage@shipmentpackage");
 
 		// Prerequisites
 		$this->phpmin = array(5, 6); // Minimum version of PHP required by module
@@ -167,16 +167,16 @@ class modPackage extends DolibarrModules
 			'fr_FR:ParentCompany'=>'Maison mère ou revendeur'
 		)*/
 
-		if (!isset($conf->package) || !isset($conf->package->enabled)) {
-			$conf->package = new stdClass();
-			$conf->package->enabled = 0;
+		if (!isset($conf->shipmentpackage) || !isset($conf->shipmentpackage->enabled)) {
+			$conf->shipmentpackage = new stdClass();
+			$conf->shipmentpackage->enabled = 0;
 		}
 
 		// Array to add new pages in new tabs
 		$this->tabs = array();
 		// Example:
-		// $this->tabs[] = array('data'=>'objecttype:+tabname1:Title1:mylangfile@package:$user->rights->package->read:/package/mynewtab1.php?id=__ID__');  					// To add a new tab identified by code tabname1
-		// $this->tabs[] = array('data'=>'objecttype:+tabname2:SUBSTITUTION_Title2:mylangfile@package:$user->rights->othermodule->read:/package/mynewtab2.php?id=__ID__',  	// To add another new tab identified by code tabname2. Label will be result of calling all substitution functions on 'Title2' key.
+		// $this->tabs[] = array('data'=>'objecttype:+tabname1:Title1:mylangfile@shipmentpackage:$user->rights->shipmentpackage->read:/shipmentpackage/mynewtab1.php?id=__ID__');  					// To add a new tab identified by code tabname1
+		// $this->tabs[] = array('data'=>'objecttype:+tabname2:SUBSTITUTION_Title2:mylangfile@shipmentpackage:$user->rights->othermodule->read:/shipmentpackage/mynewtab2.php?id=__ID__',  	// To add another new tab identified by code tabname2. Label will be result of calling all substitution functions on 'Title2' key.
 		// $this->tabs[] = array('data'=>'objecttype:-tabname:NU:conditiontoremove');                                                     										// To remove an existing tab identified by code tabname
 		//
 		// Where objecttype can be
@@ -202,7 +202,7 @@ class modPackage extends DolibarrModules
 
 		// Dictionaries
 		$this->dictionaries = array(
-			'langs'=>'package@package',
+			'langs'=>'shipmentpackage@shipmentpackage',
 			'tabname'=>array(MAIN_DB_PREFIX."c_parcel_type"),
 			'tablib'=>array("c_parcel_type"),
 			'tabsql'=>array('SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'c_parcel_type as f'),
@@ -211,11 +211,11 @@ class modPackage extends DolibarrModules
 			'tabfieldvalue'=>array("code,label"),
 			'tabfieldinsert'=>array("code,label"),
 			'tabrowid'=>array("rowid"),
-			'tabcond'=>array($conf->package->enabled)
+			'tabcond'=>array($conf->shipmentpackage->enabled)
 		);
 		/* Example:
 		$this->dictionaries=array(
-			'langs'=>'package@package',
+			'langs'=>'shipmentpackage@shipmentpackage',
 			// List of tables we want to see into dictonnary editor
 			'tabname'=>array(MAIN_DB_PREFIX."table1", MAIN_DB_PREFIX."table2", MAIN_DB_PREFIX."table3"),
 			// Label of tables
@@ -233,15 +233,15 @@ class modPackage extends DolibarrModules
 			// Name of columns with primary key (try to always name it 'rowid')
 			'tabrowid'=>array("rowid", "rowid", "rowid"),
 			// Condition to show each dictionary
-			'tabcond'=>array($conf->package->enabled, $conf->package->enabled, $conf->package->enabled)
+			'tabcond'=>array($conf->shipmentpackage->enabled, $conf->shipmentpackage->enabled, $conf->shipmentpackage->enabled)
 		);
 		*/
 
 		// Boxes/Widgets
-		// Add here list of php file(s) stored in package/core/boxes that contains a class to show a widget.
+		// Add here list of php file(s) stored in shipmentpackage/core/boxes that contains a class to show a widget.
 		$this->boxes = array(
 			//  0 => array(
-			//      'file' => 'packagewidget1.php@package',
+			//      'file' => 'packagewidget1.php@shipmentpackage',
 			//      'note' => 'Widget provided by Package',
 			//      'enabledbydefaulton' => 'Home',
 			//  ),
@@ -254,7 +254,7 @@ class modPackage extends DolibarrModules
 			//  0 => array(
 			//      'label' => 'MyJob label',
 			//      'jobtype' => 'method',
-			//      'class' => '/package/class/expeditionpackage.class.php',
+			//      'class' => '/shipmentpackage/class/expeditionpackage.class.php',
 			//      'objectname' => 'ExpeditionPackage',
 			//      'method' => 'doScheduledJob',
 			//      'parameters' => '',
@@ -262,13 +262,13 @@ class modPackage extends DolibarrModules
 			//      'frequency' => 2,
 			//      'unitfrequency' => 3600,
 			//      'status' => 0,
-			//      'test' => '$conf->package->enabled',
+			//      'test' => '$conf->shipmentpackage->enabled',
 			//      'priority' => 50,
 			//  ),
 		);
 		// Example: $this->cronjobs=array(
-		//    0=>array('label'=>'My label', 'jobtype'=>'method', 'class'=>'/dir/class/file.class.php', 'objectname'=>'MyClass', 'method'=>'myMethod', 'parameters'=>'param1, param2', 'comment'=>'Comment', 'frequency'=>2, 'unitfrequency'=>3600, 'status'=>0, 'test'=>'$conf->package->enabled', 'priority'=>50),
-		//    1=>array('label'=>'My label', 'jobtype'=>'command', 'command'=>'', 'parameters'=>'param1, param2', 'comment'=>'Comment', 'frequency'=>1, 'unitfrequency'=>3600*24, 'status'=>0, 'test'=>'$conf->package->enabled', 'priority'=>50)
+		//    0=>array('label'=>'My label', 'jobtype'=>'method', 'class'=>'/dir/class/file.class.php', 'objectname'=>'MyClass', 'method'=>'myMethod', 'parameters'=>'param1, param2', 'comment'=>'Comment', 'frequency'=>2, 'unitfrequency'=>3600, 'status'=>0, 'test'=>'$conf->shipmentpackage->enabled', 'priority'=>50),
+		//    1=>array('label'=>'My label', 'jobtype'=>'command', 'command'=>'', 'parameters'=>'param1, param2', 'comment'=>'Comment', 'frequency'=>1, 'unitfrequency'=>3600*24, 'status'=>0, 'test'=>'$conf->shipmentpackage->enabled', 'priority'=>50)
 		// );
 
 		// Permissions provided by this module
@@ -279,17 +279,17 @@ class modPackage extends DolibarrModules
 		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); // Permission id (must not be already used)
 		$this->rights[$r][1] = 'Read objects of Package'; // Permission label
 		$this->rights[$r][4] = 'expeditionpackage';
-		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->package->expeditionpackage->read)
+		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->shipmentpackage->expeditionpackage->read)
 		$r++;
 		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); // Permission id (must not be already used)
 		$this->rights[$r][1] = 'Create/Update objects of Package'; // Permission label
 		$this->rights[$r][4] = 'expeditionpackage';
-		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->package->expeditionpackage->write)
+		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->shipmentpackage->expeditionpackage->write)
 		$r++;
 		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); // Permission id (must not be already used)
 		$this->rights[$r][1] = 'Delete objects of Package'; // Permission label
 		$this->rights[$r][4] = 'expeditionpackage';
-		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->package->expeditionpackage->delete)
+		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->shipmentpackage->expeditionpackage->delete)
 		$r++;
 		/* END MODULEBUILDER PERMISSIONS */
 
@@ -303,13 +303,13 @@ class modPackage extends DolibarrModules
 			'type'=>'top', // This is a Top menu entry
 			'titre'=>'ModulePackageName',
 			'prefix' => img_picto('', $this->picto, 'class="paddingright pictofixedwidth valignmiddle"'),
-			'mainmenu'=>'package',
+			'mainmenu'=>'shipmentpackage',
 			'leftmenu'=>'',
-			'url'=>'/package/packageindex.php',
-			'langs'=>'package@package', // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+			'url'=>'/shipmentpackage/packageindex.php',
+			'langs'=>'shipmentpackage@shipmentpackage', // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000 + $r,
-			'enabled'=>'$conf->package->enabled', // Define condition to show or hide menu entry. Use '$conf->package->enabled' if entry must be visible if module is enabled.
-			'perms'=>'1', // Use 'perms'=>'$user->rights->package->expeditionpackage->read' if you want your menu with a permission rules
+			'enabled'=>'$conf->shipmentpackage->enabled', // Define condition to show or hide menu entry. Use '$conf->shipmentpackage->enabled' if entry must be visible if module is enabled.
+			'perms'=>'1', // Use 'perms'=>'$user->rights->shipmentpackage->expeditionpackage->read' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2, // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -322,11 +322,11 @@ class modPackage extends DolibarrModules
 			'prefix' => img_picto('', $this->picto, 'class="paddingright pictofixedwidth valignmiddle"'),
 			'mainmenu'=>'products',
 			'leftmenu'=>'expeditionpackage',
-			'url'=>'/package/packageindex.php',
-			'langs'=>'package@package',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+			'url'=>'/shipmentpackage/packageindex.php',
+			'langs'=>'shipmentpackage@shipmentpackage',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
-			'enabled'=>'$conf->package->enabled',  // Define condition to show or hide menu entry. Use '$conf->package->enabled' if entry must be visible if module is enabled.
-			'perms'=>'$user->rights->package->expeditionpackage->read',			                // Use 'perms'=>'$user->rights->package->level1->level2' if you want your menu with a permission rules
+			'enabled'=>'$conf->shipmentpackage->enabled',  // Define condition to show or hide menu entry. Use '$conf->shipmentpackage->enabled' if entry must be visible if module is enabled.
+			'perms'=>'$user->rights->shipmentpackage->expeditionpackage->read',			                // Use 'perms'=>'$user->rights->shipmentpackage->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>0,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -336,11 +336,11 @@ class modPackage extends DolibarrModules
 			'titre'=>'New_ExpeditionPackage',
 			'mainmenu'=>'products',
 			'leftmenu'=>'expeditionpackage_create',
-			'url'=>'/package/expeditionpackage_card.php?action=create',
-			'langs'=>'package@package',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+			'url'=>'/shipmentpackage/expeditionpackage_card.php?action=create',
+			'langs'=>'shipmentpackage@shipmentpackage',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
-			'enabled'=>'$conf->package->enabled',  // Define condition to show or hide menu entry. Use '$conf->package->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'$user->rights->package->expeditionpackage->write',			                // Use 'perms'=>'$user->rights->package->level1->level2' if you want your menu with a permission rules
+			'enabled'=>'$conf->shipmentpackage->enabled',  // Define condition to show or hide menu entry. Use '$conf->shipmentpackage->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+			'perms'=>'$user->rights->shipmentpackage->expeditionpackage->write',			                // Use 'perms'=>'$user->rights->shipmentpackage->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>0,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -350,11 +350,11 @@ class modPackage extends DolibarrModules
 			'titre'=>'List_ExpeditionPackage',
 			'mainmenu'=>'products',
 			'leftmenu'=>'expeditionpackage_list',
-			'url'=>'/package/expeditionpackage_list.php',
-			'langs'=>'package@package',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+			'url'=>'/shipmentpackage/expeditionpackage_list.php',
+			'langs'=>'shipmentpackage@shipmentpackage',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
-			'enabled'=>'$conf->package->enabled',  // Define condition to show or hide menu entry. Use '$conf->package->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-			'perms'=>'$user->rights->package->expeditionpackage->read',			                // Use 'perms'=>'$user->rights->package->level1->level2' if you want your menu with a permission rules
+			'enabled'=>'$conf->shipmentpackage->enabled',  // Define condition to show or hide menu entry. Use '$conf->shipmentpackage->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+			'perms'=>'$user->rights->shipmentpackage->expeditionpackage->read',			                // Use 'perms'=>'$user->rights->shipmentpackage->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
@@ -364,20 +364,20 @@ class modPackage extends DolibarrModules
 		$r = 1;
 		/* BEGIN MODULEBUILDER EXPORT EXPEDITIONPACKAGE */
 		/*
-		$langs->load("package@package");
+		$langs->load("shipmentpackage@shipmentpackage");
 		$this->export_code[$r]=$this->rights_class.'_'.$r;
 		$this->export_label[$r]='ExpeditionPackageLines';	// Translation key (used only if key ExportDataset_xxx_z not found)
-		$this->export_icon[$r]='expeditionpackage@package';
+		$this->export_icon[$r]='expeditionpackage@shipmentpackage';
 		// Define $this->export_fields_array, $this->export_TypeFields_array and $this->export_entities_array
-		$keyforclass = 'ExpeditionPackage'; $keyforclassfile='/package/class/expeditionpackage.class.php'; $keyforelement='expeditionpackage@package';
+		$keyforclass = 'ExpeditionPackage'; $keyforclassfile='/shipmentpackage/class/expeditionpackage.class.php'; $keyforelement='expeditionpackage@shipmentpackage';
 		include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';
 		//$this->export_fields_array[$r]['t.fieldtoadd']='FieldToAdd'; $this->export_TypeFields_array[$r]['t.fieldtoadd']='Text';
 		//unset($this->export_fields_array[$r]['t.fieldtoremove']);
-		//$keyforclass = 'ExpeditionPackageLine'; $keyforclassfile='/package/class/expeditionpackage.class.php'; $keyforelement='expeditionpackageline@package'; $keyforalias='tl';
+		//$keyforclass = 'ExpeditionPackageLine'; $keyforclassfile='/shipmentpackage/class/expeditionpackage.class.php'; $keyforelement='expeditionpackageline@shipmentpackage'; $keyforalias='tl';
 		//include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';
-		$keyforselect='expeditionpackage'; $keyforaliasextra='extra'; $keyforelement='expeditionpackage@package';
+		$keyforselect='expeditionpackage'; $keyforaliasextra='extra'; $keyforelement='expeditionpackage@shipmentpackage';
 		include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
-		//$keyforselect='expeditionpackageline'; $keyforaliasextra='extraline'; $keyforelement='expeditionpackageline@package';
+		//$keyforselect='expeditionpackageline'; $keyforaliasextra='extraline'; $keyforelement='expeditionpackageline@shipmentpackage';
 		//include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
 		//$this->export_dependencies_array[$r] = array('expeditionpackageline'=>array('tl.rowid','tl.ref')); // To force to activate one or several fields if we select some fields that need same (like to select a unique key if we ask a field of a child to avoid the DISTINCT to discard them, or for computed field than need several other fields)
 		//$this->export_special_array[$r] = array('t.field'=>'...');
@@ -395,13 +395,13 @@ class modPackage extends DolibarrModules
 		$r = 1;
 		/* BEGIN MODULEBUILDER IMPORT EXPEDITIONPACKAGE */
 		/*
-		 $langs->load("package@package");
+		 $langs->load("shipmentpackage@shipmentpackage");
 		 $this->export_code[$r]=$this->rights_class.'_'.$r;
 		 $this->export_label[$r]='ExpeditionPackageLines';	// Translation key (used only if key ExportDataset_xxx_z not found)
-		 $this->export_icon[$r]='expeditionpackage@package';
-		 $keyforclass = 'ExpeditionPackage'; $keyforclassfile='/package/class/expeditionpackage.class.php'; $keyforelement='expeditionpackage@package';
+		 $this->export_icon[$r]='expeditionpackage@shipmentpackage';
+		 $keyforclass = 'ExpeditionPackage'; $keyforclassfile='/shipmentpackage/class/expeditionpackage.class.php'; $keyforelement='expeditionpackage@shipmentpackage';
 		 include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';
-		 $keyforselect='expeditionpackage'; $keyforaliasextra='extra'; $keyforelement='expeditionpackage@package';
+		 $keyforselect='expeditionpackage'; $keyforaliasextra='extra'; $keyforelement='expeditionpackage@shipmentpackage';
 		 include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
 		 //$this->export_dependencies_array[$r]=array('mysubobject'=>'ts.rowid', 't.myfield'=>array('t.myfield2','t.myfield3')); // To force to activate one or several fields if we select some fields that need same (like to select a unique key if we ask a field of a child to avoid the DISTINCT to discard them, or for computed field than need several other fields)
 		 $this->export_sql_start[$r]='SELECT DISTINCT ';
@@ -424,7 +424,7 @@ class modPackage extends DolibarrModules
 	{
 		global $conf, $langs;
 
-		$result = $this->_load_tables('/package/sql/');
+		$result = $this->_load_tables('/shipmentpackage/sql/');
 		if ($result < 0) {
 			return -1; // Do not activate module if error 'not allowed' returned when loading module SQL queries (the _load_table run sql with run_sql with the error allowed parameter set to 'default')
 		}
@@ -432,11 +432,11 @@ class modPackage extends DolibarrModules
 		// Create extrafields during init
 		//include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 		//$extrafields = new ExtraFields($this->db);
-		//$result1=$extrafields->addExtraField('package_myattr1', "New Attr 1 label", 'boolean', 1,  3, 'thirdparty',   0, 0, '', '', 1, '', 0, 0, '', '', 'package@package', '$conf->package->enabled');
-		//$result2=$extrafields->addExtraField('package_myattr2', "New Attr 2 label", 'varchar', 1, 10, 'project',      0, 0, '', '', 1, '', 0, 0, '', '', 'package@package', '$conf->package->enabled');
-		//$result3=$extrafields->addExtraField('package_myattr3', "New Attr 3 label", 'varchar', 1, 10, 'bank_account', 0, 0, '', '', 1, '', 0, 0, '', '', 'package@package', '$conf->package->enabled');
-		//$result4=$extrafields->addExtraField('package_myattr4', "New Attr 4 label", 'select',  1,  3, 'thirdparty',   0, 1, '', array('options'=>array('code1'=>'Val1','code2'=>'Val2','code3'=>'Val3')), 1,'', 0, 0, '', '', 'package@package', '$conf->package->enabled');
-		//$result5=$extrafields->addExtraField('package_myattr5', "New Attr 5 label", 'text',    1, 10, 'user',         0, 0, '', '', 1, '', 0, 0, '', '', 'package@package', '$conf->package->enabled');
+		//$result1=$extrafields->addExtraField('package_myattr1', "New Attr 1 label", 'boolean', 1,  3, 'thirdparty',   0, 0, '', '', 1, '', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
+		//$result2=$extrafields->addExtraField('package_myattr2', "New Attr 2 label", 'varchar', 1, 10, 'project',      0, 0, '', '', 1, '', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
+		//$result3=$extrafields->addExtraField('package_myattr3', "New Attr 3 label", 'varchar', 1, 10, 'bank_account', 0, 0, '', '', 1, '', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
+		//$result4=$extrafields->addExtraField('package_myattr4', "New Attr 4 label", 'select',  1,  3, 'thirdparty',   0, 1, '', array('options'=>array('code1'=>'Val1','code2'=>'Val2','code3'=>'Val3')), 1,'', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
+		//$result5=$extrafields->addExtraField('package_myattr5', "New Attr 5 label", 'text',    1, 10, 'user',         0, 0, '', '', 1, '', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
 
 		// Permissions
 		$this->remove($options);
@@ -444,7 +444,7 @@ class modPackage extends DolibarrModules
 		$sql = array();
 
 		// Document templates
-		$moduledir = 'package';
+		$moduledir = 'shipmentpackage';
 		$myTmpObjects = array();
 		$myTmpObjects['ExpeditionPackage'] = array('includerefgeneration'=>0, 'includedocgeneration'=>0);
 
@@ -453,8 +453,8 @@ class modPackage extends DolibarrModules
 				continue;
 			}
 			if ($myTmpObjectArray['includerefgeneration']) {
-				$src = DOL_DOCUMENT_ROOT.'/install/doctemplates/package/template_expeditionpackages.odt';
-				$dirodt = DOL_DATA_ROOT.'/doctemplates/package';
+				$src = DOL_DOCUMENT_ROOT.'/install/doctemplates/shipmentpackage/template_expeditionpackages.odt';
+				$dirodt = DOL_DATA_ROOT.'/doctemplates/shipmentpackage';
 				$dest = $dirodt.'/template_expeditionpackages.odt';
 
 				if (file_exists($src) && !file_exists($dest)) {

@@ -18,7 +18,7 @@
 
 /**
  *  \file       expeditionpackage_contact.php
- *  \ingroup    package
+ *  \ingroup    shipmentpackage
  *  \brief      Tab for contacts linked to ExpeditionPackage
  */
 
@@ -55,13 +55,13 @@ if (!$res) {
 
 require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-dol_include_once('/package/class/expeditionpackage.class.php');
-dol_include_once('/package/lib/package_expeditionpackage.lib.php');
+dol_include_once('/shipmentpackage/class/expeditionpackage.class.php');
+dol_include_once('/shipmentpackage/lib/package_expeditionpackage.lib.php');
 dol_include_once('/expedition/class/expedition.class.php');
 dol_include_once('/commande/class/commande.class.php');
 
 // Load translation files required by the page
-$langs->loadLangs(array("package@package", "companies", "other", "mails"));
+$langs->loadLangs(array("shipmentpackage@shipmentpackage", "companies", "other", "mails"));
 
 $id     = (GETPOST('id') ?GETPOST('id', 'int') : GETPOST('facid', 'int')); // For backward compatibility
 $ref    = GETPOST('ref', 'alpha');
@@ -72,7 +72,7 @@ $action = GETPOST('action', 'aZ09');
 // Initialize technical objects
 $object = new ExpeditionPackage($db);
 $extrafields = new ExtraFields($db);
-$diroutputmassaction = $conf->package->dir_output.'/temp/massgeneration/'.$user->id;
+$diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('expeditionpackagecontact', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
@@ -80,7 +80,7 @@ $extrafields->fetch_name_optionals_label($object->table_element);
 // Load object
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
 
-$permission = $user->rights->package->expeditionpackage->write;
+$permission = $user->rights->shipmentpackage->expeditionpackage->write;
 $origin = 'shipping';
 $object->origin = $origin;
 $object->fetchObjectLinked();
@@ -102,7 +102,7 @@ $objectsrc = $expedition->commande;
 //if ($user->socid > 0) $socid = $user->socid;
 //$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 //restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
-//if (empty($conf->package->enabled)) accessforbidden();
+//if (empty($conf->shipmentpackage->enabled)) accessforbidden();
 //if (!$permissiontoread) accessforbidden();
 
 
@@ -171,7 +171,7 @@ if ($object->id) {
 
 	print dol_get_fiche_head($head, 'contact', '', -1, $object->picto);
 
-	$linkback = '<a href="'.dol_buildpath('/package/expeditionpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/expeditionpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*

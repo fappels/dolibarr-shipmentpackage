@@ -17,8 +17,8 @@
  */
 
 /**
- * \file    package/admin/about.php
- * \ingroup package
+ * \file    shipmentpackage/admin/about.php
+ * \ingroup shipmentpackage
  * \brief   About page of module Package.
  */
 
@@ -53,10 +53,10 @@ if (!$res) {
 // Libraries
 require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-require_once '../lib/package.lib.php';
+require_once '../lib/shipmentpackage.lib.php';
 
 // Translations
-$langs->loadLangs(array("errors", "admin", "package@package"));
+$langs->loadLangs(array("errors", "admin", "shipmentpackage@shipmentpackage"));
 
 // Access control
 if (!$user->admin) {
@@ -93,9 +93,9 @@ print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 // Configuration header
 $head = packageAdminPrepareHead();
-print dol_get_fiche_head($head, 'about', $langs->trans($page_name), 0, 'package@package');
+print dol_get_fiche_head($head, 'about', $langs->trans($page_name), 0, 'shipmentpackage@shipmentpackage');
 
-dol_include_once('/package/core/modules/modPackage.class.php');
+dol_include_once('/shipmentpackage/core/modules/modPackage.class.php');
 $tmpmodule = new modPackage($db);
 print $tmpmodule->getDescLong();
 

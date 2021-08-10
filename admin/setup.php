@@ -17,8 +17,8 @@
  */
 
 /**
- * \file    package/admin/setup.php
- * \ingroup package
+ * \file    shipmentpackage/admin/setup.php
+ * \ingroup shipmentpackage
  * \brief   Package setup page.
  */
 
@@ -54,11 +54,11 @@ global $langs, $user;
 
 // Libraries
 require_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
-require_once '../lib/package.lib.php';
+require_once '../lib/shipmentpackage.lib.php';
 //require_once "../class/myclass.class.php";
 
 // Translations
-$langs->loadLangs(array("admin", "package@package"));
+$langs->loadLangs(array("admin", "shipmentpackage@shipmentpackage"));
 
 // Access control
 if (!$user->admin) {
@@ -126,7 +126,7 @@ if ($action == 'updateMask') {
 	$file = ''; $classname = ''; $filefound = 0;
 	$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
 	foreach ($dirmodels as $reldir) {
-		$file = dol_buildpath($reldir."core/modules/package/doc/pdf_".$modele."_".strtolower($tmpobjectkey).".modules.php", 0);
+		$file = dol_buildpath($reldir."core/modules/shipmentpackage/doc/pdf_".$modele."_".strtolower($tmpobjectkey).".modules.php", 0);
 		if (file_exists($file)) {
 			$filefound = 1;
 			$classname = "pdf_".$modele;
@@ -216,7 +216,7 @@ print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 // Configuration header
 $head = packageAdminPrepareHead();
-print dol_get_fiche_head($head, 'settings', $langs->trans($page_name), -1, "package@package");
+print dol_get_fiche_head($head, 'settings', $langs->trans($page_name), -1, "shipmentpackage@shipmentpackage");
 
 // Setup page goes here
 echo '<span class="opacitymedium">'.$langs->trans("PackageSetupPage").'</span><br><br>';
@@ -397,7 +397,7 @@ if ($action == 'edit') {
 }
 
 
-$moduledir = 'package';
+$moduledir = 'shipmentpackage';
 $myTmpObjects = array();
 $myTmpObjects['MyObject'] = array('includerefgeneration'=>0, 'includedocgeneration'=>0);
 
