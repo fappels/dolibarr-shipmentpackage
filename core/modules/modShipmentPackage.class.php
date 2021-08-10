@@ -63,16 +63,16 @@ class  modShipmentPackage extends DolibarrModules
 		$this->name = preg_replace('/^mod/i', '', get_class($this));
 
 		// Module description, used if translation string 'ModulePackageDesc' not found (ShipmentPackage is name of module).
-		$this->description = "PackageDescription";
+		$this->description = "ShipmentPackageDescription";
 		// Used only if file README.md and README-LL.md not found.
-		$this->descriptionlong = "PackageDescription";
+		$this->descriptionlong = "ShipmentPackageDescription";
 
 		// Author
 		$this->editor_name = 'Editor name';
 		$this->editor_url = 'https://www.example.com';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
-		$this->version = 'experimental';
+		$this->version = '1.0.1';
 		// Url to the file with your last numberversion of this module
 		//$this->url_last_version = 'http://www.example.com/versionmodule.txt';
 
