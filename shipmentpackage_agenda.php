@@ -290,7 +290,7 @@ if ($object->id > 0) {
 		}
 
 
-		//print load_fiche_titre($langs->trans("ActionsOnExpeditionPackage"), '', '');
+		//print load_fiche_titre($langs->trans("ActionsOnShipmentPackage"), '', '');
 
 		// List of all actions
 		$filters = array();

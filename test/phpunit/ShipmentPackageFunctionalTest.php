@@ -255,7 +255,7 @@ class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 		$this->url('/admin/triggers.php');
 		$this->authenticate();
 		return $this->assertContains(
-			'interface_99_modPackage_PackageTriggers.class.php',
+			'interface_99_modShipmentPackage_PackageTriggers.class.php',
 			$this->byTag('body')->text(),
 			"Trigger declared"
 		);
@@ -273,7 +273,7 @@ class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 		$this->authenticate();
 		return $this->assertContains(
 			'tick.png',
-			$this->byXPath('//td[text()="interface_99_modPackage_MyTrigger.class.php"]/following::img')->attribute('src'),
+			$this->byXPath('//td[text()="interface_99_modShipmentPackage_MyTrigger.class.php"]/following::img')->attribute('src'),
 			"Trigger enabled"
 		);
 	}

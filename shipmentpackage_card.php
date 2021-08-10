@@ -79,7 +79,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
 require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
-dol_include_once('/shipmentpackage/lib/package_shipmentpackage.lib.php');
+dol_include_once('/shipmentpackage/lib/shipmentpackage_shipmentpackage.lib.php');
 
 // Load translation files required by the page
 $langs->loadLangs(array("shipmentpackage@shipmentpackage", "other"));

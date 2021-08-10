@@ -151,7 +151,7 @@ class modPackage extends DolibarrModules
 		// Messages at activation
 		$this->warnings_activation = array(); // Warning to show when we activate module. array('always'='text') or array('FR'='textfr','ES'='textes'...)
 		$this->warnings_activation_ext = array(); // Warning to show when we activate an external module. array('always'='text') or array('FR'='textfr','ES'='textes'...)
-		//$this->automatic_activation = array('FR'=>'PackageWasAutomaticallyActivatedBecauseOfYourCountryChoice');
+		//$this->automatic_activation = array('FR'=>'ShipmentPackageWasAutomaticallyActivatedBecauseOfYourCountryChoice');
 		//$this->always_enabled = true;								// If true, can't be disabled
 
 		// Constants
@@ -432,11 +432,11 @@ class modPackage extends DolibarrModules
 		// Create extrafields during init
 		//include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 		//$extrafields = new ExtraFields($this->db);
-		//$result1=$extrafields->addExtraField('package_myattr1', "New Attr 1 label", 'boolean', 1,  3, 'thirdparty',   0, 0, '', '', 1, '', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
-		//$result2=$extrafields->addExtraField('package_myattr2', "New Attr 2 label", 'varchar', 1, 10, 'project',      0, 0, '', '', 1, '', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
-		//$result3=$extrafields->addExtraField('package_myattr3', "New Attr 3 label", 'varchar', 1, 10, 'bank_account', 0, 0, '', '', 1, '', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
-		//$result4=$extrafields->addExtraField('package_myattr4', "New Attr 4 label", 'select',  1,  3, 'thirdparty',   0, 1, '', array('options'=>array('code1'=>'Val1','code2'=>'Val2','code3'=>'Val3')), 1,'', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
-		//$result5=$extrafields->addExtraField('package_myattr5', "New Attr 5 label", 'text',    1, 10, 'user',         0, 0, '', '', 1, '', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
+		//$result1=$extrafields->addExtraField('shipmentpackage_myattr1', "New Attr 1 label", 'boolean', 1,  3, 'thirdparty',   0, 0, '', '', 1, '', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
+		//$result2=$extrafields->addExtraField('shipmentpackage_myattr2', "New Attr 2 label", 'varchar', 1, 10, 'project',      0, 0, '', '', 1, '', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
+		//$result3=$extrafields->addExtraField('shipmentpackage_myattr3', "New Attr 3 label", 'varchar', 1, 10, 'bank_account', 0, 0, '', '', 1, '', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
+		//$result4=$extrafields->addExtraField('shipmentpackage_myattr4', "New Attr 4 label", 'select',  1,  3, 'thirdparty',   0, 1, '', array('options'=>array('code1'=>'Val1','code2'=>'Val2','code3'=>'Val3')), 1,'', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
+		//$result5=$extrafields->addExtraField('shipmentpackage_myattr5', "New Attr 5 label", 'text',    1, 10, 'user',         0, 0, '', '', 1, '', 0, 0, '', '', 'shipmentpackage@shipmentpackage', '$conf->shipmentpackage->enabled');
 
 		// Permissions
 		$this->remove($options);

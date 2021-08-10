@@ -715,7 +715,7 @@ class ShipmentPackage extends CommonObject
 		}
 
 		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->package_advance->validate))))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->shipmentpackage_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
@@ -739,7 +739,7 @@ class ShipmentPackage extends CommonObject
 		}
 
 		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->package_advance->validate))))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->shipmentpackage_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;
@@ -763,7 +763,7 @@ class ShipmentPackage extends CommonObject
 		}
 
 		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->package_advance->validate))))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->shipmentpackage_advance->validate))))
 		 {
 		 $this->error='Permission denied';
 		 return -1;

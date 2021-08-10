@@ -16,7 +16,7 @@
  */
 
 /**
- * \file    lib/package_shipmentpackage.lib.php
+ * \file    lib/shipmentpackage_shipmentpackage.lib.php
  * \ingroup shipmentpackage
  * \brief   Library files with common functions for ShipmentPackage
  */

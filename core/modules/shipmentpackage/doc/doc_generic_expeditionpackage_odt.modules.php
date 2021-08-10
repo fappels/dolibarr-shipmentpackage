@@ -174,7 +174,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 		if ($nbofiles) {
 			$texte .= '<div id="div_'.get_class($this).'" class="hidden">';
 			foreach ($listoffiles as $file) {
-				$texte .= '- '.$file['name'].' <a href="'.DOL_URL_ROOT.'/document.php?modulepart=doctemplates&file=package_shipmentpackage/'.urlencode(basename($file['name'])).'">'.img_picto('', 'listlight').'</a><br>';
+				$texte .= '- '.$file['name'].' <a href="'.DOL_URL_ROOT.'/document.php?modulepart=doctemplates&file=shipmentpackage_shipmentpackage/'.urlencode(basename($file['name'])).'">'.img_picto('', 'listlight').'</a><br>';
 			}
 			$texte .= '</div>';
 		}

@@ -56,7 +56,7 @@ if (!$res) {
 require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
-dol_include_once('/shipmentpackage/lib/package_shipmentpackage.lib.php');
+dol_include_once('/shipmentpackage/lib/shipmentpackage_shipmentpackage.lib.php');
 dol_include_once('/expedition/class/expedition.class.php');
 dol_include_once('/commande/class/commande.class.php');
 

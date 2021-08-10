@@ -16,7 +16,7 @@
  */
 
 /**
- * \file    core/triggers/interface_99_modPackage_PackageTriggers.class.php
+ * \file    core/triggers/interface_99_modShipmentPackage_PackageTriggers.class.php
  * \ingroup shipmentpackage
  * \brief   Example trigger.
  *
@@ -24,7 +24,7 @@
  *
  * \remarks You can create other triggers by copying this one.
  * - File name should be either:
- *      - interface_99_modPackage_MyTrigger.class.php
+ *      - interface_99_modShipmentPackage_MyTrigger.class.php
  *      - interface_99_all_MyTrigger.class.php
  * - The file must stay in core/triggers
  * - The class name must be InterfaceMytrigger

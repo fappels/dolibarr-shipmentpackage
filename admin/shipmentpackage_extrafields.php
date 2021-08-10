@@ -72,7 +72,7 @@ foreach ($tmptype2label as $key => $val) {
 
 $action = GETPOST('action', 'aZ09');
 $attrname = GETPOST('attrname', 'alpha');
-$elementtype = 'package_shipmentpackage'; //Must be the $table_element of the class that manage extrafield
+$elementtype = 'expedition_package'; //Must be the $table_element of the class that manage extrafield
 
 if (!$user->admin) {
 	accessforbidden();

@@ -424,8 +424,8 @@ class ActionsPackage
 			if (in_array($element, ['context1', 'context2'])) {
 				$datacount = 0;
 
-				$parameters['head'][$counter][0] = dol_buildpath('/shipmentpackage/package_tab.php', 1) . '?id=' . $id . '&amp;module='.$element;
-				$parameters['head'][$counter][1] = $langs->trans('PackageTab');
+				$parameters['head'][$counter][0] = dol_buildpath('/shipmentpackage/shipmentpackage_tab.php', 1) . '?id=' . $id . '&amp;module='.$element;
+				$parameters['head'][$counter][1] = $langs->trans('ShipmentPackageTab');
 				if ($datacount > 0) {
 					$parameters['head'][$counter][1] .= '<span class="badge marginleftonlyshort">' . $datacount . '</span>';
 				}
