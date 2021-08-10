@@ -21,7 +21,7 @@
  */
 
 /**
- *      \file       admin/expeditionpackage_extrafields.php
+ *      \file       admin/shipmentpackage_extrafields.php
  *		\ingroup    shipmentpackage
  *		\brief      Page to setup extra fields of shipmentpackage
  */
@@ -72,7 +72,7 @@ foreach ($tmptype2label as $key => $val) {
 
 $action = GETPOST('action', 'aZ09');
 $attrname = GETPOST('attrname', 'alpha');
-$elementtype = 'package_expeditionpackage'; //Must be the $table_element of the class that manage extrafield
+$elementtype = 'package_shipmentpackage'; //Must be the $table_element of the class that manage extrafield
 
 if (!$user->admin) {
 	accessforbidden();
@@ -103,7 +103,7 @@ print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 $head = packageAdminPrepareHead();
 
-print dol_get_fiche_head($head, 'expeditionpackage_extrafields', $langs->trans($page_name), -1, 'shipmentpackage@shipmentpackage');
+print dol_get_fiche_head($head, 'shipmentpackage_extrafields', $langs->trans($page_name), -1, 'shipmentpackage@shipmentpackage');
 
 require DOL_DOCUMENT_ROOT.'/core/tpl/admin_extrafields_view.tpl.php';
 

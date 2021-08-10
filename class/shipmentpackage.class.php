@@ -59,7 +59,7 @@ class ShipmentPackage extends CommonObject
 	public $isextrafieldmanaged = 1;
 
 	/**
-	 * @var string String with name of icon for shipmentpackage. Must be the part after the 'object_' into object_expeditionpackage.png
+	 * @var string String with name of icon for shipmentpackage. Must be the part after the 'object_' into object_shipmentpackage.png
 	 */
 	public $picto = 'shipmentpackage@shipmentpackage';
 
@@ -597,7 +597,7 @@ class ShipmentPackage extends CommonObject
 		}
 
 		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->shipmentpackage->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->shipmentpackage->expeditionpackage_advance->validate))))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->shipmentpackage->shipmentpackage_advance->validate))))
 		 {
 		 $this->error='NotEnoughPermissions';
 		 dol_syslog(get_class($this)."::valid ".$this->error, LOG_ERR);
@@ -799,7 +799,7 @@ class ShipmentPackage extends CommonObject
 		$label .= '<br>';
 		$label .= '<b>'.$langs->trans('Ref').':</b> '.$this->ref;
 
-		$url = dol_buildpath('/shipmentpackage/expeditionpackage_card.php', 1).'?id='.$this->id;
+		$url = dol_buildpath('/shipmentpackage/shipmentpackage_card.php', 1).'?id='.$this->id;
 
 		if ($option != 'nolink') {
 			// Add param to save lastsearch_values or not
@@ -875,7 +875,7 @@ class ShipmentPackage extends CommonObject
 		//if ($withpicto != 2) $result.=(($addlabel && $this->label) ? $sep . dol_trunc($this->label, ($addlabel > 1 ? $addlabel : 0)) : '');
 
 		global $action, $hookmanager;
-		$hookmanager->initHooks(array('expeditionpackagedao'));
+		$hookmanager->initHooks(array('shipmentpackagedao'));
 		$parameters = array('id'=>$this->id, 'getnomurl'=>$result);
 		$reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 		if ($reshook > 0) {
@@ -1023,7 +1023,7 @@ class ShipmentPackage extends CommonObject
 		$langs->load("shipmentpackage@shipmentpackage");
 
 		if (empty($conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON)) {
-			$conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON = 'mod_expeditionpackage_standard';
+			$conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON = 'mod_shipmentpackage_standard';
 		}
 
 		if (!empty($conf->global->PACKAGE_EXPEDITIONPACKAGE_ADDON)) {
@@ -1088,7 +1088,7 @@ class ShipmentPackage extends CommonObject
 		$langs->load("shipmentpackage@shipmentpackage");
 
 		if (!dol_strlen($modele)) {
-			$modele = 'standard_expeditionpackage';
+			$modele = 'standard_shipmentpackage';
 
 			if (!empty($this->model_pdf)) {
 				$modele = $this->model_pdf;
@@ -1218,7 +1218,7 @@ class ExpeditionPackageLine extends CommonObjectLine
 	/**
 	 * @var string ID to identify managed object
 	 */
-	public $element = 'expeditionpackageline';
+	public $element = 'shipmentpackageline';
 
 	/**
 	 * @var int    Name of subtable line
@@ -1236,9 +1236,9 @@ class ExpeditionPackageLine extends CommonObjectLine
 	public $isextrafieldmanaged = 0;
 
 	/**
-	 * @var string String with name of icon for line. Must be the part after the 'object_' into object_expeditionpackageline.png
+	 * @var string String with name of icon for line. Must be the part after the 'object_' into object_shipmentpackageline.png
 	 */
-	public $picto = 'expeditionpackageline';
+	public $picto = 'shipmentpackageline';
 
 	/**
 	 * Constructor

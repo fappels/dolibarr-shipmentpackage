@@ -16,7 +16,7 @@
  */
 
 /**
- * \file    lib/package_expeditionpackage.lib.php
+ * \file    lib/package_shipmentpackage.lib.php
  * \ingroup shipmentpackage
  * \brief   Library files with common functions for ShipmentPackage
  */
@@ -27,7 +27,7 @@
  * @param	ShipmentPackage	$object		ShipmentPackage
  * @return 	array					Array of tabs
  */
-function expeditionpackagePrepareHead($object)
+function shipmentpackagePrepareHead($object)
 {
 	global $db, $langs, $conf;
 
@@ -36,12 +36,12 @@ function expeditionpackagePrepareHead($object)
 	$h = 0;
 	$head = array();
 
-	$head[$h][0] = dol_buildpath("/shipmentpackage/expeditionpackage_card.php", 1).'?id='.$object->id;
+	$head[$h][0] = dol_buildpath("/shipmentpackage/shipmentpackage_card.php", 1).'?id='.$object->id;
 	$head[$h][1] = $langs->trans("Card");
 	$head[$h][2] = 'card';
 	$h++;
 
-	$head[$h][0] = dol_buildpath("/shipmentpackage/expeditionpackage_contact.php", 1).'?id='.$object->id.'&socid='.$object->fk_soc;
+	$head[$h][0] = dol_buildpath("/shipmentpackage/shipmentpackage_contact.php", 1).'?id='.$object->id.'&socid='.$object->fk_soc;
 	$head[$h][1] = $langs->trans("Contacts");
 	$head[$h][2] = 'contact';
 	$h++;
@@ -54,7 +54,7 @@ function expeditionpackagePrepareHead($object)
 		if (!empty($object->note_public)) {
 			$nbNote++;
 		}
-		$head[$h][0] = dol_buildpath('/shipmentpackage/expeditionpackage_note.php', 1).'?id='.$object->id;
+		$head[$h][0] = dol_buildpath('/shipmentpackage/shipmentpackage_note.php', 1).'?id='.$object->id;
 		$head[$h][1] = $langs->trans('Notes');
 		if ($nbNote > 0) {
 			$head[$h][1] .= (empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER) ? '<span class="badge marginleftonlyshort">'.$nbNote.'</span>' : '');
@@ -68,7 +68,7 @@ function expeditionpackagePrepareHead($object)
 	$upload_dir = $conf->shipmentpackage->dir_output."/shipmentpackage/".dol_sanitizeFileName($object->ref);
 	$nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview.*\.png)$'));
 	$nbLinks = Link::count($db, $object->element, $object->id);
-	$head[$h][0] = dol_buildpath("/shipmentpackage/expeditionpackage_document.php", 1).'?id='.$object->id;
+	$head[$h][0] = dol_buildpath("/shipmentpackage/shipmentpackage_document.php", 1).'?id='.$object->id;
 	$head[$h][1] = $langs->trans('Documents');
 	if (($nbFiles + $nbLinks) > 0) {
 		$head[$h][1] .= '<span class="badge marginleftonlyshort">'.($nbFiles + $nbLinks).'</span>';
@@ -76,7 +76,7 @@ function expeditionpackagePrepareHead($object)
 	$head[$h][2] = 'document';
 	$h++;
 
-	$head[$h][0] = dol_buildpath("/shipmentpackage/expeditionpackage_agenda.php", 1).'?id='.$object->id;
+	$head[$h][0] = dol_buildpath("/shipmentpackage/shipmentpackage_agenda.php", 1).'?id='.$object->id;
 	$head[$h][1] = $langs->trans("Events");
 	$head[$h][2] = 'agenda';
 	$h++;

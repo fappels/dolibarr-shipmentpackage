@@ -17,7 +17,7 @@
  */
 
 /**
- *  \file       expeditionpackage_contact.php
+ *  \file       shipmentpackage_contact.php
  *  \ingroup    shipmentpackage
  *  \brief      Tab for contacts linked to ShipmentPackage
  */
@@ -56,7 +56,7 @@ if (!$res) {
 require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
-dol_include_once('/shipmentpackage/lib/package_expeditionpackage.lib.php');
+dol_include_once('/shipmentpackage/lib/package_shipmentpackage.lib.php');
 dol_include_once('/expedition/class/expedition.class.php');
 dol_include_once('/commande/class/commande.class.php');
 
@@ -73,7 +73,7 @@ $action = GETPOST('action', 'aZ09');
 $object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
-$hookmanager->initHooks(array('expeditionpackagecontact', 'globalcard')); // Note that conf->hooks_modules contains array
+$hookmanager->initHooks(array('shipmentpackagecontact', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
@@ -167,11 +167,11 @@ if ($object->id) {
 	/*
 	 * Show tabs
 	 */
-	$head = expeditionpackagePrepareHead($object);
+	$head = shipmentpackagePrepareHead($object);
 
 	print dol_get_fiche_head($head, 'contact', '', -1, $object->picto);
 
-	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/expeditionpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/shipmentpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*

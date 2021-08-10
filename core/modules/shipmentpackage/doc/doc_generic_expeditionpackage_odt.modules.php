@@ -22,12 +22,12 @@
  */
 
 /**
- *	\file       htdocs/core/modules/package/doc/doc_generic_expeditionpackage_odt.modules.php
+ *	\file       htdocs/core/modules/package/doc/doc_generic_shipmentpackage_odt.modules.php
  *	\ingroup    package
- *	\brief      File of class to build ODT documents for expeditionpackages
+ *	\brief      File of class to build ODT documents for shipmentpackages
  */
 
-dol_include_once('/package/core/modules/package/modules_expeditionpackage.php');
+dol_include_once('/package/core/modules/package/modules_shipmentpackage.php');
 require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
@@ -38,7 +38,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/doc.lib.php';
 /**
  *	Class to build documents using ODF templates generator
  */
-class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
+class doc_generic_shipmentpackage_odt extends ModelePDFExpeditionPackage
 {
 	/**
 	 * Issuer
@@ -174,7 +174,7 @@ class doc_generic_expeditionpackage_odt extends ModelePDFExpeditionPackage
 		if ($nbofiles) {
 			$texte .= '<div id="div_'.get_class($this).'" class="hidden">';
 			foreach ($listoffiles as $file) {
-				$texte .= '- '.$file['name'].' <a href="'.DOL_URL_ROOT.'/document.php?modulepart=doctemplates&file=package_expeditionpackage/'.urlencode(basename($file['name'])).'">'.img_picto('', 'listlight').'</a><br>';
+				$texte .= '- '.$file['name'].' <a href="'.DOL_URL_ROOT.'/document.php?modulepart=doctemplates&file=package_shipmentpackage/'.urlencode(basename($file['name'])).'">'.img_picto('', 'listlight').'</a><br>';
 			}
 			$texte .= '</div>';
 		}

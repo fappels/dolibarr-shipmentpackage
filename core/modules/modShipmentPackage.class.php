@@ -118,7 +118,7 @@ class modPackage extends DolibarrModules
 				'data' => array(
 					'expeditioncard',
 					'shipmentlist',
-					'expeditionpackagecard'
+					'shipmentpackagecard'
 				),
 				'entity' => '0',
 			),
@@ -335,8 +335,8 @@ class modPackage extends DolibarrModules
 			'type'=>'left',			                // This is a Left menu entry
 			'titre'=>'New_ExpeditionPackage',
 			'mainmenu'=>'products',
-			'leftmenu'=>'expeditionpackage_create',
-			'url'=>'/shipmentpackage/expeditionpackage_card.php?action=create',
+			'leftmenu'=>'shipmentpackage_create',
+			'url'=>'/shipmentpackage/shipmentpackage_card.php?action=create',
 			'langs'=>'shipmentpackage@shipmentpackage',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->shipmentpackage->enabled',  // Define condition to show or hide menu entry. Use '$conf->shipmentpackage->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
@@ -349,8 +349,8 @@ class modPackage extends DolibarrModules
 			'type'=>'left',			                // This is a Left menu entry
 			'titre'=>'List_ExpeditionPackage',
 			'mainmenu'=>'products',
-			'leftmenu'=>'expeditionpackage_list',
-			'url'=>'/shipmentpackage/expeditionpackage_list.php',
+			'leftmenu'=>'shipmentpackage_list',
+			'url'=>'/shipmentpackage/shipmentpackage_list.php',
 			'langs'=>'shipmentpackage@shipmentpackage',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>1000+$r,
 			'enabled'=>'$conf->shipmentpackage->enabled',  // Define condition to show or hide menu entry. Use '$conf->shipmentpackage->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
@@ -373,13 +373,13 @@ class modPackage extends DolibarrModules
 		include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';
 		//$this->export_fields_array[$r]['t.fieldtoadd']='FieldToAdd'; $this->export_TypeFields_array[$r]['t.fieldtoadd']='Text';
 		//unset($this->export_fields_array[$r]['t.fieldtoremove']);
-		//$keyforclass = 'ExpeditionPackageLine'; $keyforclassfile='/shipmentpackage/class/shipmentpackage.class.php'; $keyforelement='expeditionpackageline@shipmentpackage'; $keyforalias='tl';
+		//$keyforclass = 'ExpeditionPackageLine'; $keyforclassfile='/shipmentpackage/class/shipmentpackage.class.php'; $keyforelement='shipmentpackageline@shipmentpackage'; $keyforalias='tl';
 		//include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';
 		$keyforselect='shipmentpackage'; $keyforaliasextra='extra'; $keyforelement='shipmentpackage@shipmentpackage';
 		include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
-		//$keyforselect='expeditionpackageline'; $keyforaliasextra='extraline'; $keyforelement='expeditionpackageline@shipmentpackage';
+		//$keyforselect='shipmentpackageline'; $keyforaliasextra='extraline'; $keyforelement='shipmentpackageline@shipmentpackage';
 		//include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
-		//$this->export_dependencies_array[$r] = array('expeditionpackageline'=>array('tl.rowid','tl.ref')); // To force to activate one or several fields if we select some fields that need same (like to select a unique key if we ask a field of a child to avoid the DISTINCT to discard them, or for computed field than need several other fields)
+		//$this->export_dependencies_array[$r] = array('shipmentpackageline'=>array('tl.rowid','tl.ref')); // To force to activate one or several fields if we select some fields that need same (like to select a unique key if we ask a field of a child to avoid the DISTINCT to discard them, or for computed field than need several other fields)
 		//$this->export_special_array[$r] = array('t.field'=>'...');
 		//$this->export_examplevalues_array[$r] = array('t.field'=>'Example');
 		//$this->export_help_array[$r] = array('t.field'=>'FieldDescHelp');
@@ -453,9 +453,9 @@ class modPackage extends DolibarrModules
 				continue;
 			}
 			if ($myTmpObjectArray['includerefgeneration']) {
-				$src = DOL_DOCUMENT_ROOT.'/install/doctemplates/shipmentpackage/template_expeditionpackages.odt';
+				$src = DOL_DOCUMENT_ROOT.'/install/doctemplates/shipmentpackage/template_shipmentpackages.odt';
 				$dirodt = DOL_DATA_ROOT.'/doctemplates/shipmentpackage';
-				$dest = $dirodt.'/template_expeditionpackages.odt';
+				$dest = $dirodt.'/template_shipmentpackages.odt';
 
 				if (file_exists($src) && !file_exists($dest)) {
 					require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';

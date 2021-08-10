@@ -17,7 +17,7 @@
  */
 
 /**
- *  \file       expeditionpackage_note.php
+ *  \file       shipmentpackage_note.php
  *  \ingroup    shipmentpackage
  *  \brief      Tab for notes on ShipmentPackage
  */
@@ -75,7 +75,7 @@ if (!$res) {
 }
 
 dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
-dol_include_once('/shipmentpackage/lib/package_expeditionpackage.lib.php');
+dol_include_once('/shipmentpackage/lib/package_shipmentpackage.lib.php');
 
 // Load translation files required by the page
 $langs->loadLangs(array("shipmentpackage@shipmentpackage", "companies"));
@@ -91,7 +91,7 @@ $backtopage = GETPOST('backtopage', 'alpha');
 $object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
-$hookmanager->initHooks(array('expeditionpackagenote', 'globalcard')); // Note that conf->hooks_modules contains array
+$hookmanager->initHooks(array('shipmentpackagenote', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
@@ -133,13 +133,13 @@ llxHeader('', $langs->trans('ShipmentPackage'), $help_url);
 if ($id > 0 || !empty($ref)) {
 	$object->fetch_thirdparty();
 
-	$head = expeditionpackagePrepareHead($object);
+	$head = shipmentpackagePrepareHead($object);
 
 	print dol_get_fiche_head($head, 'note', '', -1, $object->picto);
 
 	// Object card
 	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/expeditionpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/shipmentpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*

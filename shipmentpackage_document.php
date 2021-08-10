@@ -17,7 +17,7 @@
  */
 
 /**
- *  \file       expeditionpackage_document.php
+ *  \file       shipmentpackage_document.php
  *  \ingroup    shipmentpackage
  *  \brief      Tab for documents linked to ShipmentPackage
  */
@@ -79,7 +79,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/images.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
-dol_include_once('/shipmentpackage/lib/package_expeditionpackage.lib.php');
+dol_include_once('/shipmentpackage/lib/package_shipmentpackage.lib.php');
 
 // Load translation files required by the page
 $langs->loadLangs(array("shipmentpackage@shipmentpackage", "companies", "other", "mails"));
@@ -113,7 +113,7 @@ if (!$sortfield) {
 $object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
-$hookmanager->initHooks(array('expeditionpackagedocument', 'globalcard')); // Note that conf->hooks_modules contains array
+$hookmanager->initHooks(array('shipmentpackagedocument', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
@@ -157,7 +157,7 @@ if ($object->id) {
 	/*
 	 * Show tabs
 	 */
-	$head = expeditionpackagePrepareHead($object);
+	$head = shipmentpackagePrepareHead($object);
 
 	print dol_get_fiche_head($head, 'document', '', -1, $object->picto);
 
@@ -171,7 +171,7 @@ if ($object->id) {
 
 	// Object card
 	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/expeditionpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/shipmentpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*

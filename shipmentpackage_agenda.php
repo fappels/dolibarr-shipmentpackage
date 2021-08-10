@@ -17,7 +17,7 @@
  */
 
 /**
- *  \file       expeditionpackage_agenda.php
+ *  \file       shipmentpackage_agenda.php
  *  \ingroup    shipmentpackage
  *  \brief      Tab of events on ShipmentPackage
  */
@@ -78,7 +78,7 @@ require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/company.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
-dol_include_once('/shipmentpackage/lib/package_expeditionpackage.lib.php');
+dol_include_once('/shipmentpackage/lib/package_shipmentpackage.lib.php');
 
 
 // Load translation files required by the page
@@ -122,7 +122,7 @@ if (!$sortorder) {
 $object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
-$hookmanager->initHooks(array('expeditionpackageagenda', 'globalcard')); // Note that conf->hooks_modules contains array
+$hookmanager->initHooks(array('shipmentpackageagenda', 'globalcard')); // Note that conf->hooks_modules contains array
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
 
@@ -184,14 +184,14 @@ if ($object->id > 0) {
 	if (!empty($conf->notification->enabled)) {
 		$langs->load("mails");
 	}
-	$head = expeditionpackagePrepareHead($object);
+	$head = shipmentpackagePrepareHead($object);
 
 
 	print dol_get_fiche_head($head, 'agenda', '', -1, $object->picto);
 
 	// Object card
 	// ------------------------------------------------------------
-	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/expeditionpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
+	$linkback = '<a href="'.dol_buildpath('/shipmentpackage/shipmentpackage_list.php', 1).'?restore_lastsearch_values=1'.(!empty($socid) ? '&socid='.$socid : '').'">'.$langs->trans("BackToList").'</a>';
 
 	$morehtmlref = '<div class="refidno">';
 	/*

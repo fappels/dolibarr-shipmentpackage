@@ -21,18 +21,18 @@
  */
 
 /**
- * \file       htdocs/core/modules/shipmentpackage/mod_expeditionpackage_advanced.php
+ * \file       htdocs/core/modules/shipmentpackage/mod_shipmentpackage_advanced.php
  * \ingroup    shipmentpackage
  * \brief      File containing class for advanced numbering model of ShipmentPackage
  */
 
-dol_include_once('/shipmentpackage/core/modules/shipmentpackage/modules_expeditionpackage.php');
+dol_include_once('/shipmentpackage/core/modules/shipmentpackage/modules_shipmentpackage.php');
 
 
 /**
  *	Class to manage customer Bom numbering rules advanced
  */
-class mod_expeditionpackage_advanced extends ModeleNumRefExpeditionPackage
+class mod_shipmentpackage_advanced extends ModeleNumRefExpeditionPackage
 {
 	/**
 	 * Dolibarr version of the loaded document

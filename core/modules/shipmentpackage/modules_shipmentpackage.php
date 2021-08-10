@@ -23,9 +23,9 @@
  */
 
 /**
- *  \file			htdocs/core/modules/package/modules_expeditionpackage.php
+ *  \file			htdocs/core/modules/package/modules_shipmentpackage.php
  *  \ingroup		package
- *  \brief			File that contains parent class for expeditionpackages document models and parent class for expeditionpackages numbering models
+ *  \brief			File that contains parent class for shipmentpackages document models and parent class for shipmentpackages numbering models
  */
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/commondocgenerator.class.php';
