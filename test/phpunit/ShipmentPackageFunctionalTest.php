@@ -29,7 +29,7 @@ namespace test\functional;
 use PHPUnit_Extensions_Selenium2TestCase_WebDriverException;
 
 /**
- * Class PackageFunctionalTest
+ * Class ShipmentPackageFunctionalTest
  *
  * Requires chromedriver for Google Chrome
  * Requires geckodriver for Mozilla Firefox
@@ -41,7 +41,7 @@ use PHPUnit_Extensions_Selenium2TestCase_WebDriverException;
  *
  * @package Testpackage
  */
-class PackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
+class ShipmentPackageFunctionalTest extends \PHPUnit_Extensions_Selenium2TestCase
 {
 	// TODO: move to a global configuration file?
 	/** @var string Base URL of the webserver under test */

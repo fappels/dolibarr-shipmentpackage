@@ -24,7 +24,7 @@
 
 /**
  *  \file			htdocs/core/modules/package/modules_shipmentpackage.php
- *  \ingroup		package
+ *  \ingroup	 shipmentpackage
  *  \brief			File that contains parent class for shipmentpackages document models and parent class for shipmentpackages numbering models
  */
 

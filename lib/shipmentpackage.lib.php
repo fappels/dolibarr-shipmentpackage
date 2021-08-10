@@ -26,7 +26,7 @@
  *
  * @return array
  */
-function packageAdminPrepareHead()
+function shipmentpackageAdminPrepareHead()
 {
 	global $langs, $conf;
 

@@ -101,7 +101,7 @@ $linkback = '<a href="'.DOL_URL_ROOT.'/admin/modules.php?restore_lastsearch_valu
 print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 
-$head = packageAdminPrepareHead();
+$head = shipmentpackageAdminPrepareHead();
 
 print dol_get_fiche_head($head, 'shipmentpackage_extrafields', $langs->trans($page_name), -1, 'shipmentpackage@shipmentpackage');
 

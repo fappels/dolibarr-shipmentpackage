@@ -92,7 +92,7 @@ $linkback = '<a href="'.($backtopage ? $backtopage : DOL_URL_ROOT.'/admin/module
 print load_fiche_titre($langs->trans($page_name), $linkback, 'title_setup');
 
 // Configuration header
-$head = packageAdminPrepareHead();
+$head = shipmentpackageAdminPrepareHead();
 print dol_get_fiche_head($head, 'about', $langs->trans($page_name), 0, 'shipmentpackage@shipmentpackage');
 
 dol_include_once('/shipmentpackage/core/modules/modPackage.class.php');

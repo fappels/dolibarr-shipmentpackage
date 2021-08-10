@@ -17,17 +17,17 @@
 # Generic
 #
 
-# Module label 'ModulePackageName'
-ModulePackageName = ShipmentPackage
-# Module description 'ModulePackageDesc'
-ModulePackageDesc = ShipmentPackage description
+# Module label 'ModuleShipmentPackageName'
+ModuleShipmentPackageName = ShipmentPackage
+# Module description 'ModuleShipmentPackageDesc'
+ModuleShipmentPackageDesc = ShipmentPackage description
 
 #
 # Admin page
 #
-PackageSetup = ShipmentPackage setup
+ShipmentPackageSetup = ShipmentPackage setup
 Settings = Settings
-PackageSetupPage = ShipmentPackage setup page
+ShipmentPackageSetupPage = ShipmentPackage setup page
 SHIPMENTPACKAGE_MYPARAM1 = My param 1
 SHIPMENTPACKAGE_MYPARAM1Tooltip = My param 1 tooltip
 SHIPMENTPACKAGE_MYPARAM2=My param 2
@@ -39,8 +39,8 @@ SHIPMENTPACKAGE_MYPARAM2Tooltip=My param 2 tooltip
 # About page
 #
 About = About
-PackageAbout = About ShipmentPackage
-PackageAboutPage = ShipmentPackage about page
+ShipmentPackageAbout = About ShipmentPackage
+ShipmentPackageAboutPage = ShipmentPackage about page
 
 #
 # Sample page

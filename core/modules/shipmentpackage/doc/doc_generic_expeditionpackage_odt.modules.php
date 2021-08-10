@@ -23,7 +23,7 @@
 
 /**
  *	\file       htdocs/core/modules/package/doc/doc_generic_shipmentpackage_odt.modules.php
- *	\ingroup    package
+ *	\ingroup    shipmentpackage
  *	\brief      File of class to build ODT documents for shipmentpackages
  */
 

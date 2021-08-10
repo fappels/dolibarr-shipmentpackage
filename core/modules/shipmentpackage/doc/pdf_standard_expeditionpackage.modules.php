@@ -27,7 +27,7 @@
 
 /**
  *  \file       core/modules/package/doc/pdf_standard.modules.php
- *  \ingroup    package
+ *  \ingroup    shipmentpackage
  *  \brief      File of class to generate document from standard template
  */
 
