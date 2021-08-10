@@ -333,7 +333,7 @@ class modPackage extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=products,fk_leftmenu=shipmentpackage',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'New_ExpeditionPackage',
+			'titre'=>'New_ShipmentPackage',
 			'mainmenu'=>'products',
 			'leftmenu'=>'shipmentpackage_create',
 			'url'=>'/shipmentpackage/shipmentpackage_card.php?action=create',
@@ -347,7 +347,7 @@ class modPackage extends DolibarrModules
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=products,fk_leftmenu=shipmentpackage',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
-			'titre'=>'List_ExpeditionPackage',
+			'titre'=>'List_ShipmentPackage',
 			'mainmenu'=>'products',
 			'leftmenu'=>'shipmentpackage_list',
 			'url'=>'/shipmentpackage/shipmentpackage_list.php',
@@ -366,14 +366,14 @@ class modPackage extends DolibarrModules
 		/*
 		$langs->load("shipmentpackage@shipmentpackage");
 		$this->export_code[$r]=$this->rights_class.'_'.$r;
-		$this->export_label[$r]='ExpeditionPackageLines';	// Translation key (used only if key ExportDataset_xxx_z not found)
+		$this->export_label[$r]='ShipmentPackageLines';	// Translation key (used only if key ExportDataset_xxx_z not found)
 		$this->export_icon[$r]='shipmentpackage@shipmentpackage';
 		// Define $this->export_fields_array, $this->export_TypeFields_array and $this->export_entities_array
 		$keyforclass = 'ShipmentPackage'; $keyforclassfile='/shipmentpackage/class/shipmentpackage.class.php'; $keyforelement='shipmentpackage@shipmentpackage';
 		include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';
 		//$this->export_fields_array[$r]['t.fieldtoadd']='FieldToAdd'; $this->export_TypeFields_array[$r]['t.fieldtoadd']='Text';
 		//unset($this->export_fields_array[$r]['t.fieldtoremove']);
-		//$keyforclass = 'ExpeditionPackageLine'; $keyforclassfile='/shipmentpackage/class/shipmentpackage.class.php'; $keyforelement='shipmentpackageline@shipmentpackage'; $keyforalias='tl';
+		//$keyforclass = 'ShipmentPackageLine'; $keyforclassfile='/shipmentpackage/class/shipmentpackage.class.php'; $keyforelement='shipmentpackageline@shipmentpackage'; $keyforalias='tl';
 		//include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';
 		$keyforselect='shipmentpackage'; $keyforaliasextra='extra'; $keyforelement='shipmentpackage@shipmentpackage';
 		include DOL_DOCUMENT_ROOT.'/core/extrafieldsinexport.inc.php';
@@ -397,7 +397,7 @@ class modPackage extends DolibarrModules
 		/*
 		 $langs->load("shipmentpackage@shipmentpackage");
 		 $this->export_code[$r]=$this->rights_class.'_'.$r;
-		 $this->export_label[$r]='ExpeditionPackageLines';	// Translation key (used only if key ExportDataset_xxx_z not found)
+		 $this->export_label[$r]='ShipmentPackageLines';	// Translation key (used only if key ExportDataset_xxx_z not found)
 		 $this->export_icon[$r]='shipmentpackage@shipmentpackage';
 		 $keyforclass = 'ShipmentPackage'; $keyforclassfile='/shipmentpackage/class/shipmentpackage.class.php'; $keyforelement='shipmentpackage@shipmentpackage';
 		 include DOL_DOCUMENT_ROOT.'/core/commonfieldsinexport.inc.php';

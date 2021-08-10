@@ -32,7 +32,7 @@ dol_include_once('/shipmentpackage/core/modules/shipmentpackage/modules_shipment
 /**
  *	Class to manage customer Bom numbering rules advanced
  */
-class mod_shipmentpackage_advanced extends ModeleNumRefExpeditionPackage
+class mod_shipmentpackage_advanced extends ModeleNumRefShipmentPackage
 {
 	/**
 	 * Dolibarr version of the loaded document
@@ -79,7 +79,7 @@ class mod_shipmentpackage_advanced extends ModeleNumRefExpeditionPackage
 
 		// Parametrage du prefix
 		$texte .= '<tr><td>'.$langs->trans("Mask").':</td>';
-		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskExpeditionPackage" value="'.$conf->global->PACKAGE_EXPEDITIONPACKAGE_ADVANCED_MASK.'">', $tooltip, 1, 1).'</td>';
+		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskShipmentPackage" value="'.$conf->global->PACKAGE_EXPEDITIONPACKAGE_ADVANCED_MASK.'">', $tooltip, 1, 1).'</td>';
 
 		$texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button" value="'.$langs->trans("Modify").'" name="Button"></td>';
 

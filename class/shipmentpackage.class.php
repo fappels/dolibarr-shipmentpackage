@@ -175,7 +175,7 @@ class ShipmentPackage extends CommonObject
 	// /**
 	//  * @var string    Name of subtable class that manage subtable lines
 	//  */
-	public $class_element_line = 'ExpeditionPackageLine';
+	public $class_element_line = 'ShipmentPackageLine';
 
 	// /**
 	//  * @var array	List of child tables. To test if we can delete object.
@@ -190,7 +190,7 @@ class ShipmentPackage extends CommonObject
 	protected $childtablesoncascade = array('expedition_packagedet');
 
 	// /**
-	//  * @var ExpeditionPackageLine[]     Array of subtable lines
+	//  * @var ShipmentPackageLine[]     Array of subtable lines
 	//  */
 	public $lines = array();
 
@@ -368,7 +368,7 @@ class ShipmentPackage extends CommonObject
 	 */
 	public function addLine($user, $qty, $fk_product, $fk_origin_line = null, $product_lot_batch = '', $fk_origin_batch_line = null)
 	{
-		$line = new ExpeditionPackageLine($this->db);
+		$line = new ShipmentPackageLine($this->db);
 		$line->fk_expedition_package = $this->id;
 		$line->qty = $qty;
 		$line->fk_product = $fk_product;
@@ -399,7 +399,7 @@ class ShipmentPackage extends CommonObject
 	 */
 	public function updateLine($user, $lineid, $qty, $fk_product, $fk_origin_line = null, $product_lot_batch = '', $fk_origin_batch_line = null)
 	{
-		$line = new ExpeditionPackageLine($this->db);
+		$line = new ShipmentPackageLine($this->db);
 		$line->fetch($lineid);
 		$line->updatePackageValue($user, $this, 'decrease');
 		$line->fk_expedition_package = $this->id;
@@ -568,7 +568,7 @@ class ShipmentPackage extends CommonObject
 			return -2;
 		}
 
-		$line = new ExpeditionPackageLine($this->db);
+		$line = new ShipmentPackageLine($this->db);
 		$line->fetch($idline);
 		$line->updatePackageValue($user, $this, 'decrease');
 		return $this->deleteLineCommon($user, $idline, $notrigger);
@@ -815,7 +815,7 @@ class ShipmentPackage extends CommonObject
 		$linkclose = '';
 		if (empty($notooltip)) {
 			if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER)) {
-				$label = $langs->trans("ShowExpeditionPackage");
+				$label = $langs->trans("ShowShipmentPackage");
 				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
 			}
 			$linkclose .= ' title="'.dol_escape_htmltag($label, 1).'"';
@@ -999,7 +999,7 @@ class ShipmentPackage extends CommonObject
 	{
 		$this->lines = array();
 
-		$objectline = new ExpeditionPackageLine($this->db);
+		$objectline = new ShipmentPackageLine($this->db);
 		$result = $objectline->fetchAll('ASC', 'rang', 0, 0, array('customsql'=>'fk_expedition_package = '.$this->id));
 
 		if (is_numeric($result)) {
@@ -1162,11 +1162,11 @@ class ShipmentPackage extends CommonObject
 require_once DOL_DOCUMENT_ROOT.'/core/class/commonobjectline.class.php';
 
 /**
- * Class ExpeditionPackageLine. You can also remove this and generate a CRUD class for lines objects.
+ * Class ShipmentPackageLine. You can also remove this and generate a CRUD class for lines objects.
  */
-class ExpeditionPackageLine extends CommonObjectLine
+class ShipmentPackageLine extends CommonObjectLine
 {
-	// To complete with content of an object ExpeditionPackageLine
+	// To complete with content of an object ShipmentPackageLine
 	// We should have a field rowid, fk_expedition_package and position
 
 	/**

@@ -35,7 +35,7 @@ require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php'; // requir
 /**
  *	Parent class for documents models
  */
-abstract class ModelePDFExpeditionPackage extends CommonDocGenerator
+abstract class ModelePDFShipmentPackage extends CommonDocGenerator
 {
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
@@ -66,7 +66,7 @@ abstract class ModelePDFExpeditionPackage extends CommonDocGenerator
 /**
  *  Parent class to manage numbering of ShipmentPackage
  */
-abstract class ModeleNumRefExpeditionPackage
+abstract class ModeleNumRefShipmentPackage
 {
 	/**
 	 * @var string Error code (or message)

@@ -251,9 +251,9 @@ $form = new Form($db);
 
 $now = dol_now();
 
-//$help_url="EN:Module_ExpeditionPackage|FR:Module_ExpeditionPackage_FR|ES:Módulo_ExpeditionPackage";
+//$help_url="EN:Module_ShipmentPackage|FR:Module_ShipmentPackage_FR|ES:Módulo_ShipmentPackage";
 $help_url = '';
-$title = $langs->trans('ListOf', $langs->transnoentitiesnoconv("ExpeditionPackages"));
+$title = $langs->trans('ListOf', $langs->transnoentitiesnoconv("ShipmentPackages"));
 $morejs = array();
 $morecss = array();
 
@@ -463,7 +463,7 @@ $newcardbutton = dolGetButtonTitle($langs->trans('New'), '', 'fa fa-plus-circle'
 print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, $num, $nbtotalofrecords, 'object_'.$object->picto, 0, $newcardbutton, '', $limit, 0, 0, 1);
 
 // Add code for pre mass action (confirmation or email presend form)
-$topicmail = "SendExpeditionPackageRef";
+$topicmail = "SendShipmentPackageRef";
 $modelmail = "shipmentpackage";
 $objecttmp = new ShipmentPackage($db);
 $trackid = 'xxxx'.$object->id;

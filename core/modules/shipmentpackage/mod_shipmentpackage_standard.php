@@ -28,7 +28,7 @@ dol_include_once('/shipmentpackage/core/modules/package/modules_shipmentpackage.
 /**
  *	Class to manage customer order numbering rules standard
  */
-class mod_shipmentpackage_standard extends ModeleNumRefExpeditionPackage
+class mod_shipmentpackage_standard extends ModeleNumRefShipmentPackage
 {
 	/**
 	 * Dolibarr version of the loaded document

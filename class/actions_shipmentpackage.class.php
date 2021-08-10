@@ -156,7 +156,7 @@ class ActionsPackage
 		if (in_array($parameters['currentcontext'], array('shipmentpackagecard'))) {
 			if ($user->rights->shipmentpackage->shipmentpackage->write) {
 				dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
-				$packageLine = new ExpeditionPackageLine($this->db);
+				$packageLine = new ShipmentPackageLine($this->db);
 				$selectedLines = array(0);
 				$originLine = $parameters['line'];
 				$pattern = '/'.preg_quote(DOL_URL_ROOT, '/').'(.*)/';

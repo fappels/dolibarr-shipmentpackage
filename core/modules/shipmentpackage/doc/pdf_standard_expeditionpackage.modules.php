@@ -41,7 +41,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/pdf.lib.php';
 /**
  *	Class to manage PDF template standard_shipmentpackage
  */
-class pdf_standard_shipmentpackage extends ModelePDFExpeditionPackage
+class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 {
 	/**
 	 * @var DoliDb Database handler

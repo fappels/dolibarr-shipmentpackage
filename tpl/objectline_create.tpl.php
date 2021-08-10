@@ -37,7 +37,7 @@ $colspan = 3; // Columns: total ht + col edit + col delete
 //print $object->element;
 
 // Lines for extrafield
-$objectline = new ExpeditionPackageLine($this->db);
+$objectline = new ShipmentPackageLine($this->db);
 
 print "<!-- BEGIN PHP TEMPLATE objectline_create.tpl.php -->\n";
 

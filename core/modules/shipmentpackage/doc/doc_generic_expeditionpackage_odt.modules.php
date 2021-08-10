@@ -38,7 +38,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/doc.lib.php';
 /**
  *	Class to build documents using ODF templates generator
  */
-class doc_generic_shipmentpackage_odt extends ModelePDFExpeditionPackage
+class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 {
 	/**
 	 * Issuer
