@@ -175,11 +175,11 @@ class ActionsShipmentPackage
 						if ($packagedQty < 0) {
 							$result = $packagedQty;
 						} else {
+							$originLine->id = $batch->id;
+							$originLine->desc = $batch->batch;
 							if ($originLine->qty > 0) {
 								$selectedLines[] = $originLine->id;
 							}
-							$originLine->id = $batch->id;
-							$originLine->desc = $batch->batch;
 							$object->printOriginLine($originLine, '', '', $packagePath, $selectedLines);
 							$result = 1;
 						}
