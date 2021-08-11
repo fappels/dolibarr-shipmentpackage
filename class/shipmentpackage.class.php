@@ -108,7 +108,7 @@ class ShipmentPackage extends CommonObject
 		'fk_supplier' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'TransportSupplier', 'enabled'=>'1', 'position'=>45, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToTransporter",),
 		'fk_project' => array('type'=>'integer:Project:projet/class/project.class.php:1', 'label'=>'Project', 'enabled'=>'1', 'position'=>50, 'notnull'=>-1, 'visible'=>-1, 'index'=>1,),
 		'description' => array('type'=>'varchar(255)', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>-1,),
-		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>-1, 'default'=>0),
+		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>4, 'default'=>0),
 		'fk_parcel_type' => array('type'=>'sellist:c_parcel_type:label:rowid::active=1', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1,),
 		'height' => array('type'=>'real', 'label'=>'Height', 'enabled'=>'1', 'position'=>90, 'notnull'=>0, 'visible'=>-1,),
 		'width' => array('type'=>'real', 'label'=>'Width', 'enabled'=>'1', 'position'=>100, 'notnull'=>0, 'visible'=>-1,),
