@@ -18,20 +18,22 @@
 #
 
 # Module label 'ModuleShipmentPackageName'
-ModuleShipmentPackageName = ShipmentPackage
+ModuleShipmentPackageName = Shipment Packages
 # Module description 'ModuleShipmentPackageDesc'
-ModuleShipmentPackageDesc = ShipmentPackage description
+ModuleShipmentPackageDesc = Create final shipping packages to handover to transporter.
 
 #
 # Admin page
 #
-ShipmentPackageSetup = ShipmentPackage setup
+ShipmentPackageSetup = Shipment Package setup
 Settings = Settings
-ShipmentPackageSetupPage = ShipmentPackage setup page
-SHIPMENTPACKAGE_MYPARAM1 = My param 1
+ShipmentPackageSetupPage = Shipment Package setup page
+SHIPMENTPACKAGE_MYPARAM1 = TODO add ref numbering model
 SHIPMENTPACKAGE_MYPARAM1Tooltip = My param 1 tooltip
-SHIPMENTPACKAGE_MYPARAM2=My param 2
-SHIPMENTPACKAGE_MYPARAM2Tooltip=My param 2 tooltip
+SHIPMENTPACKAGE_MYPARAM2= TODO add doc model
+SHIPMENTPACKAGE_MYPARAM2Tooltip=PDF model or for example external label from shipper
+SHIPMENTPACKAGE_MYPARAM3= TODO Calc value by buy price or sell price
+SHIPMENTPACKAGE_MYPARAM3Tooltip=PDF model or for example external label from shipper
 
 
 
@@ -39,14 +41,39 @@ SHIPMENTPACKAGE_MYPARAM2Tooltip=My param 2 tooltip
 # About page
 #
 About = About
-ShipmentPackageAbout = About ShipmentPackage
-ShipmentPackageAboutPage = ShipmentPackage about page
+ShipmentPackageAbout = About Shipment Package
+ShipmentPackageAboutPage = Shipment Package about page
 
 #
 # Sample page
 #
-MyPageName = My page name
-
+ReadShipmentPackage = Read objects of Shipment Package
+WriteShipmentPackage = Create/Update objects of Shipment Package
+DeleteShipmentPackage = Delete objects of Shipment Package
+ShipmentPackage = Shipment Packages
+New_ShipmentPackage = New package
+List_ShipmentPackage = List of packages
+ValueOfPackage = Value (Price of the content, for insurance & customs)
+TransportSupplier = Shipping Supplier
+LinkToTransporter = Supplier who does transportation and invoices the shipping.
+LinkToThirparty = Customer to receive package.
+ShipmentPackageRefSupplier = Supplier shipping reference (tracking number)
+Fkparceltype = Type of parcel
+PackageParcelType = To define in package parcel type dictionary
+c_parcel_type = Package parcel type
+Dangerousgoods = Dangerous goods
+PackageExplosives = Explosives
+PackageFlammableGases = Flammable Gases
+PackageFlammableLiquids = Flammable solids
+PackageFlammableSolids = Flammable solids
+PackageOxidizing = Oxidizing
+PackageToxicAndInfectious = Toxic & Infectious
+PackageRadioactive = Radioactive
+PackageCorrosives = Corrosives
+PackageMiscellaneous = Miscellaneous
+Taillift = Taillift
+PackageTailLiftRequired = Tail lift is required
+ProductLotBatch = Lot/Serial
 #
 # Sample widget
 #
