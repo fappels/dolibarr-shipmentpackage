@@ -169,7 +169,7 @@ class ShipmentPackage extends CommonObject
 	// /**
 	//  * @var string    Field with ID of parent key if this object has a parent
 	//  */
-	public $fk_element = 'fk_expedition_package';
+	public $fk_element = 'fk_shipmentpackage';
 
 	// /**
 	//  * @var string    Name of subtable class that manage subtable lines
@@ -368,7 +368,7 @@ class ShipmentPackage extends CommonObject
 	public function addLine($user, $qty, $fk_product, $fk_origin_line = null, $product_lot_batch = '', $fk_origin_batch_line = null)
 	{
 		$line = new ShipmentPackageLine($this->db);
-		$line->fk_expedition_package = $this->id;
+		$line->fk_shipmentpackage = $this->id;
 		$line->qty = $qty;
 		$line->fk_product = $fk_product;
 		$line->product_lot_batch = $product_lot_batch;
@@ -401,7 +401,7 @@ class ShipmentPackage extends CommonObject
 		$line = new ShipmentPackageLine($this->db);
 		$line->fetch($lineid);
 		$line->updatePackageValue($user, $this, 'decrease');
-		$line->fk_expedition_package = $this->id;
+		$line->fk_shipmentpackage = $this->id;
 		$line->qty = $qty;
 		$line->fk_product = $fk_product;
 		if (!empty($product_lot_batch)) $line->product_lot_batch = $product_lot_batch;
@@ -548,8 +548,13 @@ class ShipmentPackage extends CommonObject
 	 */
 	public function delete(User $user, $notrigger = false)
 	{
-		return $this->deleteCommon($user, $notrigger);
-		//return $this->deleteCommon($user, $notrigger, 1);
+		$result = $this->deleteCommon($user, $notrigger);
+		if ($result > 0) {
+			// Delete linked object
+			return $this->deleteObjectLinked();
+		} else {
+			return $result;
+		}
 	}
 
 	/**
@@ -999,7 +1004,7 @@ class ShipmentPackage extends CommonObject
 		$this->lines = array();
 
 		$objectline = new ShipmentPackageLine($this->db);
-		$result = $objectline->fetchAll('ASC', 'rang', 0, 0, array('customsql'=>'fk_expedition_package = '.$this->id));
+		$result = $objectline->fetchAll('ASC', 'rang', 0, 0, array('customsql'=>'fk_shipmentpackage = '.$this->id));
 
 		if (is_numeric($result)) {
 			$this->error = $this->error;
@@ -1166,7 +1171,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/commonobjectline.class.php';
 class ShipmentPackageLine extends CommonObjectLine
 {
 	// To complete with content of an object ShipmentPackageLine
-	// We should have a field rowid, fk_expedition_package and position
+	// We should have a field rowid, fk_shipmentpackage and position
 
 	/**
 	 *  'type' if the field format ('integer', 'integer:ObjectClass:PathToClass[:AddCreateButtonOrNot[:Filter]]', 'varchar(x)', 'double(24,8)', 'real', 'price', 'text', 'html', 'date', 'datetime', 'timestamp', 'duration', 'mail', 'phone', 'url', 'password')
@@ -1196,7 +1201,7 @@ class ShipmentPackageLine extends CommonObjectLine
 	 */
 	public $fields=array(
 		'rowid' => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'position'=>1, 'notnull'=>1, 'visible'=>-1, 'noteditable'=>'1', 'index'=>1, 'comment'=>"Id"),
-		'fk_expedition_package' => array('type'=>'integer:ShipmentPackage:shipmentpackage/class/shipmentpackage.class.php', 'label'=>'SyncApi', 'enabled'=>1, 'visible'=>1, 'position'=>10, 'notnull'=>1, 'index'=>1,),
+		'fk_shipmentpackage' => array('type'=>'integer:ShipmentPackage:shipmentpackage/class/shipmentpackage.class.php', 'label'=>'SyncApi', 'enabled'=>1, 'visible'=>1, 'position'=>10, 'notnull'=>1, 'index'=>1,),
 		'fk_origin_line' => array('type'=>'integer', 'label'=>'OriginLine', 'enabled'=>'1', 'position'=>20, 'notnull'=>1, 'visible'=>0),
 		'fk_origin_batch_line' => array('type'=>'integer', 'label'=>'OriginBatchLine', 'enabled'=>'1', 'position'=>30, 'notnull'=>1, 'visible'=>0),
 		'fk_product' => array('type'=>'integer:Product:product/class/product.class.php', 'label'=>'Product', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>1),
@@ -1206,7 +1211,7 @@ class ShipmentPackageLine extends CommonObjectLine
 	);
 
 	public $rowid;
-	public $fk_expedition_package;
+	public $fk_shipmentpackage;
 	public $fk_origin_line;
 	public $fk_origin_batch_line;
 	public $fk_product;

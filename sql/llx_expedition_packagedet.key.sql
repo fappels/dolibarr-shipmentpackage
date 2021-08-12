@@ -13,6 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see https://www.gnu.org/licenses/.
 
-ALTER TABLE llx_expedition_packagedet ADD INDEX idx_expedition_packagedet_fk_expedition_package (fk_expedition_package);
+ALTER TABLE llx_expedition_packagedet ADD INDEX idx_expedition_packagedet_fk_shipmentpackage (fk_shipmentpackage);
 ALTER TABLE llx_expedition_packagedet ADD INDEX idx_expedition_packagedet_fk_origin_line (fk_origin_line);
-ALTER TABLE llx_expedition_pacakgedet ADD CONSTRAINT fk_expeditiondet_fk_expedition_package FOREIGN KEY (fk_expedition_package) REFERENCES llx_expedition_package (rowid);
+ALTER TABLE llx_expedition_pacakgedet ADD CONSTRAINT fk_expeditiondet_fk_shipmentpackage FOREIGN KEY (fk_shipmentpackage) REFERENCES llx_expedition_package (rowid);

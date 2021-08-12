@@ -15,7 +15,7 @@
 create table llx_expedition_packagedet
 (
   rowid                     integer AUTO_INCREMENT PRIMARY KEY,
-  fk_expedition_package     integer NOT NULL,
+  fk_shipmentpackage        integer NOT NULL,
   fk_origin_line            integer,           -- Corresponds with the line of the origin object (shipping)
   fk_origin_batch_line      integer,           -- Corresponds with the lot id line of the origin object (shipping line batch)
   fk_product                integer,           -- product id
