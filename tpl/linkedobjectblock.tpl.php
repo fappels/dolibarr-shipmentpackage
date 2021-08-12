@@ -26,7 +26,7 @@ if (empty($conf) || !is_object($conf)) {
 print "<!-- BEGIN PHP TEMPLATE -->\n";
 
 
-global $user;
+global $user, $db;
 
 $langs = $GLOBALS['langs'];
 $linkedObjectBlock = $GLOBALS['linkedObjectBlock'];
@@ -50,9 +50,24 @@ foreach ($linkedObjectBlock as $key => $objectlink) {
 		<td></td>
 		<td class="center"><?php echo dol_print_date($objectlink->date_creation, 'day'); ?></td>
 		<td class="right"><?php
-		if ($user->rights->expedition->lire) {
-			$total = $total + $objectlink->value;
-			echo price($objectlink->value);
+		// get origin object amount for packaged qty
+		if ($user->rights->commande->lire && is_array($objectlink->lines)) {
+			$lineTotal = 0;
+			foreach ($objectlink->lines as $packageLine) {
+				dol_include_once('/expedition/class/expedition.class.php');
+				dol_include_once('/commande/class/commande.class.php');
+				$shipmentLine = new ExpeditionLigne($db);
+				$shipmentLine->fetch($packageLine->fk_origin_line);
+				if ($shipmentLine->id > 0) {
+					$orderLine = new OrderLine($db);
+					$orderLine->fetch($shipmentLine->fk_origin_line);
+					if ($orderLine->id > 0) {
+						$lineTotal = $lineTotal + ($orderLine->subprice * $packageLine->qty);
+					}
+				}
+			}
+			$total = $total + $lineTotal;
+			echo price($lineTotal);
 		} ?></td>
 		<td class="right"><?php echo $objectlink->getLibStatut(3); ?></td>
 		<td class="right"></td>
