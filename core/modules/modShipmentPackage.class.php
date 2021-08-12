@@ -277,17 +277,17 @@ class modShipmentPackage extends DolibarrModules
 		// Add here entries to declare new permissions
 		/* BEGIN MODULEBUILDER PERMISSIONS */
 		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Read objects of ShipmentPackage'; // Permission label
+		$this->rights[$r][1] = 'ReadShipmentPackage'; // Permission label
 		$this->rights[$r][4] = 'shipmentpackage';
 		$this->rights[$r][5] = 'read'; // In php code, permission will be checked by test if ($user->rights->shipmentpackage->shipmentpackage->read)
 		$r++;
 		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Create/Update objects of ShipmentPackage'; // Permission label
+		$this->rights[$r][1] = 'WriteShipmentPackage'; // Permission label
 		$this->rights[$r][4] = 'shipmentpackage';
 		$this->rights[$r][5] = 'write'; // In php code, permission will be checked by test if ($user->rights->shipmentpackage->shipmentpackage->write)
 		$r++;
 		$this->rights[$r][0] = $this->numero . sprintf("%02d", $r + 1); // Permission id (must not be already used)
-		$this->rights[$r][1] = 'Delete objects of ShipmentPackage'; // Permission label
+		$this->rights[$r][1] = 'DeleteShipmentPackage'; // Permission label
 		$this->rights[$r][4] = 'shipmentpackage';
 		$this->rights[$r][5] = 'delete'; // In php code, permission will be checked by test if ($user->rights->shipmentpackage->shipmentpackage->delete)
 		$r++;
@@ -385,7 +385,7 @@ class modShipmentPackage extends DolibarrModules
 		//$this->export_help_array[$r] = array('t.field'=>'FieldDescHelp');
 		$this->export_sql_start[$r]='SELECT DISTINCT ';
 		$this->export_sql_end[$r]  =' FROM '.MAIN_DB_PREFIX.'expedition_package as t';
-		//$this->export_sql_end[$r]  =' LEFT JOIN '.MAIN_DB_PREFIX.'expedition_packagedet as tl ON tl.fk_expedition_package = t.rowid';
+		//$this->export_sql_end[$r]  =' LEFT JOIN '.MAIN_DB_PREFIX.'expedition_packagedet as tl ON tl.fk_shipmentpackage = t.rowid';
 		$this->export_sql_end[$r] .=' WHERE 1 = 1';
 		$this->export_sql_end[$r] .=' AND t.entity IN ('.getEntity('expedition_package').')';
 		$r++; */

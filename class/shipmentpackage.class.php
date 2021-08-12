@@ -108,16 +108,34 @@ class ShipmentPackage extends CommonObject
 		'fk_supplier' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'TransportSupplier', 'enabled'=>'1', 'position'=>45, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToTransporter",),
 		'fk_project' => array('type'=>'integer:Project:projet/class/project.class.php:1', 'label'=>'Project', 'enabled'=>'1', 'position'=>50, 'notnull'=>-1, 'visible'=>-1, 'index'=>1,),
 		'description' => array('type'=>'varchar(255)', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>-1,),
-		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>4, 'default'=>0),
-		'fk_parcel_type' => array('type'=>'sellist:c_parcel_type:label:rowid::active=1', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1,),
+		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>4, 'default'=>0, 'help'=>"ValueOfPackage"),
+		'fk_parcel_type' => array('type'=>'sellist:c_parcel_type:label:rowid::active=1', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1, 'help'=>"PackageParcelType"),
 		'height' => array('type'=>'real', 'label'=>'Height', 'enabled'=>'1', 'position'=>90, 'notnull'=>0, 'visible'=>-1,),
 		'width' => array('type'=>'real', 'label'=>'Width', 'enabled'=>'1', 'position'=>100, 'notnull'=>0, 'visible'=>-1,),
 		'size' => array('type'=>'real', 'label'=>'Size', 'enabled'=>'1', 'position'=>110, 'notnull'=>0, 'visible'=>-1,),
-		'size_units' => array('type'=>'int', 'label'=>'Sizeunits', 'enabled'=>'1', 'position'=>120, 'notnull'=>0, 'visible'=>-1,),
+		'size_units' => array('type'=>'int', 'label'=>'SizeUnits', 'enabled'=>'1', 'position'=>120, 'notnull'=>0, 'visible'=>-1,),
 		'weight' => array('type'=>'real', 'label'=>'Weight', 'enabled'=>'1', 'position'=>130, 'notnull'=>0, 'visible'=>-1,),
-		'weight_units' => array('type'=>'int', 'label'=>'Weightunits', 'enabled'=>'1', 'position'=>140, 'notnull'=>0, 'visible'=>-1,),
-		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>150, 'notnull'=>0, 'visible'=>1,'arrayofkeyval'=>array('0'=>'', '1'=>'Explosives', '2'=>'FlammableGases', '3'=>'FlammableLiquids', '4'=>'FlammableSolids', '5'=>'Oxidizing', '6'=>'ToxicAndInfectious', '7'=>'Radioactive', '8'=>'Corrosives', '9'=>'Miscellaneous')),
-		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>160, 'notnull'=>0, 'visible'=>1, 'arrayofkeyval'=>array('0'=>'', '1'=>'TailLiftRequired')),
+		'weight_units' => array('type'=>'int', 'label'=>'WeightUnits', 'enabled'=>'1', 'position'=>140, 'notnull'=>0, 'visible'=>-1,),
+		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>150, 'notnull'=>0, 'visible'=>1,
+			'arrayofkeyval'=>array(
+				'0'=>'',
+				'1'=>'PackageExplosives',
+				'2'=>'PackageFlammableGases',
+				'3'=>'PackageFlammableLiquids',
+				'4'=>'PackageFlammableSolids',
+				'5'=>'PackageOxidizing',
+				'6'=>'PackageToxicAndInfectious',
+				'7'=>'PackageRadioactive',
+				'8'=>'PackageCorrosives',
+				'9'=>'PackageMiscellaneous'
+			)
+		),
+		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>160, 'notnull'=>0, 'visible'=>1,
+			'arrayofkeyval'=>array(
+				'0'=>'', 
+				'1'=>'PackageTailLiftRequired'
+			)
+		),
 		'note_public' => array('type'=>'html', 'label'=>'NotePublic', 'enabled'=>'1', 'position'=>170, 'notnull'=>0, 'visible'=>0,),
 		'note_private' => array('type'=>'html', 'label'=>'NotePrivate', 'enabled'=>'1', 'position'=>180, 'notnull'=>0, 'visible'=>0,),
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>'1', 'position'=>190, 'notnull'=>1, 'visible'=>-2,),
@@ -169,7 +187,7 @@ class ShipmentPackage extends CommonObject
 	// /**
 	//  * @var string    Field with ID of parent key if this object has a parent
 	//  */
-	public $fk_element = 'fk_expedition_package';
+	public $fk_element = 'fk_shipmentpackage';
 
 	// /**
 	//  * @var string    Name of subtable class that manage subtable lines
@@ -368,7 +386,7 @@ class ShipmentPackage extends CommonObject
 	public function addLine($user, $qty, $fk_product, $fk_origin_line = null, $product_lot_batch = '', $fk_origin_batch_line = null)
 	{
 		$line = new ShipmentPackageLine($this->db);
-		$line->fk_expedition_package = $this->id;
+		$line->fk_shipmentpackage = $this->id;
 		$line->qty = $qty;
 		$line->fk_product = $fk_product;
 		$line->product_lot_batch = $product_lot_batch;
@@ -401,7 +419,7 @@ class ShipmentPackage extends CommonObject
 		$line = new ShipmentPackageLine($this->db);
 		$line->fetch($lineid);
 		$line->updatePackageValue($user, $this, 'decrease');
-		$line->fk_expedition_package = $this->id;
+		$line->fk_shipmentpackage = $this->id;
 		$line->qty = $qty;
 		$line->fk_product = $fk_product;
 		if (!empty($product_lot_batch)) $line->product_lot_batch = $product_lot_batch;
@@ -548,8 +566,13 @@ class ShipmentPackage extends CommonObject
 	 */
 	public function delete(User $user, $notrigger = false)
 	{
-		return $this->deleteCommon($user, $notrigger);
-		//return $this->deleteCommon($user, $notrigger, 1);
+		$result = $this->deleteCommon($user, $notrigger);
+		if ($result > 0) {
+			// Delete linked object
+			return $this->deleteObjectLinked();
+		} else {
+			return $result;
+		}
 	}
 
 	/**
@@ -999,7 +1022,7 @@ class ShipmentPackage extends CommonObject
 		$this->lines = array();
 
 		$objectline = new ShipmentPackageLine($this->db);
-		$result = $objectline->fetchAll('ASC', 'rang', 0, 0, array('customsql'=>'fk_expedition_package = '.$this->id));
+		$result = $objectline->fetchAll('ASC', 'rang', 0, 0, array('customsql'=>'fk_shipmentpackage = '.$this->id));
 
 		if (is_numeric($result)) {
 			$this->error = $this->error;
@@ -1166,7 +1189,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/commonobjectline.class.php';
 class ShipmentPackageLine extends CommonObjectLine
 {
 	// To complete with content of an object ShipmentPackageLine
-	// We should have a field rowid, fk_expedition_package and position
+	// We should have a field rowid, fk_shipmentpackage and position
 
 	/**
 	 *  'type' if the field format ('integer', 'integer:ObjectClass:PathToClass[:AddCreateButtonOrNot[:Filter]]', 'varchar(x)', 'double(24,8)', 'real', 'price', 'text', 'html', 'date', 'datetime', 'timestamp', 'duration', 'mail', 'phone', 'url', 'password')
@@ -1196,7 +1219,7 @@ class ShipmentPackageLine extends CommonObjectLine
 	 */
 	public $fields=array(
 		'rowid' => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'position'=>1, 'notnull'=>1, 'visible'=>-1, 'noteditable'=>'1', 'index'=>1, 'comment'=>"Id"),
-		'fk_expedition_package' => array('type'=>'integer:ShipmentPackage:shipmentpackage/class/shipmentpackage.class.php', 'label'=>'SyncApi', 'enabled'=>1, 'visible'=>1, 'position'=>10, 'notnull'=>1, 'index'=>1,),
+		'fk_shipmentpackage' => array('type'=>'integer:ShipmentPackage:shipmentpackage/class/shipmentpackage.class.php', 'label'=>'SyncApi', 'enabled'=>1, 'visible'=>1, 'position'=>10, 'notnull'=>1, 'index'=>1,),
 		'fk_origin_line' => array('type'=>'integer', 'label'=>'OriginLine', 'enabled'=>'1', 'position'=>20, 'notnull'=>1, 'visible'=>0),
 		'fk_origin_batch_line' => array('type'=>'integer', 'label'=>'OriginBatchLine', 'enabled'=>'1', 'position'=>30, 'notnull'=>1, 'visible'=>0),
 		'fk_product' => array('type'=>'integer:Product:product/class/product.class.php', 'label'=>'Product', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>1),
@@ -1206,7 +1229,7 @@ class ShipmentPackageLine extends CommonObjectLine
 	);
 
 	public $rowid;
-	public $fk_expedition_package;
+	public $fk_shipmentpackage;
 	public $fk_origin_line;
 	public $fk_origin_batch_line;
 	public $fk_product;

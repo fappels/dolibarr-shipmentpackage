@@ -34,6 +34,11 @@ ALTER TABLE llx_expedition_package ADD COLUMN status smallint NOT NULL;
 ALTER TABLE llx_expedition_package DROP COLUMN rang;
 ALTER TABLE llx_expedition_packagedet DROP COLUMN fk_product_lot;
 ALTER TABLE llx_expedition_packagedet ADD COLUMN product_lot_batch varchar(128);
+ALTER TABLE llx_expedition_packagedet DROP INDEX idx_expedition_packagedet_fk_expedition_package;
+ALTER TABLE llx_expedition_pacakgedet DROP CONSTRAINT fk_expeditiondet_fk_expedition_package;
+ALTER TABLE llx_expedition_packagedet CHANGE COLUMN fk_expedition_package fk_shipmentpackage integer NOT NULL;
+ALTER TABLE llx_expedition_packagedet ADD INDEX idx_expedition_packagedet_fk_shipmentpackage (fk_shipmentpackage);
+ALTER TABLE llx_expedition_pacakgedet ADD CONSTRAINT fk_expeditiondet_fk_shipmentpackage FOREIGN KEY (fk_shipmentpackage) REFERENCES llx_expedition_package (rowid);
 
 
 
