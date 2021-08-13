@@ -385,6 +385,8 @@ class ShipmentPackage extends CommonObject
 	 */
 	public function addLine($user, $qty, $fk_product, $fk_origin_line = null, $product_lot_batch = '', $fk_origin_batch_line = null)
 	{
+		$result = 0;
+
 		$line = new ShipmentPackageLine($this->db);
 		$line->fk_shipmentpackage = $this->id;
 		$line->qty = $qty;
@@ -394,12 +396,15 @@ class ShipmentPackage extends CommonObject
 		$line->fk_origin_batch_line = $fk_origin_batch_line;
 
 		$lineid = $line->create($user);
-		if ($lineid < 0) {
-			$this->error = $line->error;
-		} else {
-			$line->updatePackageValue($user, $this, 'increase');
+		if ($lineid > 0) {
+			$result = $line->updatePackageValue($user, $this, 'increase');
 		}
-		return $lineid;
+		if ($result > 0) {
+			return $lineid;
+		} else {
+			$this->error = $line->error;
+			return $result;
+		}
 	}
 
 	/**
@@ -416,6 +421,8 @@ class ShipmentPackage extends CommonObject
 	 */
 	public function updateLine($user, $lineid, $qty, $fk_product, $fk_origin_line = null, $product_lot_batch = '', $fk_origin_batch_line = null)
 	{
+		$result = 0;
+
 		$line = new ShipmentPackageLine($this->db);
 		$line->fetch($lineid);
 		$line->updatePackageValue($user, $this, 'decrease');
@@ -427,12 +434,15 @@ class ShipmentPackage extends CommonObject
 		if (isset($fk_origin_batch_line)) $line->fk_origin_batch_line = $fk_origin_batch_line;
 
 		$lineid = $line->update($user);
-		if ($lineid < 0) {
-			$this->error = $line->error;
-		} else {
-			$line->updatePackageValue($user, $this, 'increase');
+		if ($lineid > 0) {
+			$result = $line->updatePackageValue($user, $this, 'increase');
 		}
-		return $lineid;
+		if ($result > 0) {
+			return $lineid;
+		} else {
+			$this->error = $line->error;
+			return $result;
+		}
 	}
 
 	/**
