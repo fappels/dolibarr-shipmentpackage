@@ -143,7 +143,7 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 		global $conf, $langs, $mysoc;
 
 		// Translations
-		$langs->loadLangs(array("main", "bills"));
+		$langs->loadLangs(array("main", "bills", "shipmentpackage@shipmentpackage"));
 
 		$this->db = $db;
 		$this->name = "standard";
@@ -172,15 +172,6 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 
 
 		$this->tabTitleHeight = 5; // default height
-
-		//  Use new system for position of columns, view  $this->defineColumnField()
-
-		$this->tva = array();
-		$this->localtax1 = array();
-		$this->localtax2 = array();
-		$this->atleastoneratenotnull = 0;
-		$this->atleastonediscount = 0;
-		$this->situationinvoice = false;
 	}
 
 
@@ -212,13 +203,13 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 		}
 
 		// Load translation files required by the page
-		$outputlangs->loadLangs(array("main", "bills", "products", "dict", "companies"));
+		$outputlangs->loadLangs(array("main", "bills", "products", "dict", "companies", "orders", "sendings", "productbatch", "shipmentpackage@shipmentpackage"));
 
 		if (!empty($conf->global->PDF_USE_ALSO_LANGUAGE_CODE) && $outputlangs->defaultlang != $conf->global->PDF_USE_ALSO_LANGUAGE_CODE) {
 			global $outputlangsbis;
 			$outputlangsbis = new Translate('', $conf);
 			$outputlangsbis->setDefaultLang($conf->global->PDF_USE_ALSO_LANGUAGE_CODE);
-			$outputlangsbis->loadLangs(array("main", "bills", "products", "dict", "companies"));
+			$outputlangsbis->loadLangs(array("main", "bills", "products", "dict", "companies", "orders", "sendings", "productbatch", "shipmentpackage@shipmentpackage"));
 		}
 
 		$nblines = (is_array($object->lines) ? count($object->lines) : 0);
@@ -231,13 +222,11 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 		// Loop on each lines to detect if there is at least one image to show
 		$realpatharray = array();
 		$this->atleastonephoto = false;
-		/*
-		if (!empty($conf->global->MAIN_GENERATE_SHIPMENTPACKAGE_WITH_PICTURE))
-		{
+
+		if (!empty($conf->global->MAIN_GENERATE_SHIPMENTPACKAGE_WITH_PICTURE)) {
 			$objphoto = new Product($this->db);
 
-			for ($i = 0; $i < $nblines; $i++)
-			{
+			for ($i = 0; $i < $nblines; $i++) {
 				if (empty($object->lines[$i]->fk_product)) continue;
 
 				//var_dump($objphoto->ref);exit;
@@ -250,18 +239,13 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 				}
 
 				$arephoto = false;
-				foreach ($pdir as $midir)
-				{
-					if (!$arephoto)
-					{
+				foreach ($pdir as $midir) {
+					if (!$arephoto) {
 						$dir = $conf->product->dir_output.'/'.$midir;
 
-						foreach ($objphoto->liste_photos($dir, 1) as $key => $obj)
-						{
-							if (empty($conf->global->CAT_HIGH_QUALITY_IMAGES))		// If CAT_HIGH_QUALITY_IMAGES not defined, we use thumb if defined and then original photo
-							{
-								if ($obj['photo_vignette'])
-								{
+						foreach ($objphoto->liste_photos($dir, 1) as $key => $obj) {
+							if (empty($conf->global->CAT_HIGH_QUALITY_IMAGES)) { // If CAT_HIGH_QUALITY_IMAGES not defined, we use thumb if defined and then original photo
+								if ($obj['photo_vignette']) {
 									$filename = $obj['photo_vignette'];
 								} else {
 									$filename = $obj['photo'];
@@ -280,9 +264,10 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 				if ($realpath && $arephoto) $realpatharray[$i] = $realpath;
 			}
 		}
-		*/
 
-		//if (count($realpatharray) == 0) $this->posxpicture=$this->posxtva;
+		if (count($realpatharray) == 0) {
+			$this->posxpicture = $this->posxweightvol;
+		}
 
 		if ($conf->shipmentpackage->dir_output.'/shipmentpackage') {
 			$object->fetch_thirdparty();
@@ -401,111 +386,97 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 				}
 
 				$pagenb = $pdf->getPage();
-				if ($notetoshow) {
-					$tab_top -= 2;
+				if ($notetoshow || !empty($object->ref_supplier)) {
+					// Supplier ref (Tracking number)
+					if (!empty($object->ref_supplier)) {
+						$pdf->SetFont('', 'B', $default_font_size - 2);
+						$pdf->writeHTMLCell(60, 4, $this->posxdesc - 1, $tab_top - 1, $outputlangs->transnoentities("TrackingNumber") . " : " . $object->ref_supplier, 0, 1, false, true, 'L');
 
-					$tab_width = $this->page_largeur - $this->marge_gauche - $this->marge_droite;
-					$pageposbeforenote = $pagenb;
+						$tab_top = $pdf->GetY();
+					}
+					if ($notetoshow) {
+						$tab_top -= 2;
 
-					$substitutionarray = pdf_getSubstitutionArray($outputlangs, null, $object);
-					complete_substitutions_array($substitutionarray, $outputlangs, $object);
-					$notetoshow = make_substitutions($notetoshow, $substitutionarray, $outputlangs);
-					$notetoshow = convertBackOfficeMediasLinksToPublicLinks($notetoshow);
+						$tab_width = $this->page_largeur - $this->marge_gauche - $this->marge_droite;
+						$pageposbeforenote = $pagenb;
 
-					$pdf->startTransaction();
+						$substitutionarray = pdf_getSubstitutionArray($outputlangs, null, $object);
+						complete_substitutions_array($substitutionarray, $outputlangs, $object);
+						$notetoshow = make_substitutions($notetoshow, $substitutionarray, $outputlangs);
+						$notetoshow = convertBackOfficeMediasLinksToPublicLinks($notetoshow);
 
-					$pdf->SetFont('', '', $default_font_size - 1);
-					$pdf->writeHTMLCell(190, 3, $this->posxdesc - 1, $tab_top, dol_htmlentitiesbr($notetoshow), 0, 1);
-					// Description
-					$pageposafternote = $pdf->getPage();
-					$posyafter = $pdf->GetY();
+						$pdf->startTransaction();
 
-					if ($pageposafternote > $pageposbeforenote) {
-						$pdf->rollbackTransaction(true);
-
-						// prepare pages to receive notes
-						while ($pagenb < $pageposafternote) {
-							$pdf->AddPage();
-							$pagenb++;
-							if (!empty($tplidx)) {
-								$pdf->useTemplate($tplidx);
-							}
-							if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-								$this->_pagehead($pdf, $object, 0, $outputlangs);
-							}
-							// $this->_pagefoot($pdf,$object,$outputlangs,1);
-							$pdf->setTopMargin($tab_top_newpage);
-							// The only function to edit the bottom margin of current page to set it.
-							$pdf->setPageOrientation('', 1, $heightforfooter + $heightforfreetext);
-						}
-
-						// back to start
-						$pdf->setPage($pageposbeforenote);
-						$pdf->setPageOrientation('', 1, $heightforfooter + $heightforfreetext);
 						$pdf->SetFont('', '', $default_font_size - 1);
 						$pdf->writeHTMLCell(190, 3, $this->posxdesc - 1, $tab_top, dol_htmlentitiesbr($notetoshow), 0, 1);
+						// Description
 						$pageposafternote = $pdf->getPage();
-
 						$posyafter = $pdf->GetY();
 
-						if ($posyafter > ($this->page_hauteur - ($heightforfooter + $heightforfreetext + 20))) {	// There is no space left for total+free text
-							$pdf->AddPage('', '', true);
-							$pagenb++;
-							$pageposafternote++;
-							$pdf->setPage($pageposafternote);
-							$pdf->setTopMargin($tab_top_newpage);
-							// The only function to edit the bottom margin of current page to set it.
-							$pdf->setPageOrientation('', 1, $heightforfooter + $heightforfreetext);
-							//$posyafter = $tab_top_newpage;
-						}
+						if ($pageposafternote > $pageposbeforenote) {
+							$pdf->rollbackTransaction(true);
 
-
-						// apply note frame to previous pages
-						$i = $pageposbeforenote;
-						while ($i < $pageposafternote) {
-							$pdf->setPage($i);
-
-
-							$pdf->SetDrawColor(128, 128, 128);
-							// Draw note frame
-							if ($i > $pageposbeforenote) {
-								$height_note = $this->page_hauteur - ($tab_top_newpage + $heightforfooter);
-								$pdf->Rect($this->marge_gauche, $tab_top_newpage - 1, $tab_width, $height_note + 1);
-							} else {
-								$height_note = $this->page_hauteur - ($tab_top + $heightforfooter);
-								$pdf->Rect($this->marge_gauche, $tab_top - 1, $tab_width, $height_note + 1);
+							// prepare pages to receive notes
+							while ($pagenb < $pageposafternote) {
+								$pdf->AddPage();
+								$pagenb++;
+								if (!empty($tplidx)) {
+									$pdf->useTemplate($tplidx);
+								}
+								if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
+									$this->_pagehead($pdf, $object, 0, $outputlangs);
+								}
+								// $this->_pagefoot($pdf,$object,$outputlangs,1);
+								$pdf->setTopMargin($tab_top_newpage);
+								// The only function to edit the bottom margin of current page to set it.
+								$pdf->setPageOrientation('', 1, $heightforfooter + $heightforfreetext);
 							}
 
-							// Add footer
-							$pdf->setPageOrientation('', 1, 0); // The only function to edit the bottom margin of current page to set it.
-							$this->_pagefoot($pdf, $object, $outputlangs, 1);
+							// back to start
+							$pdf->setPage($pageposbeforenote);
+							$pdf->setPageOrientation('', 1, $heightforfooter + $heightforfreetext);
+							$pdf->SetFont('', '', $default_font_size - 1);
+							$pdf->writeHTMLCell(190, 3, $this->posxdesc - 1, $tab_top, dol_htmlentitiesbr($notetoshow), 0, 1);
+							$pageposafternote = $pdf->getPage();
 
-							$i++;
-						}
+							$posyafter = $pdf->GetY();
 
-						// apply note frame to last page
-						$pdf->setPage($pageposafternote);
-						if (!empty($tplidx)) {
-							$pdf->useTemplate($tplidx);
-						}
-						if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-							$this->_pagehead($pdf, $object, 0, $outputlangs);
-						}
-						$height_note = $posyafter - $tab_top_newpage;
-						$pdf->Rect($this->marge_gauche, $tab_top_newpage - 1, $tab_width, $height_note + 1);
-					} else // No pagebreak
-					{
-						$pdf->commitTransaction();
-						$posyafter = $pdf->GetY();
-						$height_note = $posyafter - $tab_top;
-						$pdf->Rect($this->marge_gauche, $tab_top - 1, $tab_width, $height_note + 1);
+							if ($posyafter > ($this->page_hauteur - ($heightforfooter + $heightforfreetext + 20))) {	// There is no space left for total+free text
+								$pdf->AddPage('', '', true);
+								$pagenb++;
+								$pageposafternote++;
+								$pdf->setPage($pageposafternote);
+								$pdf->setTopMargin($tab_top_newpage);
+								// The only function to edit the bottom margin of current page to set it.
+								$pdf->setPageOrientation('', 1, $heightforfooter + $heightforfreetext);
+								//$posyafter = $tab_top_newpage;
+							}
 
 
-						if ($posyafter > ($this->page_hauteur - ($heightforfooter + $heightforfreetext + 20))) {
-							// not enough space, need to add page
-							$pdf->AddPage('', '', true);
-							$pagenb++;
-							$pageposafternote++;
+							// apply note frame to previous pages
+							$i = $pageposbeforenote;
+							while ($i < $pageposafternote) {
+								$pdf->setPage($i);
+
+
+								$pdf->SetDrawColor(128, 128, 128);
+								// Draw note frame
+								if ($i > $pageposbeforenote) {
+									$height_note = $this->page_hauteur - ($tab_top_newpage + $heightforfooter);
+									$pdf->Rect($this->marge_gauche, $tab_top_newpage - 1, $tab_width, $height_note + 1);
+								} else {
+									$height_note = $this->page_hauteur - ($tab_top + $heightforfooter);
+									$pdf->Rect($this->marge_gauche, $tab_top - 1, $tab_width, $height_note + 1);
+								}
+
+								// Add footer
+								$pdf->setPageOrientation('', 1, 0); // The only function to edit the bottom margin of current page to set it.
+								$this->_pagefoot($pdf, $object, $outputlangs, 1);
+
+								$i++;
+							}
+
+							// apply note frame to last page
 							$pdf->setPage($pageposafternote);
 							if (!empty($tplidx)) {
 								$pdf->useTemplate($tplidx);
@@ -513,15 +484,38 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 							if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
 								$this->_pagehead($pdf, $object, 0, $outputlangs);
 							}
+							$height_note = $posyafter - $tab_top_newpage;
+							$pdf->Rect($this->marge_gauche, $tab_top_newpage - 1, $tab_width, $height_note + 1);
+						} else // No pagebreak
+						{
+							$pdf->commitTransaction();
+							$posyafter = $pdf->GetY();
+							$height_note = $posyafter - $tab_top;
+							$pdf->Rect($this->marge_gauche, $tab_top - 1, $tab_width, $height_note + 1);
 
-							$posyafter = $tab_top_newpage;
+
+							if ($posyafter > ($this->page_hauteur - ($heightforfooter + $heightforfreetext + 20))) {
+								// not enough space, need to add page
+								$pdf->AddPage('', '', true);
+								$pagenb++;
+								$pageposafternote++;
+								$pdf->setPage($pageposafternote);
+								if (!empty($tplidx)) {
+									$pdf->useTemplate($tplidx);
+								}
+								if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
+									$this->_pagehead($pdf, $object, 0, $outputlangs);
+								}
+
+								$posyafter = $tab_top_newpage;
+							}
 						}
-					}
 
-					$tab_height = $tab_height - $height_note;
-					$tab_top = $posyafter + 6;
-				} else {
-					$height_note = 0;
+						$tab_height = $tab_height - $height_note;
+						$tab_top = $posyafter + 6;
+					} else {
+						$height_note = 0;
+					}
 				}
 
 				// Use new auto column system
@@ -633,6 +627,15 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 
 					$pdf->SetFont('', '', $default_font_size - 1); // On repositionne la police par defaut
 
+					if (!empty($conf->productbatch->enabled)) {
+						// batch
+						$batch =  $object->lines[$i]->product_lot_batch;
+						if ($this->getColumnStatus('batch')) {
+							$this->printStdColumnContent($pdf, $curY, 'batch', $batch);
+							$nexY = max($pdf->GetY(), $nexY);
+						}
+					}
+
 					// Quantity
 					// Enough for 6 chars
 					if ($this->getColumnStatus('qty')) {
@@ -666,55 +669,6 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 
 
 					$sign = 1;
-					// Collecte des totaux par valeur de tva dans $this->tva["taux"]=total_tva
-					if (!empty($conf->multicurrency->enabled) && $object->multicurrency_tx != 1) {
-						$tvaligne = $sign * $object->lines[$i]->multicurrency_total_tva;
-					} else {
-						$tvaligne = $sign * $object->lines[$i]->total_tva;
-					}
-
-					$localtax1ligne = $object->lines[$i]->total_localtax1;
-					$localtax2ligne = $object->lines[$i]->total_localtax2;
-					$localtax1_rate = $object->lines[$i]->localtax1_tx;
-					$localtax2_rate = $object->lines[$i]->localtax2_tx;
-					$localtax1_type = $object->lines[$i]->localtax1_type;
-					$localtax2_type = $object->lines[$i]->localtax2_type;
-
-					if ($object->remise_percent) {
-						$tvaligne -= ($tvaligne * $object->remise_percent) / 100;
-					}
-					if ($object->remise_percent) {
-						$localtax1ligne -= ($localtax1ligne * $object->remise_percent) / 100;
-					}
-					if ($object->remise_percent) {
-						$localtax2ligne -= ($localtax2ligne * $object->remise_percent) / 100;
-					}
-
-					$vatrate = (string) $object->lines[$i]->tva_tx;
-
-					// Retrieve type from database for backward compatibility with old records
-					if ((!isset($localtax1_type) || $localtax1_type == '' || !isset($localtax2_type) || $localtax2_type == '') // if tax type not defined
-						&& (!empty($localtax1_rate) || !empty($localtax2_rate))) { // and there is local tax
-						$localtaxtmp_array = getLocalTaxesFromRate($vatrate, 0, $object->thirdparty, $mysoc);
-						$localtax1_type = isset($localtaxtmp_array[0]) ? $localtaxtmp_array[0] : '';
-						$localtax2_type = isset($localtaxtmp_array[2]) ? $localtaxtmp_array[2] : '';
-					}
-
-					// retrieve global local tax
-					if ($localtax1_type && $localtax1ligne != 0) {
-						$this->localtax1[$localtax1_type][$localtax1_rate] += $localtax1ligne;
-					}
-					if ($localtax2_type && $localtax2ligne != 0) {
-						$this->localtax2[$localtax2_type][$localtax2_rate] += $localtax2ligne;
-					}
-
-					if (($object->lines[$i]->info_bits & 0x01) == 0x01) {
-						$vatrate .= '*';
-					}
-					if (!isset($this->tva[$vatrate])) {
-						$this->tva[$vatrate] = 0;
-					}
-					$this->tva[$vatrate] += $tvaligne;
 
 					$nexY = max($nexY, $posYAfterImage);
 
@@ -862,7 +816,6 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 			$hidetop = -1;
 		}
 
-		$currency = !empty($currency) ? $currency : $conf->currency;
 		$default_font_size = pdf_getPDFFontSize($outputlangs);
 
 		// Amount in (at tab_top - 1)
@@ -914,7 +867,7 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 		global $conf, $langs;
 
 		// Load traductions files required by page
-		$outputlangs->loadLangs(array("main", "bills", "propal", "companies"));
+		$outputlangs->loadLangs(array("main", "bills", "propal", "companies", "orders", "sendings", "productbatch", "shipmentpackage@shipmentpackage"));
 
 		$default_font_size = pdf_getPDFFontSize($outputlangs);
 
@@ -1250,30 +1203,19 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 
 
 		$rank = $rank + 10;
-		$this->cols['vat'] = array(
+		$this->cols['batch'] = array(
 			'rank' => $rank,
 			'status' => false,
-			'width' => 16, // in mm
+			'width' => 50, // in mm
 			'title' => array(
-				'textkey' => 'VAT'
+				'textkey' => 'ProductLotBatch'
 			),
 			'border-left' => true, // add left line separator
 		);
 
-		if (empty($conf->global->MAIN_GENERATE_DOCUMENTS_WITHOUT_VAT) && empty($conf->global->MAIN_GENERATE_DOCUMENTS_WITHOUT_VAT_COLUMN)) {
-			$this->cols['vat']['status'] = true;
+		if (!empty($conf->productbatch->enabled)) {
+			$this->cols['batch']['status'] = true;
 		}
-
-		$rank = $rank + 10;
-		$this->cols['subprice'] = array(
-			'rank' => $rank,
-			'width' => 19, // in mm
-			'status' => true,
-			'title' => array(
-				'textkey' => 'PriceUHT'
-			),
-			'border-left' => true, // add left line separator
-		);
 
 		$rank = $rank + 10;
 		$this->cols['qty'] = array(
@@ -1285,21 +1227,6 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 			),
 			'border-left' => true, // add left line separator
 		);
-
-		$rank = $rank + 10;
-		$this->cols['progress'] = array(
-			'rank' => $rank,
-			'width' => 19, // in mm
-			'status' => false,
-			'title' => array(
-				'textkey' => 'Progress'
-			),
-			'border-left' => true, // add left line separator
-		);
-
-		if ($this->situationinvoice) {
-			$this->cols['progress']['status'] = true;
-		}
 
 		$rank = $rank + 10;
 		$this->cols['unit'] = array(
@@ -1314,31 +1241,6 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 		if (!empty($conf->global->PRODUCT_USE_UNITS)) {
 			$this->cols['unit']['status'] = true;
 		}
-
-		$rank = $rank + 10;
-		$this->cols['discount'] = array(
-			'rank' => $rank,
-			'width' => 13, // in mm
-			'status' => false,
-			'title' => array(
-				'textkey' => 'ReductionShort'
-			),
-			'border-left' => true, // add left line separator
-		);
-		if ($this->atleastonediscount) {
-			$this->cols['discount']['status'] = true;
-		}
-
-		$rank = $rank + 1000; // add a big offset to be sure is the last col because default extrafield rank is 100
-		$this->cols['totalexcltax'] = array(
-			'rank' => $rank,
-			'width' => 26, // in mm
-			'status' => true,
-			'title' => array(
-				'textkey' => 'TotalHT'
-			),
-			'border-left' => true, // add left line separator
-		);
 
 		// Add extrafields cols
 		if (!empty($object->lines)) {
@@ -1361,6 +1263,73 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 			$this->cols = array_replace($this->cols, $hookmanager->resArray); // array_replace is used to preserve keys
 		} else {
 			$this->cols = $hookmanager->resArray;
+		}
+	}
+
+	/**
+	 *  print description column content
+	 *
+	 *  @param	TCPDF		$pdf    	pdf object
+	 *  @param	float		$curY    	curent Y position
+	 *  @param	string		$colKey    	the column key
+	 *  @param  object      $object CommonObject
+	 *  @param  int         $i  the $object->lines array key
+	 *  @param  Translate $outputlangs    Output language
+	 *  @param  int $hideref hide ref
+	 *  @param  int $hidedesc hide desc
+	 *  @param  int $issupplierline if object need supplier product
+	 *  @return null
+	 */
+	public function printColDescContent($pdf, &$curY, $colKey, $object, $i, $outputlangs, $hideref = 0, $hidedesc = 0, $issupplierline = 0)
+	{
+		global $user;
+
+		// load desc col params
+		$colDef = $this->cols[$colKey];
+		// save curent cell padding
+		$curentCellPaddinds = $pdf->getCellPaddings();
+		// set cell padding with column content definition
+		$pdf->setCellPaddings($colDef['content']['padding'][3], $colDef['content']['padding'][0], $colDef['content']['padding'][1], $colDef['content']['padding'][2]);
+
+		// line description
+		if ($object->lines[$i]->fk_product > 0) {
+			$product = new Product($this->db);
+			$product->fetch($object->lines[$i]->fk_product);
+			$labelproductservice = $product->ref . ' - ' . $product->label;
+			if (!$hideref) {
+				$labelproductservice .= ' - ' . $product->description;
+			}
+		} else {
+			// free product
+			if ($user->rights->commande->lire) {
+				dol_include_once('/expedition/class/expedition.class.php');
+				dol_include_once('/commande/class/commande.class.php');
+				$shipmentLine = new ExpeditionLigne($this->db);
+				$result = $shipmentLine->fetch($object->lines[$i]->fk_origin_line);
+				if ($result > 0) {
+					$orderLine = new OrderLine($this->db);
+					$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+					if ($result > 0) {
+						$labelproductservice = $orderLine->desc;
+					}
+				}
+			}
+		}
+		$pdf->writeHTMLCell($colDef['width'], 3, $colDef['xStartPos'], $curY, $outputlangs->convToOutputCharset($labelproductservice), 0, 1, false, true, 'J', true);
+		$posYAfterDescription = $pdf->GetY() - $colDef['content']['padding'][0];
+
+		// restore cell padding
+		$pdf->setCellPaddings($curentCellPaddinds['L'], $curentCellPaddinds['T'], $curentCellPaddinds['R'], $curentCellPaddinds['B']);
+
+		// Display extrafield if needed
+		$params = array(
+			'display'         => 'list',
+			'printableEnable' => array(3),
+			'printableEnableNotEmpty' => array(4)
+		);
+		$extrafieldDesc = $this->getExtrafieldsInHtml($object->lines[$i], $outputlangs, $params);
+		if (!empty($extrafieldDesc)) {
+			$this->printStdColumnContent($pdf, $posYAfterDescription, $colKey, $extrafieldDesc);
 		}
 	}
 }
