@@ -14,7 +14,7 @@
 -- along with this program.  If not, see http://www.gnu.org/licenses/.
 
 ALTER TABLE llx_expedition_package MODIFY COLUMN rowid integer AUTO_INCREMENT PRIMARY KEY NOT NULL;
-ALTER TABLE llx_expedition_package drop COLUMN fk_expedition;
+ALTER TABLE llx_expedition_package MODIFY COLUMN fk_expedition integer;
 ALTER TABLE llx_expedition_package ADD COLUMN entity integer DEFAULT 1 NOT NULL AFTER rowid;
 ALTER TABLE llx_expedition_package ADD COLUMN ref varchar(128) DEFAULT '(PROV)' NOT NULL;
 ALTER TABLE llx_expedition_package ADD COLUMN ref_supplier varchar(128);

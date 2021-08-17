@@ -132,7 +132,7 @@ class ShipmentPackage extends CommonObject
 		),
 		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>160, 'notnull'=>0, 'visible'=>1,
 			'arrayofkeyval'=>array(
-				'0'=>'', 
+				'0'=>'',
 				'1'=>'PackageTailLiftRequired'
 			)
 		),

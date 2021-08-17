@@ -310,11 +310,11 @@ class InterfacePackageTriggers extends DolibarrTriggers
 			//case 'SHIPPING_SENTBYMAIL':
 			//case 'SHIPPING_BILLED':
 			case 'SHIPPING_CLOSED':
-				// if shipmentpackage enabled and no shipmentpackage show warning
+				// TODO if shipmentpackage enabled and no shipmentpackage show warning
 				break;
 			//case 'SHIPPING_REOPEN':
 			case 'SHIPPING_DELETE':
-				// check if shipmentpackage exist, if yes refuse delete
+				// TODO check if shipmentpackage exist, if yes refuse delete
 				break;
 
 			// and more...
