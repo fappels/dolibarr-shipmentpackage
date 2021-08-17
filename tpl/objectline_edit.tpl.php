@@ -64,29 +64,47 @@ if (! empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
 $coldisplay++;
 print '<td class="bordertop nobottom linecol">';
 $statustoshow = 1;
-if (!empty($conf->global->ENTREPOT_EXTRA_STATUS)) {
-	// hide products in closed warehouse, but show products for internal transfer
-	$form->select_produits($line->fk_product, 'fk_product', $filtertype, $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, 'warehouseopen,warehouseinternal');
-} else {
-	$form->select_produits($line->fkproduct, 'fk_product', $filtertype, $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, '');
-}
-if (!empty($conf->global->MAIN_AUTO_OPEN_SELECT2_ON_FOCUS_FOR_CUSTOMER_PRODUCTS)) {
-	?>
-<script>
-	$(document).ready(function(){
-		// On first focus on a select2 combo, auto open the menu (this allow to use the keyboard only)
-		$(document).on('focus', '.select2-selection.select2-selection--single', function (e) {
-			console.log('focus on a select2');
-			if ($(this).attr('aria-labelledby') == 'select2-idprod-container')
-			{
-				console.log('open combo');
-				$('#idprod').select2('open');
-			}
+if ($line->fk_product) {
+	if (!empty($conf->global->ENTREPOT_EXTRA_STATUS)) {
+		// hide products in closed warehouse, but show products for internal transfer
+		$form->select_produits($line->fk_product, 'fk_product', $filtertype, $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, 'warehouseopen,warehouseinternal');
+	} else {
+		$form->select_produits($line->fkproduct, 'fk_product', $filtertype, $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, '');
+	}
+	if (!empty($conf->global->MAIN_AUTO_OPEN_SELECT2_ON_FOCUS_FOR_CUSTOMER_PRODUCTS)) {
+		?>
+	<script>
+		$(document).ready(function(){
+			// On first focus on a select2 combo, auto open the menu (this allow to use the keyboard only)
+			$(document).on('focus', '.select2-selection.select2-selection--single', function (e) {
+				console.log('focus on a select2');
+				if ($(this).attr('aria-labelledby') == 'select2-idprod-container')
+				{
+					console.log('open combo');
+					$('#idprod').select2('open');
+				}
+			});
 		});
-	});
-</script>
-	<?php
+	</script>
+		<?php
+	}
+} else {
+	// free product
+	if ($user->rights->commande->lire) {
+		dol_include_once('/expedition/class/expedition.class.php');
+		dol_include_once('/commande/class/commande.class.php');
+		$shipmentLine = new ExpeditionLigne($object->db);
+		$result = $shipmentLine->fetch($line->fk_origin_line);
+		if ($result > 0) {
+			$orderLine = new OrderLine($object->db);
+			$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+			if ($result > 0) {
+				print $orderLine->desc;
+			}
+		}
+	}
 }
+
 print '</td>';
 
 $coldisplay++;

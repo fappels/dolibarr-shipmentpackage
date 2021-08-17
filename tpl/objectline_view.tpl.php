@@ -62,7 +62,26 @@ if (!empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
 $coldisplay++;
 print '<td class="linecoldescription minwidth200imp"></td>';
 $coldisplay++;
-print '<td class="linecol">' . $objectline->showOutputField($objectline->fields['fk_product'], 'fk_product', $line->fk_product);
+print '<td class="linecol">';
+if ($line->fk_product > 0) {
+	print $objectline->showOutputField($objectline->fields['fk_product'], 'fk_product', $line->fk_product);
+} else {
+	// free product
+	if ($user->rights->commande->lire) {
+		dol_include_once('/expedition/class/expedition.class.php');
+		dol_include_once('/commande/class/commande.class.php');
+		$shipmentLine = new ExpeditionLigne($object->db);
+		$result = $shipmentLine->fetch($line->fk_origin_line);
+		if ($result > 0) {
+			$orderLine = new OrderLine($object->db);
+			$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+			if ($result > 0) {
+				print $orderLine->desc;
+			}
+		}
+	}
+}
+
 print '</td>';
 
 $coldisplay++;

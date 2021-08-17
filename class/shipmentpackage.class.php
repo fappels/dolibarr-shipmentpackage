@@ -1442,21 +1442,40 @@ class ShipmentPackageLine extends CommonObjectLine
 	public function updatePackageValue($user, $package, $mode = 'increase')
 	{
 		// update package value
+		$result = 0;
 		$product = new Product($this->db);
-		$result = $product->fetch($this->fk_product);
+		if ($this->fk_product > 0) {
+			$result = $product->fetch($this->fk_product);
+			if ($result > 0) {
+				$value = $product->pmp * $this->qty;
+			} else {
+				$this->error = $product->error;
+			}
+		} else {
+			if ($user->rights->commande->lire) {
+				dol_include_once('/expedition/class/expedition.class.php');
+				dol_include_once('/commande/class/commande.class.php');
+				$shipmentLine = new ExpeditionLigne($this->db);
+				$result = $shipmentLine->fetch($this->fk_origin_line);
+				if ($result > 0) {
+					$orderLine = new OrderLine($this->db);
+					$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+					if ($result > 0) {
+						$value = $orderLine->subprice * $this->qty;
+					}
+				}
+			}
+		}
 		if ($result > 0) {
-			$value = $product->pmp * $this->qty;
 			if ($mode == 'increase') {
 				$package->value += $value;
 			} else {
 				$package->value -= $value;
 			}
-			$result = $package->update($user);
+			return $package->update($user);
 		} else {
-			$this->error = $product->error;
+			return $result;
 		}
-
-		return $result;
 	}
 
 	/**
