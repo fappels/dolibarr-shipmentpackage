@@ -112,7 +112,7 @@ class ShipmentPackage extends CommonObject
 		'fk_parcel_type' => array('type'=>'sellist:c_parcel_type:label:rowid::active=1', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1, 'help'=>"PackageParcelType"),
 		'height' => array('type'=>'real', 'label'=>'Height', 'enabled'=>'1', 'position'=>90, 'notnull'=>0, 'visible'=>-1,),
 		'width' => array('type'=>'real', 'label'=>'Width', 'enabled'=>'1', 'position'=>100, 'notnull'=>0, 'visible'=>-1,),
-		'size' => array('type'=>'real', 'label'=>'Size', 'enabled'=>'1', 'position'=>110, 'notnull'=>0, 'visible'=>-1,),
+		'length' => array('type'=>'real', 'label'=>'Length', 'enabled'=>'1', 'position'=>110, 'notnull'=>0, 'visible'=>-1,),
 		'size_units' => array('type'=>'int', 'label'=>'SizeUnits', 'enabled'=>'1', 'position'=>120, 'notnull'=>0, 'visible'=>-1,),
 		'weight' => array('type'=>'real', 'label'=>'Weight', 'enabled'=>'1', 'position'=>130, 'notnull'=>0, 'visible'=>-1,),
 		'weight_units' => array('type'=>'int', 'label'=>'WeightUnits', 'enabled'=>'1', 'position'=>140, 'notnull'=>0, 'visible'=>-1,),
@@ -158,7 +158,7 @@ class ShipmentPackage extends CommonObject
 	public $fk_parcel_type;
 	public $height;
 	public $width;
-	public $size;
+	public $length;
 	public $size_units;
 	public $weight;
 	public $weight_units;
@@ -174,6 +174,14 @@ class ShipmentPackage extends CommonObject
 	public $import_key;
 	public $model_pdf;
 	public $status;
+	/**
+	 * var string $origin origin object type returned with fetch method
+	 */
+	public $origin;
+	/**
+	 * var int $origin origin object id returned with fetch method
+	 */
+	public $origin_id;
 	// END MODULEBUILDER PROPERTIES
 
 
@@ -455,8 +463,18 @@ class ShipmentPackage extends CommonObject
 	public function fetch($id, $ref = null)
 	{
 		$result = $this->fetchCommon($id, $ref);
-		if ($result > 0 && !empty($this->table_element_line)) {
-			$this->fetchLines();
+		if ($result > 0) {
+			if (!empty($this->table_element_line)) {
+				$this->fetchLines();
+			}
+			$this->fetchObjectLinked(null, 'shipping', $this->id, 'shipmentpackage');
+			if (count($this->linkedObjects['shipping']) > 0) {
+				$this->origin = 'shipping';
+				foreach ($this->linkedObjects['shipping'] as $shipment) {
+					$this->origin_id = $shipment->id;
+					break; // only one shipment possible
+				};
+			}
 		}
 		return $result;
 	}

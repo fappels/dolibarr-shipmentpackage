@@ -31,6 +31,7 @@ ALTER TABLE llx_expedition_package ADD COLUMN last_main_doc varchar(255);
 ALTER TABLE llx_expedition_package ADD COLUMN import_key varchar(14);
 ALTER TABLE llx_expedition_package ADD COLUMN model_pdf varchar(255);
 ALTER TABLE llx_expedition_package ADD COLUMN status smallint NOT NULL;
+ALTER TABLE llx_expedition_package CHANGE COLUMN size length float;
 ALTER TABLE llx_expedition_package DROP COLUMN rang;
 ALTER TABLE llx_expedition_packagedet DROP COLUMN fk_product_lot;
 ALTER TABLE llx_expedition_packagedet ADD COLUMN product_lot_batch varchar(128);

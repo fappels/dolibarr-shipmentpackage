@@ -27,7 +27,7 @@ CREATE TABLE llx_expedition_package(
 	fk_parcel_type int, 
 	height float,					-- height
 	width float,					-- width
-	size float, 					-- depth
+	length float, 					-- depth
 	size_units int, 				-- unit of all sizes (height, width, depth)
 	weight float, 					-- weight
 	weight_units int, 				-- unit of weight
