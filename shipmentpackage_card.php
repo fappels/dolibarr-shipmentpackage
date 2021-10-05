@@ -78,6 +78,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
 require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
+require_once DOL_DOCUMENT_ROOT.'/product/class/html.formproduct.class.php';
 dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
 dol_include_once('/shipmentpackage/lib/shipmentpackage_shipmentpackage.lib.php');
 
@@ -338,6 +339,7 @@ if (empty($reshook)) {
 $form = new Form($db);
 $formfile = new FormFile($db);
 $formproject = new FormProjets($db);
+$formUnits = new FormProduct($db);
 
 $title = $langs->trans("ShipmentPackage");
 $help_url = '';
@@ -399,6 +401,52 @@ if ($action == 'create') {
 	// Common attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_add.tpl.php';
 
+	// weight and size units
+	$val = $object->fields['size_units'];
+	print '<tr class="field_size_units"><td';
+	print ' class="titlefieldcreate';
+	if (isset($val['notnull']) && $val['notnull'] > 0) {
+		print ' fieldrequired';
+	}
+	if (preg_match('/^(text|html)/', $val['type'])) {
+		print ' tdtop';
+	}
+	print '">';
+	if (!empty($val['help'])) {
+		print $form->textwithpicto($langs->trans($val['label']), $langs->trans($val['help']));
+	} else {
+		print $langs->trans($val['label']);
+	}
+	print '</td>';
+	print '<td class="valuefieldcreate">';
+	if (!empty($val['picto'])) {
+		print img_picto('', $val['picto'], '', false, 0, 0, '', 'pictofixedwidth');
+	}
+	print $formUnits->selectMeasuringUnits("size_units", "size", $object->size_units, 0, 2);
+	print '</td></tr>';
+	$val = $object->fields['weight_units'];
+	print '<tr class="field_weight_units"><td';
+	print ' class="titlefieldcreate';
+	if (isset($val['notnull']) && $val['notnull'] > 0) {
+		print ' fieldrequired';
+	}
+	if (preg_match('/^(text|html)/', $val['type'])) {
+		print ' tdtop';
+	}
+	print '">';
+	if (!empty($val['help'])) {
+		print $form->textwithpicto($langs->trans($val['label']), $langs->trans($val['help']));
+	} else {
+		print $langs->trans($val['label']);
+	}
+	print '</td>';
+	print '<td class="valuefieldcreate">';
+	if (!empty($val['picto'])) {
+		print img_picto('', $val['picto'], '', false, 0, 0, '', 'pictofixedwidth');
+	}
+	print $formUnits->selectMeasuringUnits("weight_units", "weight", $object->weight_units, 0, 2);
+	print '</td></tr>';
+
 	// Other attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_add.tpl.php';
 
@@ -458,6 +506,52 @@ if (($id || $ref) && $action == 'edit') {
 
 	// Common attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_edit.tpl.php';
+
+	// weight and size units
+	$val = $object->fields['size_units'];
+	print '<tr class="field_size_units"><td';
+	print ' class="titlefieldcreate';
+	if (isset($val['notnull']) && $val['notnull'] > 0) {
+		print ' fieldrequired';
+	}
+	if (preg_match('/^(text|html)/', $val['type'])) {
+		print ' tdtop';
+	}
+	print '">';
+	if (!empty($val['help'])) {
+		print $form->textwithpicto($langs->trans($val['label']), $langs->trans($val['help']));
+	} else {
+		print $langs->trans($val['label']);
+	}
+	print '</td>';
+	print '<td class="valuefieldcreate">';
+	if (!empty($val['picto'])) {
+		print img_picto('', $val['picto'], '', false, 0, 0, '', 'pictofixedwidth');
+	}
+	print $formUnits->selectMeasuringUnits("size_units", "size", $object->size_units, 0, 2);
+	print '</td></tr>';
+	$val = $object->fields['weight_units'];
+	print '<tr class="field_weight_units"><td';
+	print ' class="titlefieldcreate';
+	if (isset($val['notnull']) && $val['notnull'] > 0) {
+		print ' fieldrequired';
+	}
+	if (preg_match('/^(text|html)/', $val['type'])) {
+		print ' tdtop';
+	}
+	print '">';
+	if (!empty($val['help'])) {
+		print $form->textwithpicto($langs->trans($val['label']), $langs->trans($val['help']));
+	} else {
+		print $langs->trans($val['label']);
+	}
+	print '</td>';
+	print '<td class="valuefieldcreate">';
+	if (!empty($val['picto'])) {
+		print img_picto('', $val['picto'], '', false, 0, 0, '', 'pictofixedwidth');
+	}
+	print $formUnits->selectMeasuringUnits("weight_units", "weight", $object->weight_units, 0, 2);
+	print '</td></tr>';
 
 	// Other attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_edit.tpl.php';
@@ -581,6 +675,63 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	//unset($object->fields['fk_project']);				// Hide field already shown in banner
 	//unset($object->fields['fk_soc']);					// Hide field already shown in banner
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_view.tpl.php';
+
+	// weight and size units
+	$val = $object->fields['size_units'];
+	print '<tr class="field_size_units"><td';
+	print ' class="titlefield fieldname_size_units';
+	//if ($val['notnull'] > 0) print ' fieldrequired';     // No fieldrequired on the view output
+	if ($val['type'] == 'text' || $val['type'] == 'html') {
+		print ' tdtop';
+	}
+	print '">';
+	if (!empty($val['help'])) {
+		print $form->textwithpicto($langs->trans($val['label']), $langs->trans($val['help']));
+	} else {
+		print $langs->trans($val['label']);
+	}
+	print '</td>';
+	print '<td class="valuefield fieldname_'.$key;
+	if ($val['type'] == 'text') {
+		print ' wordbreak';
+	}
+	if (!empty($val['cssview'])) {
+		print ' '.$val['cssview'];
+	}
+	print '">';
+	if (in_array($val['type'], array('text', 'html'))) {
+		print '<div class="longmessagecut">';
+	}
+	print measuringUnitString(0, "size", $object->size_units, 1);
+	print '</td></tr>';
+
+	$val = $object->fields['weight_units'];
+	print '<tr class="field_weight_units"><td';
+	print ' class="titlefield fieldname_size_units';
+	//if ($val['notnull'] > 0) print ' fieldrequired';     // No fieldrequired on the view output
+	if ($val['type'] == 'text' || $val['type'] == 'html') {
+		print ' tdtop';
+	}
+	print '">';
+	if (!empty($val['help'])) {
+		print $form->textwithpicto($langs->trans($val['label']), $langs->trans($val['help']));
+	} else {
+		print $langs->trans($val['label']);
+	}
+	print '</td>';
+	print '<td class="valuefield fieldname_'.$key;
+	if ($val['type'] == 'text') {
+		print ' wordbreak';
+	}
+	if (!empty($val['cssview'])) {
+		print ' '.$val['cssview'];
+	}
+	print '">';
+	if (in_array($val['type'], array('text', 'html'))) {
+		print '<div class="longmessagecut">';
+	}
+	print measuringUnitString(0, "weight", $object->weight_units, 1);
+	print '</td></tr>';
 
 	// Other attributes. Fields from hook formObjectOptions and Extrafields.
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';

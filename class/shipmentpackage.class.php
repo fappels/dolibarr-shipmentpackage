@@ -107,16 +107,11 @@ class ShipmentPackage extends CommonObject
 		'fk_soc' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'ThirdParty', 'enabled'=>'1', 'position'=>40, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToThirparty",),
 		'fk_supplier' => array('type'=>'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)', 'label'=>'TransportSupplier', 'enabled'=>'1', 'position'=>45, 'notnull'=>-1, 'visible'=>1, 'index'=>1, 'help'=>"LinkToTransporter",),
 		'fk_project' => array('type'=>'integer:Project:projet/class/project.class.php:1', 'label'=>'Project', 'enabled'=>'1', 'position'=>50, 'notnull'=>-1, 'visible'=>-1, 'index'=>1,),
+		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>'1', 'position'=>55, 'notnull'=>1, 'visible'=>5,),
 		'description' => array('type'=>'varchar(255)', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>-1,),
 		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>4, 'default'=>0, 'help'=>"ValueOfPackage"),
 		'fk_parcel_type' => array('type'=>'sellist:c_parcel_type:label:rowid::active=1', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1, 'help'=>"PackageParcelType"),
-		'height' => array('type'=>'real', 'label'=>'Height', 'enabled'=>'1', 'position'=>90, 'notnull'=>0, 'visible'=>-1,),
-		'width' => array('type'=>'real', 'label'=>'Width', 'enabled'=>'1', 'position'=>100, 'notnull'=>0, 'visible'=>-1,),
-		'length' => array('type'=>'real', 'label'=>'Length', 'enabled'=>'1', 'position'=>110, 'notnull'=>0, 'visible'=>-1,),
-		'size_units' => array('type'=>'int', 'label'=>'SizeUnits', 'enabled'=>'1', 'position'=>120, 'notnull'=>0, 'visible'=>-1,),
-		'weight' => array('type'=>'real', 'label'=>'Weight', 'enabled'=>'1', 'position'=>130, 'notnull'=>0, 'visible'=>-1,),
-		'weight_units' => array('type'=>'int', 'label'=>'WeightUnits', 'enabled'=>'1', 'position'=>140, 'notnull'=>0, 'visible'=>-1,),
-		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>150, 'notnull'=>0, 'visible'=>1,
+		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>82, 'notnull'=>0, 'visible'=>1,
 			'arrayofkeyval'=>array(
 				'0'=>'',
 				'1'=>'PackageExplosives',
@@ -130,15 +125,20 @@ class ShipmentPackage extends CommonObject
 				'9'=>'PackageMiscellaneous'
 			)
 		),
-		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>160, 'notnull'=>0, 'visible'=>1,
+		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>84, 'notnull'=>0, 'visible'=>1,
 			'arrayofkeyval'=>array(
 				'0'=>'',
 				'1'=>'PackageTailLiftRequired'
 			)
 		),
+		'height' => array('type'=>'real', 'label'=>'Height', 'enabled'=>'1', 'position'=>90, 'notnull'=>0, 'visible'=>3,),
+		'width' => array('type'=>'real', 'label'=>'Width', 'enabled'=>'1', 'position'=>100, 'notnull'=>0, 'visible'=>3,),
+		'length' => array('type'=>'real', 'label'=>'Length', 'enabled'=>'1', 'position'=>110, 'notnull'=>0, 'visible'=>3,),
+		'weight' => array('type'=>'real', 'label'=>'Weight', 'enabled'=>'1', 'position'=>120, 'notnull'=>0, 'visible'=>3,),
+		'size_units' => array('type'=>'int', 'label'=>'SizeUnits', 'enabled'=>'1', 'position'=>130, 'notnull'=>0, 'visible'=>0,),
+		'weight_units' => array('type'=>'int', 'label'=>'WeightUnits', 'enabled'=>'1', 'position'=>140, 'notnull'=>0, 'visible'=>0,),
 		'note_public' => array('type'=>'html', 'label'=>'NotePublic', 'enabled'=>'1', 'position'=>170, 'notnull'=>0, 'visible'=>0,),
 		'note_private' => array('type'=>'html', 'label'=>'NotePrivate', 'enabled'=>'1', 'position'=>180, 'notnull'=>0, 'visible'=>0,),
-		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>'1', 'position'=>190, 'notnull'=>1, 'visible'=>-2,),
 		'tms' => array('type'=>'timestamp', 'label'=>'DateModification', 'enabled'=>'1', 'position'=>200, 'notnull'=>0, 'visible'=>-2,),
 		'fk_user_creat' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserAuthor', 'enabled'=>'1', 'position'=>210, 'notnull'=>1, 'visible'=>-2, 'foreignkey'=>'user.rowid',),
 		'fk_user_modif' => array('type'=>'integer:User:user/class/user.class.php', 'label'=>'UserModif', 'enabled'=>'1', 'position'=>220, 'notnull'=>-1, 'visible'=>-2,),
