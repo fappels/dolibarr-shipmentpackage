@@ -446,13 +446,10 @@ class modShipmentPackage extends DolibarrModules
 		// Document templates
 		$moduledir = 'shipmentpackage';
 		$myTmpObjects = array();
-		$myTmpObjects['ShipmentPackage'] = array('includerefgeneration'=>0, 'includedocgeneration'=>0);
+		$myTmpObjects['ShipmentPackage'] = array('includerefgeneration'=>0, 'includedocgeneration'=>1);
 
 		foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
-			if ($myTmpObjectKey == 'ShipmentPackage') {
-				continue;
-			}
-			if ($myTmpObjectArray['includerefgeneration']) {
+			if ($myTmpObjectArray['includedocgeneration']) {
 				$src = DOL_DOCUMENT_ROOT.'/install/doctemplates/shipmentpackage/template_shipmentpackages.odt';
 				$dirodt = DOL_DATA_ROOT.'/doctemplates/shipmentpackage';
 				$dest = $dirodt.'/template_shipmentpackages.odt';
@@ -470,9 +467,9 @@ class modShipmentPackage extends DolibarrModules
 
 				$sql = array_merge($sql, array(
 					"DELETE FROM ".MAIN_DB_PREFIX."document_model WHERE nom = 'standard_".strtolower($myTmpObjectKey)."' AND type = '".strtolower($myTmpObjectKey)."' AND entity = ".$conf->entity,
-					"INSERT INTO ".MAIN_DB_PREFIX."document_model (nom, type, entity) VALUES('standard_".strtolower($myTmpObjectKey)."','".strtolower($myTmpObjectKey)."',".$conf->entity.")",
+					"INSERT INTO ".MAIN_DB_PREFIX."document_model (nom, type, entity, libelle) VALUES('standard_".strtolower($myTmpObjectKey)."','".strtolower($myTmpObjectKey)."',".$conf->entity.", 'Standard')",
 					"DELETE FROM ".MAIN_DB_PREFIX."document_model WHERE nom = 'generic_".strtolower($myTmpObjectKey)."_odt' AND type = '".strtolower($myTmpObjectKey)."' AND entity = ".$conf->entity,
-					"INSERT INTO ".MAIN_DB_PREFIX."document_model (nom, type, entity) VALUES('generic_".strtolower($myTmpObjectKey)."_odt', '".strtolower($myTmpObjectKey)."', ".$conf->entity.")"
+					"INSERT INTO ".MAIN_DB_PREFIX."document_model (nom, type, entity, libelle) VALUES('generic_".strtolower($myTmpObjectKey)."_odt', '".strtolower($myTmpObjectKey)."', ".$conf->entity.",'Generic odt')"
 				));
 			}
 		}

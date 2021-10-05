@@ -307,7 +307,7 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 				$default_font_size = pdf_getPDFFontSize($outputlangs); // Must be after pdf_getInstance
 				$pdf->SetAutoPageBreak(1, 0);
 
-				$heightforinfotot = 50; // Height reserved to output the info and total part and payment part
+				$heightforinfotot = 10; // Height reserved to output the info and total part and other part
 				$heightforfreetext = (isset($conf->global->MAIN_PDF_FREETEXT_HEIGHT) ? $conf->global->MAIN_PDF_FREETEXT_HEIGHT : 5); // Height reserved to output the free text on last page
 				$heightforfooter = $this->marge_basse + (empty($conf->global->MAIN_GENERATE_DOCUMENTS_SHOW_FOOT_DETAILS) ? 12 : 22); // Height reserved to output the footer (value include bottom margin)
 
@@ -386,17 +386,45 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 				}
 
 				$pagenb = $pdf->getPage();
-				if ($notetoshow || !empty($object->ref_supplier)) {
-					// Supplier ref (Tracking number)
-					if (!empty($object->ref_supplier)) {
+				if ($notetoshow || !empty($object->weight)) {
+					$tab_top -= 2;
+					// weight
+					if (!empty($object->weight)) {
+						$text = $object->weight.' '.measuringUnitString(0, "weight", $object->weight_units, 1);
 						$pdf->SetFont('', 'B', $default_font_size - 2);
-						$pdf->writeHTMLCell(60, 4, $this->posxdesc - 1, $tab_top - 1, $outputlangs->transnoentities("TrackingNumber") . " : " . $object->ref_supplier, 0, 1, false, true, 'L');
+						$pdf->writeHTMLCell(60, 4, $this->posxdesc - 1, $tab_top - 1, $outputlangs->transnoentities("Weight") . " : " . $text, 0, 1, false, true, 'L');
 
-						$tab_top = $pdf->GetY();
+						$tab_top_alt = $pdf->GetY();
+					} else {
+						$tab_top_alt = $tab_top;
 					}
-					if ($notetoshow) {
-						$tab_top -= 2;
+					// height
+					if (!empty($object->height)) {
+						$text = $object->height.' '.measuringUnitString(0, "size", $object->size_units, 1);
+						$pdf->SetFont('', 'B', $default_font_size - 2);
+						$pdf->writeHTMLCell(60, 4, $this->posxdesc - 1, $tab_top_alt, $outputlangs->transnoentities("Height") . " : " . $text, 0, 1, false, true, 'L');
 
+						$tab_top_alt = $pdf->GetY();
+					}
+					// width
+					if (!empty($object->width)) {
+						$text = $object->width.' '.measuringUnitString(0, "size", $object->size_units, 1);
+						$pdf->SetFont('', 'B', $default_font_size - 2);
+						$pdf->writeHTMLCell(60, 4, $this->posxdesc - 1, $tab_top_alt, $outputlangs->transnoentities("Widht") . " : " . $text, 0, 1, false, true, 'L');
+
+						$tab_top_alt = $pdf->GetY();
+					}
+					// length
+					if (!empty($object->length)) {
+						$text = $object->length.' '.measuringUnitString(0, "size", $object->size_units, 1);
+						$pdf->SetFont('', 'B', $default_font_size - 2);
+						$pdf->writeHTMLCell(60, 4, $this->posxdesc - 1, $tab_top_alt, $outputlangs->transnoentities("Lenght") . " : " . $text, 0, 1, false, true, 'L');
+
+						$tab_top_alt = $pdf->GetY();
+					}
+					// notes
+					$pagenb = $pdf->getPage();
+					if ($notetoshow) {
 						$tab_width = $this->page_largeur - $this->marge_gauche - $this->marge_droite;
 						$pageposbeforenote = $pagenb;
 
@@ -408,7 +436,7 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 						$pdf->startTransaction();
 
 						$pdf->SetFont('', '', $default_font_size - 1);
-						$pdf->writeHTMLCell(190, 3, $this->posxdesc - 1, $tab_top, dol_htmlentitiesbr($notetoshow), 0, 1);
+						$pdf->writeHTMLCell(190, 3, $this->posxdesc - 1, $tab_top_alt, dol_htmlentitiesbr($notetoshow), 0, 1);
 						// Description
 						$pageposafternote = $pdf->getPage();
 						$posyafter = $pdf->GetY();
@@ -436,7 +464,7 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 							$pdf->setPage($pageposbeforenote);
 							$pdf->setPageOrientation('', 1, $heightforfooter + $heightforfreetext);
 							$pdf->SetFont('', '', $default_font_size - 1);
-							$pdf->writeHTMLCell(190, 3, $this->posxdesc - 1, $tab_top, dol_htmlentitiesbr($notetoshow), 0, 1);
+							$pdf->writeHTMLCell(190, 3, $this->posxdesc - 1, $tab_top_alt, dol_htmlentitiesbr($notetoshow), 0, 1);
 							$pageposafternote = $pdf->getPage();
 
 							$posyafter = $pdf->GetY();
@@ -513,6 +541,7 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 
 						$tab_height = $tab_height - $height_note;
 						$tab_top = $posyafter + 6;
+						$tab_top_alt = $tab_top;
 					} else {
 						$height_note = 0;
 					}
@@ -938,7 +967,6 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 		$pdf->MultiCell($w, 4, $textref, '', 'R');
 
 		$posy += 1;
-		$pdf->SetFont('', '', $default_font_size - 2);
 
 		if ($object->ref_client) {
 			$posy += 4;
@@ -947,6 +975,13 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 			$pdf->MultiCell($w, 3, $outputlangs->transnoentities("RefCustomer")." : ".$outputlangs->convToOutputCharset($object->ref_client), '', 'R');
 		}
 
+		if ($object->ref_supplier) {
+			$posy += 4;
+			$pdf->SetXY($posx, $posy);
+			$pdf->SetTextColor(0, 0, 60);
+			$pdf->MultiCell($w, 3, $outputlangs->transnoentities("TrackingNumber")." : ".$outputlangs->convToOutputCharset($object->ref_supplier), '', 'R');
+		}
+		$pdf->SetFont('', '', $default_font_size - 2);
 		if (!empty($conf->global->PDF_SHOW_PROJECT_TITLE)) {
 			$object->fetch_projet();
 			if (!empty($object->project->ref)) {
@@ -976,7 +1011,7 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 		if (!empty($conf->global->PDF_USE_ALSO_LANGUAGE_CODE) && is_object($outputlangsbis)) {
 			$title .= ' - '.$outputlangsbis->transnoentities("Date");
 		}
-		$pdf->MultiCell($w, 3, $title." : ".dol_print_date($object->date, "day", false, $outputlangs), '', 'R');
+		$pdf->MultiCell($w, 3, $title." : ".dol_print_date($object->date_creation, "day", false, $outputlangs), '', 'R');
 
 		if ($object->thirdparty->code_client) {
 			$posy += 3;
