@@ -2,8 +2,10 @@
 host = https://www.transifex.com
 lang_map = uz: uz_UZ
 
-[mymodule.mymodule]
+[dolibarr-shipmentpackage.config]
 file_filter = langs/<lang>/shipmentpackage.lang
+minimum_perc = 0
 source_file = langs/en_US/shipmentpackage.lang
 source_lang = en_US
 type = MOZILLAPROPERTIES
+
