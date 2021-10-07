@@ -2,11 +2,10 @@
 
 ## Features
 
-Description of the module...
+Create final shipping packages to handover to transporter.
+From a validated shipment you can create a package by selecting the items to put in package.
 
-<!--
 ![Screenshot shipmentpackage](img/screenshot_package.png?raw=true "ShipmentPackage"){imgmd}
--->
 
 Other external modules are available on [Dolistore.com](https://www.dolistore.com).
 

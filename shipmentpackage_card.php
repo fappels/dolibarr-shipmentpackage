@@ -83,7 +83,7 @@ dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
 dol_include_once('/shipmentpackage/lib/shipmentpackage_shipmentpackage.lib.php');
 
 // Load translation files required by the page
-$langs->loadLangs(array("shipmentpackage@shipmentpackage", "other"));
+$langs->loadLangs(array("shipmentpackage@shipmentpackage", "other", "sendings", "bills"));
 
 // Get parameters
 $id = GETPOST('id', 'int');
@@ -396,7 +396,7 @@ if ($action == 'create') {
 
 	print '<table class="border centpercent tableforfieldcreate">'."\n";
 
-	if ($objectsrc->id) print '<tr><td>'.$langs->trans($classname).'</td><td>'.$objectsrc->getNomUrl(1).'</td></tr>';
+	if ($objectsrc->id) print '<tr><td>'.$langs->trans('Expedition').'</td><td>'.$objectsrc->getNomUrl(1).'</td></tr>';
 
 	// Common attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_add.tpl.php';

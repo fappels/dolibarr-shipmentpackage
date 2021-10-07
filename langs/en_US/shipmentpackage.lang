@@ -74,6 +74,7 @@ PackageMiscellaneous = Miscellaneous
 Taillift = Taillift
 PackageTailLiftRequired = Tail lift is required
 ProductLotBatch = Lot/Serial
+CreatePackage = Create Package
 #
 # Sample widget
 #
