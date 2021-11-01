@@ -1,6 +1,7 @@
 <?php
 /* Copyright (C) 2012       Regis Houssin   <regis.houssin@inodbox.com>
  * Copyright (C) 2014       Marcos García   <marcosgdf@gmail.com>
+ * Copyright (C) 2021       Francis Appels  <francis.appels@z-application.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
