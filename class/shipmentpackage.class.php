@@ -112,7 +112,7 @@ class ShipmentPackage extends CommonObject
 		'description' => array('type'=>'varchar(255)', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>-1,),
 		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>4, 'default'=>0, 'help'=>"ValueOfPackage"),
 		'fk_parcel_type' => array('type'=>'sellist:c_parcel_type:label:rowid::active=1', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1, 'help'=>"PackageParcelType"),
-		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>82, 'notnull'=>0, 'visible'=>1,
+		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>82, 'notnull'=>0, 'default'=>0, 'visible'=>1,
 			'arrayofkeyval'=>array(
 				'0'=>'',
 				'1'=>'PackageExplosives',
@@ -126,7 +126,7 @@ class ShipmentPackage extends CommonObject
 				'9'=>'PackageMiscellaneous'
 			)
 		),
-		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>84, 'notnull'=>0, 'visible'=>1,
+		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>84, 'notnull'=>0, 'visible'=>1, 'default'=>0,
 			'arrayofkeyval'=>array(
 				'0'=>'',
 				'1'=>'PackageTailLiftRequired'

@@ -41,5 +41,5 @@ ALTER TABLE llx_expedition_packagedet CHANGE COLUMN fk_expedition_package fk_shi
 ALTER TABLE llx_expedition_packagedet ADD INDEX idx_expedition_packagedet_fk_shipmentpackage (fk_shipmentpackage);
 ALTER TABLE llx_expedition_pacakgedet ADD CONSTRAINT fk_expeditiondet_fk_shipmentpackage FOREIGN KEY (fk_shipmentpackage) REFERENCES llx_expedition_package (rowid);
 
-
-
+UPDATE llx_expedition_package SET dangerous_goods = 0 WHERE dangerous_goods IS NULL;
+UPDATE llx_expedition_package SET tail_lift = 0 WHERE tail_lift IS NULL;
