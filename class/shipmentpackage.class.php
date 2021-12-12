@@ -1552,10 +1552,12 @@ class ShipmentPackageLine extends CommonObjectLine
 	 */
 	public function updatePackageValue($user, $package, $mode = 'increase')
 	{
+		global $conf;
+
 		// update package value
 		$result = 0;
 		$product = new Product($this->db);
-		if ($this->fk_product > 0) {
+		if ($this->fk_product > 0 && !empty($conf->global->SHIPMENTPACKAGE_WAP_PACKAGEVALUE)) {
 			$result = $product->fetch($this->fk_product);
 			if ($result > 0) {
 				$value = $product->pmp * $this->qty;
