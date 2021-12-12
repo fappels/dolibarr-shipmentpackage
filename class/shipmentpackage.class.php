@@ -23,8 +23,9 @@
  */
 
 // Put here all includes required by your class file
-require_once DOL_DOCUMENT_ROOT.'/core/class/commonobject.class.php';
-//require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
+require_once DOL_DOCUMENT_ROOT . '/expedition/class/expedition.class.php';
+require_once DOL_DOCUMENT_ROOT . '/commande/class/commande.class.php';
 require_once DOL_DOCUMENT_ROOT . '/product/class/product.class.php';
 
 /**
@@ -111,7 +112,7 @@ class ShipmentPackage extends CommonObject
 		'description' => array('type'=>'varchar(255)', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>-1,),
 		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>4, 'default'=>0, 'help'=>"ValueOfPackage"),
 		'fk_parcel_type' => array('type'=>'sellist:c_parcel_type:label:rowid::active=1', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1, 'help'=>"PackageParcelType"),
-		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>82, 'notnull'=>0, 'visible'=>1,
+		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>82, 'notnull'=>0, 'default'=>0, 'visible'=>1,
 			'arrayofkeyval'=>array(
 				'0'=>'',
 				'1'=>'PackageExplosives',
@@ -125,7 +126,7 @@ class ShipmentPackage extends CommonObject
 				'9'=>'PackageMiscellaneous'
 			)
 		),
-		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>84, 'notnull'=>0, 'visible'=>1,
+		'tail_lift' => array('type'=>'smallint', 'label'=>'Taillift', 'enabled'=>'1', 'position'=>84, 'notnull'=>0, 'visible'=>1, 'default'=>0,
 			'arrayofkeyval'=>array(
 				'0'=>'',
 				'1'=>'PackageTailLiftRequired'
@@ -1208,6 +1209,96 @@ class ShipmentPackage extends CommonObject
 			return implode(',', $keys);
 		}
 	}
+
+	/**
+	 * get qty packaged for shipment
+	 *
+	 * @param int			$fk_expedition			shipment id
+	 * @param int			$fk_product				product id
+	 * @param string		$product_lot_batch		product_lot_batch value
+	 *
+	 * @return float NOK < 0 > qty packaged
+	 */
+	public function getQtyPackaged($fk_expedition, $fk_product = null, $product_lot_batch = null)
+	{
+		$qtyPackaged = 0;
+
+		// we get all packages with product
+		$sql = 'SELECT SUM(tl.qty) as qty_packaged';
+		$sql .= ' FROM '.MAIN_DB_PREFIX.$this->table_element.' as t';
+		$sql .= ' INNER JOIN '.MAIN_DB_PREFIX.$this->table_element_line. ' as tl ON tl.fk_shipmentpackage = t.rowid';
+		$sql .= ' INNER JOIN '.MAIN_DB_PREFIX."element_element as el ON el.fk_target = t.rowid AND el.targettype = '".$this->element."'";
+		if (isset($this->ismultientitymanaged) && $this->ismultientitymanaged == 1) $sql .= ' WHERE t.entity IN ('.getEntity($this->table_element).')';
+		else $sql .= ' WHERE 1 = 1';
+		$sql .= ' AND el.fk_source = ' . (int) $fk_expedition . " AND el.sourcetype = 'shipping'";
+		if ($fk_product > 0) $sql .= ' AND tl.fk_product = '. (int) $fk_product;
+		if (!empty($product_lot_batch)) $sql .= ' AND tl.product_lot_batch = '. $this->db->escape($product_lot_batch);
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			$num = $this->db->num_rows($resql);
+			if ($num) {
+				$obj = $this->db->fetch_object($resql);
+				$qtyPackaged = $obj->qty_packaged;
+			}
+			$this->db->free($resql);
+
+			return $qtyPackaged;
+		} else {
+			$this->errors[] = 'Error '.$this->db->lasterror();
+			dol_syslog(__METHOD__.' '.join(',', $this->errors), LOG_ERR);
+
+			return -1;
+		}
+	}
+
+	/**
+	 * get qty to ship for shipment
+	 *
+	 * @param int			$fk_expedition			shipment id
+	 * @param int			$fk_product				product id
+	 * @param string		$product_lot_batch		product_lot_batch value
+	 *
+	 * @return float NOK < 0 > qty packaged
+	 */
+	public function getQtyToShip($fk_expedition, $fk_product = null, $product_lot_batch = null)
+	{
+		global $conf;
+
+		$shipment = new Expedition($this->db);
+		$order = new Commande($this->db);
+		$qtyToShip = 0;
+
+		// we get all packages with product
+		$sql = 'SELECT SUM(tl.qty) as qty_toship';
+		$sql .= ' FROM '.MAIN_DB_PREFIX.$shipment->table_element.' as t';
+		$sql .= ' INNER JOIN '.MAIN_DB_PREFIX.$shipment->table_element_line. ' as tl ON tl.fk_expedition = t.rowid';
+		$sql .= ' INNER JOIN '.MAIN_DB_PREFIX.$order->table_element_line. ' as cl ON cl.rowid = tl.fk_origin_line';
+		if ($conf->productbatch->enabled) {
+			$sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'expeditiondet_batch as eb ON eb.fk_expeditiondet = tl.rowid';
+		}
+		$sql .= ' WHERE t.entity IN ('.getEntity($shipment->table_element).')';
+		$sql .= ' AND t.rowid = ' . (int) $fk_expedition;
+		if ($fk_product > 0) $sql .= ' AND cl.fk_product = '. (int) $fk_product;
+		if (!empty($product_lot_batch)) $sql .= ' AND eb.batch = '. $this->db->escape($product_lot_batch);
+
+		$resql = $this->db->query($sql);
+		if ($resql) {
+			$num = $this->db->num_rows($resql);
+			if ($num) {
+				$obj = $this->db->fetch_object($resql);
+				$qtyToShip = $obj->qty_toship;
+			}
+			$this->db->free($resql);
+
+			return $qtyToShip;
+		} else {
+			$this->errors[] = 'Error '.$this->db->lasterror();
+			dol_syslog(__METHOD__.' '.join(',', $this->errors), LOG_ERR);
+
+			return -1;
+		}
+	}
 }
 
 
@@ -1461,10 +1552,12 @@ class ShipmentPackageLine extends CommonObjectLine
 	 */
 	public function updatePackageValue($user, $package, $mode = 'increase')
 	{
+		global $conf;
+
 		// update package value
 		$result = 0;
 		$product = new Product($this->db);
-		if ($this->fk_product > 0) {
+		if ($this->fk_product > 0 && !empty($conf->global->SHIPMENTPACKAGE_WAP_PACKAGEVALUE)) {
 			$result = $product->fetch($this->fk_product);
 			if ($result > 0) {
 				$value = $product->pmp * $this->qty;
@@ -1508,23 +1601,26 @@ class ShipmentPackageLine extends CommonObjectLine
 	 */
 	public function getQtyPackaged($fk_origin_line, $fk_origin_batch_line = null)
 	{
+		$package = new ShipmentPackage($this->db);
 		$qtyPackaged = 0;
 
-		$sql = 'SELECT t.qty';
+		$sql = 'SELECT SUM(t.qty) as qty_packaged';
 		$sql .= ' FROM '.MAIN_DB_PREFIX.$this->table_element.' as t';
-		if (isset($this->ismultientitymanaged) && $this->ismultientitymanaged == 1) $sql .= ' WHERE t.entity IN ('.getEntity($this->table_element).')';
-		else $sql .= ' WHERE 1 = 1';
+		if (isset($package->ismultientitymanaged) && $package->ismultientitymanaged == 1) {
+			$sql .= ' INNER JOIN '.MAIN_DB_PREFIX.$package->table_element. ' as sp ON t.fk_shipmentpackage = sp.rowid';
+			$sql .= ' WHERE sp.entity IN ('.getEntity($package->table_element).')';
+		} else {
+			$sql .= ' WHERE 1 = 1';
+		}
 		$sql .= ' AND fk_origin_line = '. $fk_origin_line;
-		if (isset($fk_origin_batch_line)) $sql .= ' AND fk_origin_batch_line = '. $fk_origin_batch_line;
+		if ($fk_origin_batch_line > 0) $sql .= ' AND fk_origin_batch_line = '. (int) $fk_origin_batch_line;
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
 			$num = $this->db->num_rows($resql);
-			$i = 0;
-			while ($i < $num) {
+			if ($num) {
 				$obj = $this->db->fetch_object($resql);
-				$qtyPackaged += $obj->qty;
-				$i++;
+				$qtyPackaged = $obj->qty_packaged;
 			}
 			$this->db->free($resql);
 

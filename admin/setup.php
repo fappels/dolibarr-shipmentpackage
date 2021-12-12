@@ -79,7 +79,7 @@ $arrayofparameters = array(
 	'SHIPMENTPACKAGE_MYPARAM2'=>array('type'=>'textarea','enabled'=>1),
 	//'SHIPMENTPACKAGE_MYPARAM3'=>array('type'=>'category:'.Categorie::TYPE_CUSTOMER, 'enabled'=>1),
 	//'SHIPMENTPACKAGE_MYPARAM4'=>array('type'=>'emailtemplate:thirdparty', 'enabled'=>1),
-	'SHIPMENTPACKAGE_MYPARAM3'=>array('type'=>'yesno', 'enabled'=>1),
+	'SHIPMENTPACKAGE_WAP_PACKAGEVALUE'=>array('type'=>'yesno', 'enabled'=>1),
 	//'SHIPMENTPACKAGE_MYPARAM5'=>array('type'=>'thirdparty_type', 'enabled'=>1),
 	//'SHIPMENTPACKAGE_MYPARAM6'=>array('type'=>'securekey', 'enabled'=>1),
 	//'SHIPMENTPACKAGE_MYPARAM7'=>array('type'=>'product', 'enabled'=>1),

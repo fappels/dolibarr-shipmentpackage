@@ -879,6 +879,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		}
 
 		// Show links to link elements
+		if ($object->fk_supplier > 0) $object->fetch_thirdparty($object->fk_supplier); // allow add a supplier object
 		$linktoelem = $form->showLinkToObjectBlock($object, null, array('shipmentpackage'));
 		$somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
 

@@ -32,8 +32,8 @@ SHIPMENTPACKAGE_MYPARAM1 = TODO add ref numbering model
 SHIPMENTPACKAGE_MYPARAM1Tooltip = My param 1 tooltip
 SHIPMENTPACKAGE_MYPARAM2= TODO add doc model
 SHIPMENTPACKAGE_MYPARAM2Tooltip=PDF model or for example external label from shipper
-SHIPMENTPACKAGE_MYPARAM3= TODO Calc value by buy price or sell price
-SHIPMENTPACKAGE_MYPARAM3Tooltip=PDF model or for example external label from shipper
+SHIPMENTPACKAGE_WAP_PACKAGEVALUE=Calculate total package value from WAP
+SHIPMENTPACKAGE_WAP_PACKAGEVALUETooltip=Calculate total package value by weighted average price of products, when off calculate from product sell price.
 
 
 
