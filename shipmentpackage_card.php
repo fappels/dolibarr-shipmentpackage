@@ -396,7 +396,13 @@ if ($action == 'create') {
 
 	print '<table class="border centpercent tableforfieldcreate">'."\n";
 
-	if ($objectsrc->id) print '<tr><td>'.$langs->trans('Expedition').'</td><td>'.$objectsrc->getNomUrl(1).'</td></tr>';
+	if ($objectsrc->id && $origin == 'shipping') {
+		print '<tr><td>'.$langs->trans('Expedition').'</td><td>'.$objectsrc->getNomUrl(1).'</td></tr>';
+		$object->weight_units = $objectsrc->weight_units;
+		$object->size_units = $objectsrc->width_units;
+		$object->fk_shipping_method = $objectsrc->shipping_method_id;
+		$object->fk_project = $objectsrc->fk_project;
+	}
 
 	// Common attributes
 	include DOL_DOCUMENT_ROOT.'/core/tpl/commonfields_add.tpl.php';
@@ -445,6 +451,12 @@ if ($action == 'create') {
 		print img_picto('', $val['picto'], '', false, 0, 0, '', 'pictofixedwidth');
 	}
 	print $formUnits->selectMeasuringUnits("weight_units", "weight", $object->weight_units, 0, 2);
+	print '</td></tr>';
+
+	// Shipping Method
+	print '<tr><td>'.$langs->trans('SendingMethod').'</td><td>';
+	print img_picto('', 'object_dollyrevert', 'class="pictofixedwidth"');
+	print $form->selectShippingMethod($object->fk_shipping_method, 'fk_shipping_method', '', 1, '', 0, 'maxwidth200 widthcentpercentminusx');
 	print '</td></tr>';
 
 	// Other attributes
@@ -551,6 +563,12 @@ if (($id || $ref) && $action == 'edit') {
 		print img_picto('', $val['picto'], '', false, 0, 0, '', 'pictofixedwidth');
 	}
 	print $formUnits->selectMeasuringUnits("weight_units", "weight", $object->weight_units, 0, 2);
+	print '</td></tr>';
+
+	// Shipping Method
+	print '<tr><td>'.$langs->trans('SendingMethod').'</td><td>';
+	print img_picto('', 'object_dollyrevert', 'class="pictofixedwidth"');
+	print $form->selectShippingMethod($object->fk_shipping_method, 'fk_shipping_method', '', 1, '', 0, 'maxwidth200 widthcentpercentminusx');
 	print '</td></tr>';
 
 	// Other attributes

@@ -132,7 +132,7 @@ class ActionsShipmentPackage
 		if (in_array($parameters['currentcontext'], array('expeditioncard'))) {
 			if ($user->rights->shipmentpackage->shipmentpackage->write && $object->statut == Expedition::STATUS_VALIDATED) {
 				$href = dol_buildpath('/shipmentpackage/shipmentpackage_card.php', 2);
-				print '<div class="inline-block divButAction"><a class="butAction" href="' . $href . '?origin=shipping&originid=' . $object->id . '&fk_soc=' . $object->socid . '&action=create">' . $langs->trans('CreatePackage') . '</a></div>';
+				print '<div class="inline-block divButAction"><a class="butAction" href="' . $href . '?origin=shipping&originid=' . $object->id . '&fk_soc=' . $object->socid . '&fk_project=' . $object->fk_project . '&action=create">' . $langs->trans('CreatePackage') . '</a></div>';
 			}
 		}
 		return $error;
