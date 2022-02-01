@@ -72,7 +72,7 @@ class modShipmentPackage extends DolibarrModules
 		$this->editor_url = 'https://www.z-application.com';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
-		$this->version = '1.0.2';
+		$this->version = '1.0.3';
 		// Url to the file with your last numberversion of this module
 		//$this->url_last_version = 'http://www.example.com/versionmodule.txt';
 
@@ -203,13 +203,13 @@ class modShipmentPackage extends DolibarrModules
 		// Dictionaries
 		$this->dictionaries = array(
 			'langs'=>'shipmentpackage@shipmentpackage',
-			'tabname'=>array(MAIN_DB_PREFIX."c_parcel_type"),
-			'tablib'=>array("c_parcel_type"),
-			'tabsql'=>array('SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'c_parcel_type as f'),
+			'tabname'=>array(MAIN_DB_PREFIX."c_shipment_package_type"),
+			'tablib'=>array("c_shipment_package_type"),
+			'tabsql'=>array('SELECT f.rowid as rowid, f.label, f.description, f.active FROM '.MAIN_DB_PREFIX.'c_shipment_package_type as f'),
 			'tabsqlsort'=>array("label ASC"),
-			'tabfield'=>array("code,label"),
-			'tabfieldvalue'=>array("code,label"),
-			'tabfieldinsert'=>array("code,label"),
+			'tabfield'=>array("label,description"),
+			'tabfieldvalue'=>array("label,description"),
+			'tabfieldinsert'=>array("label,description"),
 			'tabrowid'=>array("rowid"),
 			'tabcond'=>array($conf->shipmentpackage->enabled)
 		);

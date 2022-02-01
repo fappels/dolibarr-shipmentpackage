@@ -1,5 +1,8 @@
 # CHANGELOG SHIPMENTPACKAGE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
+## 1.0.3
+Add shipping method and set defaults from expedition.
+Fix for missing migration parcel to package in core.
 ## 1.0.2
 
 Fix draft filter

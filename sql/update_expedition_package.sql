@@ -33,6 +33,8 @@ ALTER TABLE llx_expedition_package ADD COLUMN model_pdf varchar(255);
 ALTER TABLE llx_expedition_package ADD COLUMN status smallint NOT NULL;
 ALTER TABLE llx_expedition_package CHANGE COLUMN size length float;
 ALTER TABLE llx_expedition_package DROP COLUMN rang;
+ALTER TABLE llx_expedition_package CHANGE COLUMN fk_parcel_type fk_package_type integer;
+ALTER TABLE llx_expedition_package ADD COLUMN fk_shipping_method integer;
 ALTER TABLE llx_expedition_packagedet DROP COLUMN fk_product_lot;
 ALTER TABLE llx_expedition_packagedet ADD COLUMN product_lot_batch varchar(128);
 ALTER TABLE llx_expedition_packagedet DROP INDEX idx_expedition_packagedet_fk_expedition_package;
@@ -43,3 +45,5 @@ ALTER TABLE llx_expedition_pacakgedet ADD CONSTRAINT fk_expeditiondet_fk_shipmen
 
 UPDATE llx_expedition_package SET dangerous_goods = 0 WHERE dangerous_goods IS NULL;
 UPDATE llx_expedition_package SET tail_lift = 0 WHERE tail_lift IS NULL;
+
+INSERT INTO llx_c_shipment_package_type (rowid, label, active) SELECT rowid, label, active FROM llx_c_parcel_type;
