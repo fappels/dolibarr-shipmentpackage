@@ -195,7 +195,8 @@ if (empty($reshook)) {
 	include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';
 
 	// link object and replicate extrafield, contacts and lines
-	if ($action == 'add_object_linked' && $origin == 'shipping' && !empty($originid)) {
+	// if view and origin set means add new reception to object
+	if (($action == 'add_object_linked' || $action == 'view') && $origin == 'shipping' && !empty($originid)) {
 		// link object
 		if ($object->add_object_linked($origin, $originid, $user) > 0) {
 			dol_include_once('/expedition/class/expedition.class.php');
@@ -204,14 +205,20 @@ if (empty($reshook)) {
 			$objectsrc = new Expedition($db);
 			$objectsrc->fetch($originid);
 
-			// Replicate extrafields
-			$objectsrc->fetch_optionals();
-			$object->array_options = $objectsrc->array_options;
+			if ($action == 'add_object_linked') {
+				// Replicate extrafields
+				$objectsrc->fetch_optionals();
+				$object->array_options = $objectsrc->array_options;
 
-			// Repicate notes
-			$object->note_private = $object->getDefaultCreateValueFor('note_private', (!empty($objectsrc->note_private) ? $objectsrc->note_private : null));
-			$object->note_public = $object->getDefaultCreateValueFor('note_public', (!empty($objectsrc->note_public) ? $objectsrc->note_public : null));
-
+				// Repicate notes
+				$object->note_private = $object->getDefaultCreateValueFor('note_private', (!empty($objectsrc->note_private) ? $objectsrc->note_private : null));
+				$object->note_public = $object->getDefaultCreateValueFor('note_public', (!empty($objectsrc->note_public) ? $objectsrc->note_public : null));
+			} else {
+				// if add new reception append notes
+				// Repicate notes
+				$object->note_private .= $object->getDefaultCreateValueFor('note_private', (!empty($objectsrc->note_private) ? $objectsrc->note_private : null));
+				$object->note_public .= $object->getDefaultCreateValueFor('note_public', (!empty($objectsrc->note_public) ? $objectsrc->note_public : null));
+			}
 			// Replicate source contacts list
 			// TODO add shipmentpackage type contact
 			/*$objectsrc->fetch_origin();
@@ -273,7 +280,7 @@ if (empty($reshook)) {
 		if (!$error) {
 			$result = $object->addLine($user, $qty, $fk_product);
 			if ($result <= 0) {
-				setEventMessages($this->error, $this->errors, 'errors');
+				setEventMessages($object->error, $object->errors, 'errors');
 				$action = '';
 			} else {
 				unset($_POST['fk_product']);
@@ -302,7 +309,7 @@ if (empty($reshook)) {
 		if (!$error) {
 			$result = $object->updateLine($user, $lineid, $qty, $fk_product);
 			if ($result <= 0) {
-				setEventMessages($this->error, $this->errors, 'errors');
+				setEventMessages($object->error, $object->errors, 'errors');
 				$action = '';
 			} else {
 				unset($_POST['fk_product']);
@@ -360,9 +367,8 @@ llxHeader('', $title, $help_url);
 // });
 // </script>';
 
-
-// Part to create
-if ($action == 'create') {
+// get origin lines
+if ($action == 'create' || $action == 'addto') {
 	if ($origin == 'shipping' && !empty($originid)) {
 		dol_include_once('/expedition/class/expedition.class.php');
 
@@ -372,7 +378,10 @@ if ($action == 'create') {
 			$objectsrc->fetch_lines();
 		}
 	}
+}
 
+// Part to create
+if ($action == 'create') {
 	print load_fiche_titre($langs->trans("NewObject", $langs->transnoentitiesnoconv("ShipmentPackage")), '', 'object_'.$object->picto);
 
 	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
@@ -498,7 +507,7 @@ if ($action == 'create') {
 }
 
 // Part to edit record
-if (($id || $ref) && $action == 'edit') {
+if (($id || $ref) && ($action == 'edit' || $action == 'addto')) {
 	print load_fiche_titre($langs->trans("ShipmentPackage"), '', 'object_'.$object->picto);
 
 	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
@@ -578,6 +587,28 @@ if (($id || $ref) && $action == 'edit') {
 
 	print dol_get_fiche_end();
 
+	// show origin lines to add
+	if ($action == 'addto' && !empty($origin) && !empty($originid) && is_object($objectsrc)) {
+		$title = $langs->trans('ProductsAndServices');
+		print load_fiche_titre($title);
+
+		print '<table class="noborder centpercent">';
+
+		// workaround to have hook 'printOriginObjectLine'
+		if (!empty($objectsrc->lines)) {
+			foreach ($objectsrc->lines as &$line) {
+				$line->product_type = 9;
+				$line->special_code = 1;
+			}
+		}
+
+		$objectsrc->printOriginLinesList('', $selectedLines);
+
+		print '</table>';
+		print '<input type="hidden" name="origin" value="'.$origin.'">';
+		print '<input type="hidden" name="originid" value="'.$originid.'">';
+	}
+
 	print '<div class="center"><input type="submit" class="button button-save" name="save" value="'.$langs->trans("Save").'">';
 	print ' &nbsp; <input type="submit" class="button button-cancel" name="cancel" value="'.$langs->trans("Cancel").'">';
 	print '</div>';
@@ -586,7 +617,7 @@ if (($id || $ref) && $action == 'edit') {
 }
 
 // Part to show record
-if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create'))) {
+if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create' && $action != 'addto'))) {
 	$res = $object->fetch_optionals();
 
 	$head = shipmentpackagePrepareHead($object);
@@ -794,7 +825,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 		// Form to add new line
 		if ($object->status == 0 && $permissiontoadd && $action != 'selectlines') {
-			if ($action != 'editline') {
+			if ($action != 'editline' && $action != 'addto') {
 				// Add products/services form
 
 				$parameters = array();
@@ -816,7 +847,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 
 	// Buttons for actions
 
-	if ($action != 'presend' && $action != 'editline') {
+	if ($action != 'presend' && $action != 'editline' && $action != 'addto') {
 		print '<div class="tabsAction">'."\n";
 		$parameters = array();
 		$reshook = $hookmanager->executeHooks('addMoreActionsButtons', $parameters, $object, $action); // Note that $action and $object may have been modified by hook

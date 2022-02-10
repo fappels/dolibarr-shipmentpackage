@@ -20,7 +20,7 @@ CREATE TABLE llx_expedition_package(
 	ref varchar(128) DEFAULT '(PROV)' NOT NULL, 
 	ref_supplier varchar(128),		-- package ref supplier who handles package (tracking number)
 	fk_soc integer, 				-- customer
-	fk_supplier,					-- supplier who handles package
+	fk_supplier integer,					-- supplier who handles package
 	fk_project integer,
 	description varchar(255), 		--Description of goods in the package (required by the custom)
 	value double(24,8) DEFAULT 0,	--Value (Price of the content, for insurance & custom), 

@@ -1342,7 +1342,7 @@ class ShipmentPackageLine extends CommonObjectLine
 	 */
 	public $fields=array(
 		'rowid' => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'position'=>1, 'notnull'=>1, 'visible'=>-1, 'noteditable'=>'1', 'index'=>1, 'comment'=>"Id"),
-		'fk_shipmentpackage' => array('type'=>'integer:ShipmentPackage:shipmentpackage/class/shipmentpackage.class.php', 'label'=>'SyncApi', 'enabled'=>1, 'visible'=>1, 'position'=>10, 'notnull'=>1, 'index'=>1,),
+		'fk_shipmentpackage' => array('type'=>'integer:ShipmentPackage:shipmentpackage/class/shipmentpackage.class.php', 'label'=>'ShipmentPackage', 'enabled'=>1, 'visible'=>1, 'position'=>10, 'notnull'=>1, 'index'=>1,),
 		'fk_origin_line' => array('type'=>'integer', 'label'=>'OriginLine', 'enabled'=>'1', 'position'=>20, 'notnull'=>1, 'visible'=>0),
 		'fk_origin_batch_line' => array('type'=>'integer', 'label'=>'OriginBatchLine', 'enabled'=>'1', 'position'=>30, 'notnull'=>1, 'visible'=>0),
 		'fk_product' => array('type'=>'integer:Product:product/class/product.class.php', 'label'=>'Product', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>1),
@@ -1369,11 +1369,6 @@ class ShipmentPackageLine extends CommonObjectLine
 	 * @var int    Name of subtable line
 	 */
 	public $table_element = 'expedition_packagedet';
-
-	/**
-	 * @var int  Does support multicompany module ? 0=No test on entity, 1=Test with field entity, 2=Test with link by societe
-	 */
-	public $ismultientitymanaged = 0;
 
 	/**
 	 * @var int  Does object support extrafields ? 0=No, 1=Yes
@@ -1465,8 +1460,7 @@ class ShipmentPackageLine extends CommonObjectLine
 		$sql = 'SELECT ';
 		$sql .= $this->getFieldList();
 		$sql .= ' FROM '.MAIN_DB_PREFIX.$this->table_element.' as t';
-		if (isset($this->ismultientitymanaged) && $this->ismultientitymanaged == 1) $sql .= ' WHERE t.entity IN ('.getEntity($this->table_element).')';
-		else $sql .= ' WHERE 1 = 1';
+		$sql .= ' WHERE 1 = 1';
 		// Manage filter
 		$sqlwhere = array();
 		if (count($filter) > 0) {
@@ -1545,7 +1539,7 @@ class ShipmentPackageLine extends CommonObjectLine
 	}
 
 	/**
-	 * update shipmentpackage value with product pmp
+	 * update shipmentpackage value
 	 *
 	 * @param user				$user		User that do the action
 	 * @param ShipmentPackage	$package	package to update value
