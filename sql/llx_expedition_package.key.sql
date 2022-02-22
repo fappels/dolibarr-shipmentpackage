@@ -16,7 +16,7 @@
 
 -- BEGIN MODULEBUILDER INDEXES
 ALTER TABLE llx_expedition_package ADD INDEX idx_expedition_package_entity (entity);
-ALTER TABLE llx_expedition_package ADD INDEX idx_expedition_package_ref (ref);
+ALTER TABLE llx_expedition_package ADD UNIQUE INDEX idx_reception_uk_ref (ref, entity);
 ALTER TABLE llx_expedition_package ADD INDEX idx_expedition_package_ref_supplier (ref_supplier);
 ALTER TABLE llx_expedition_package ADD INDEX idx_expedition_package_fk_soc (fk_soc);
 ALTER TABLE llx_expedition_package ADD INDEX idx_expedition_package_fk_supplier (fk_supplier);
