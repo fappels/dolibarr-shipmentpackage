@@ -470,15 +470,17 @@ class ShipmentPackage extends CommonObject
 		$result = $this->fetchCommon($id, $ref);
 		if ($result > 0) {
 			if (!empty($this->table_element_line)) {
-				$this->fetchLines();
+				$result = $this->fetchLines();
 			}
-			$result = $this->fetchObjectLinked(null, 'shipping', $this->id, 'shipmentpackage');
-			if ($result > 0 && is_array($this->linkedObjects['shipping'])) {
-				if (count($this->linkedObjects['shipping']) > 0) {
-					$this->origin = 'shipping';
-					foreach ($this->linkedObjects['shipping'] as $shipment) {
-						$this->origin_id = $shipment->id;
-						break; // only one shipment possible
+			if ($result > 0) {
+				$result = $this->fetchObjectLinked(null, 'shipping', $this->id, 'shipmentpackage');
+				if ($result > 0 && is_array($this->linkedObjects['shipping'])) {
+					if (count($this->linkedObjects['shipping']) > 0) {
+						$this->origin = 'shipping';
+						foreach ($this->linkedObjects['shipping'] as $shipment) {
+							$this->origin_id = $shipment->id;
+							break; // only one shipment possible
+						}
 					}
 				}
 			}

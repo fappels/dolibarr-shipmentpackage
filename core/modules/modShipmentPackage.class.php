@@ -159,7 +159,7 @@ class modShipmentPackage extends DolibarrModules
 		// Example: $this->const=array(1 => array('SHIPMENTPACKAGE_MYNEWCONST1', 'chaine', 'myvalue', 'This is a constant to add', 1),
 		//                             2 => array('SHIPMENTPACKAGE_MYNEWCONST2', 'chaine', 'myvalue', 'This is another constant to add', 0, 'current', 1)
 		// );
-		$this->const = array();
+		$this->const = array(1 => array('SHIPMENTPACKAGE_SUBPERMCATEGORY_FOR_DOCUMENTS', 'chaine', 'shipmentpackage', '', 0, 'current', 1));
 
 		// Some keys to add into the overwriting translation tables
 		/*$this->overwrite_translation = array(
@@ -446,7 +446,7 @@ class modShipmentPackage extends DolibarrModules
 		// Document templates
 		$moduledir = 'shipmentpackage';
 		$myTmpObjects = array();
-		$myTmpObjects['ShipmentPackage'] = array('includerefgeneration'=>0, 'includedocgeneration'=>1);
+		$myTmpObjects['ShipmentPackage'] = array('includerefgeneration'=>1, 'includedocgeneration'=>1);
 
 		foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
 			if ($myTmpObjectArray['includedocgeneration']) {
