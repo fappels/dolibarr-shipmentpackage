@@ -473,6 +473,8 @@ class ShipmentPackage extends CommonObject
 				$result = $this->fetchLines();
 			}
 			if ($result > 0) {
+				// Tracking url
+				$this->getUrlTrackingStatus($this->ref_supplier);
 				$result = $this->fetchObjectLinked(null, 'shipping', $this->id, 'shipmentpackage');
 				if ($result > 0 && is_array($this->linkedObjects['shipping'])) {
 					if (count($this->linkedObjects['shipping']) > 0) {
@@ -1259,6 +1261,35 @@ class ShipmentPackage extends CommonObject
 	}
 
 	/**
+	 * set tracking url
+	 *
+	 * @param	string	$value		Value
+	 * @return	void
+	 */
+	public function getUrlTrackingStatus($value = '')
+	{
+		if (!empty($this->fk_shipping_method)) {
+			$sql = "SELECT em.code, em.tracking";
+			$sql .= " FROM ".MAIN_DB_PREFIX."c_shipment_mode as em";
+			$sql .= " WHERE em.rowid = ".((int) $this->fk_shipping_method);
+
+			$resql = $this->db->query($sql);
+			if ($resql) {
+				if ($obj = $this->db->fetch_object($resql)) {
+					$tracking = $obj->tracking;
+				}
+			}
+		}
+
+		if (!empty($tracking) && !empty($value)) {
+			$url = str_replace('{TRACKID}', $value, $tracking);
+			$this->tracking_url = sprintf('<a target="_blank" href="%s">'.($value ? $value : 'url').'</a>', $url, $url);
+		} else {
+			$this->tracking_url = '';
+		}
+	}
+
+	/**
 	 * get qty to ship for shipment
 	 *
 	 * @param int			$fk_expedition			shipment id
@@ -1580,6 +1611,7 @@ class ShipmentPackageLine extends CommonObjectLine
 			}
 		}
 		if ($result > 0) {
+			if (empty($package->value)) $package->value = 0;
 			if ($mode == 'increase') {
 				$package->value += $value;
 			} else {

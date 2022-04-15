@@ -782,6 +782,13 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	print measuringUnitString(0, "weight", $object->weight_units, 1);
 	print '</td></tr>';
 
+	// Tracking URL
+	if ($object->tracking_url) {
+		print '<tr><td class="titlefield">'.$langs->trans("TrackingUrl").'</td><td colspan="3">';
+		print $object->tracking_url;
+		print '</td></tr>';
+	}
+
 	// Other attributes. Fields from hook formObjectOptions and Extrafields.
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
 
