@@ -28,8 +28,7 @@
  */
 
 // Protection to avoid direct call of template
-if (empty($object) || ! is_object($object))
-{
+if (empty($object) || ! is_object($object)) {
 	print "Error, template page can't be called as URL";
 	exit;
 }
@@ -42,10 +41,8 @@ print '<tr class="liste_titre nodrag nodrop">';
 // Adds a line numbering column
 if (! empty($conf->global->MAIN_VIEW_LINE_NUMBER)) print '<td class="linecolnum center">&nbsp;</td>';
 
-print '<td class="linecoldescription minwidth200imp"></td>';
-
 print '<td class="linecol">'.$langs->trans('Product').'</td>';
-print '<td class="linecoldescription minwidth200imp">'.$langs->trans('Quantity').'</td>';
+print '<td class="linecolqty right">'.$langs->trans('Quantity').'</td>';
 if (!empty($conf->productbatch->enabled)) print '<td class="linecoldescription minwidth200imp">'.$langs->trans('ProductLotBatch').'</td>';
 
 print '<td class="linecoledit"></td>';  // No width to allow autodim
@@ -54,8 +51,7 @@ print '<td class="linecoldelete" style="width: 10px"></td>';
 
 print '<td class="linecolmove" style="width: 10px"></td>';
 
-if ($action == 'selectlines')
-{
+if ($action == 'selectlines') {
 	print '<td class="linecolcheckall center">';
 	print '<input type="checkbox" class="linecheckboxtoggle" />';
 	print '<script>$(document).ready(function() {$(".linecheckboxtoggle").click(function() {var checkBoxes = $(".linecheckbox");checkBoxes.prop("checked", this.checked);})});</script>';

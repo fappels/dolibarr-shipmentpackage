@@ -59,8 +59,7 @@ if (!empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
 	print '<td class="linecolnum center">'.($i + 1).'</td>';
 	$coldisplay++;
 }
-$coldisplay++;
-print '<td class="linecoldescription minwidth200imp"></td>';
+
 $coldisplay++;
 print '<td class="linecol">';
 if ($line->fk_product > 0) {
@@ -85,7 +84,7 @@ if ($line->fk_product > 0) {
 print '</td>';
 
 $coldisplay++;
-print '<td class="linecolqty minwidth200imp">' . $line->qty;
+print '<td class="linecolqty right">' . $line->qty;
 print '</td>';
 
 if (!empty($conf->productbatch->enabled)) {
@@ -95,7 +94,7 @@ if (!empty($conf->productbatch->enabled)) {
 	} else {
 		$value = $line->product_lot_batch;
 	}
-	print '<td class="linecolqty minwidth200imp">' . $value;
+	print '<td class="linecoldescription minwidth200imp">' . $value;
 	print '</td>';
 }
 

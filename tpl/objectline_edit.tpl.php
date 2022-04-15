@@ -52,12 +52,9 @@ print '<tr class="oddeven tredited">';
 if (! empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
 	print '<td class="linecolnum center">'.($i+1).'</td>';
 	$coldisplay++;
-	if (! empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
-		print '<td class="linecolnum center">'.($i+1).'</td>';
-		$coldisplay++;
-		print '<td><div id="line_'.$line->id.'"></div></td>';
-	}
-	print '<input type="hidden" name="lineid" value="'.$line->id.'">';
+}
+print '<div id="line_'.$line->id.'"></div>';
+print '<input type="hidden" name="lineid" value="'.$line->id.'">';
 $coldisplay++;
 print '<td class="bordertop nobottom linecol">';
 $statustoshow = 1;
@@ -105,7 +102,7 @@ if ($line->fk_product) {
 print '</td>';
 
 $coldisplay++;
-print '<td class="bordertop nobottom linecolqty"><input type="text" size="2" name="qty" id="qty" class="flat right" value="'.$line->qty.'">';
+print '<td class="bordertop nobottom linecolqty right"><input type="text" size="2" name="qty" id="qty" class="flat right" value="'.$line->qty.'">';
 print '</td>';
 
 if (!empty($conf->productbatch->enabled)) {
