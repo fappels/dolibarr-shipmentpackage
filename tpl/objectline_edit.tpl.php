@@ -41,7 +41,7 @@ if (empty($forceall)) $forceall = 0;
 $colspan = 3; // Columns: total ht + col edit + col delete
 
 // Lines for extrafield
-$line = new ShipmentPackageLine($this->db);
+$line = new ShipmentPackageLine($object->db);
 $line->fetch($lineid);
 
 print "<!-- BEGIN PHP TEMPLATE objectline_edit.tpl.php -->\n";
@@ -53,14 +53,8 @@ if (! empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
 	print '<td class="linecolnum center">'.($i+1).'</td>';
 	$coldisplay++;
 }
-?>
-	<td>
-	<div id="line_<?php echo $line->id; ?>"></div>
-
-	<input type="hidden" name="lineid" value="<?php echo $line->id; ?>">
-	</td>
-<?php
-
+print '<div id="line_'.$line->id.'"></div>';
+print '<input type="hidden" name="lineid" value="'.$line->id.'">';
 $coldisplay++;
 print '<td class="bordertop nobottom linecol">';
 $statustoshow = 1;
@@ -69,7 +63,7 @@ if ($line->fk_product) {
 		// hide products in closed warehouse, but show products for internal transfer
 		$form->select_produits($line->fk_product, 'fk_product', $filtertype, $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, 'warehouseopen,warehouseinternal');
 	} else {
-		$form->select_produits($line->fkproduct, 'fk_product', $filtertype, $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, '');
+		$form->select_produits($line->fk_product, 'fk_product', $filtertype, $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, '');
 	}
 	if (!empty($conf->global->MAIN_AUTO_OPEN_SELECT2_ON_FOCUS_FOR_CUSTOMER_PRODUCTS)) {
 		?>
@@ -108,7 +102,7 @@ if ($line->fk_product) {
 print '</td>';
 
 $coldisplay++;
-print '<td class="bordertop nobottom linecolqty"><input type="text" size="2" name="qty" id="qty" class="flat right" value="'.$line->qty.'">';
+print '<td class="bordertop nobottom linecolqty right"><input type="text" size="2" name="qty" id="qty" class="flat right" value="'.$line->qty.'">';
 print '</td>';
 
 if (!empty($conf->productbatch->enabled)) {

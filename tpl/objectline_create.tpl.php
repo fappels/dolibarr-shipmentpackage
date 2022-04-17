@@ -37,22 +37,20 @@ $colspan = 3; // Columns: total ht + col edit + col delete
 //print $object->element;
 
 // Lines for extrafield
-$objectline = new ShipmentPackageLine($this->db);
+$objectline = new ShipmentPackageLine($object->db);
 
 print "<!-- BEGIN PHP TEMPLATE objectline_create.tpl.php -->\n";
 
-$nolinesbefore = (count($this->lines) == 0 || $forcetoshowtitlelines);
+$nolinesbefore = (count($object->lines) == 0 || $forcetoshowtitlelines);
 if ($nolinesbefore) {
 	print '<tr class="liste_titre nodrag nodrop">';
 	if (!empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
 		print '<td class="linecolnum center"></td>';
 	}
-	print '<td class="linecoldescription minwidth200imp">';
 	print '<div id="add"></div><span class="hideonsmartphone">'.$langs->trans('AddNewLine').'</span>';
 	// echo $langs->trans("FreeZone");
-	print '</td>';
 	print '<td class="linecol">'.$langs->trans('Product').'</td>';
-	print '<td class="linecoldescription minwidth200imp">'.$langs->trans('Quantity').'</td>';
+	print '<td class="linecolqty right">'.$langs->trans('Quantity').'</td>';
 	if (!empty($conf->productbatch->enabled)) print '<td class="linecoldescription minwidth200imp">'.$langs->trans('ProductLotBatch').'</td>';
 	print '<td class="linecoledit" colspan="'.$colspan.'">&nbsp;</td>';
 	print '</tr>';
@@ -65,9 +63,6 @@ if (!empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
 	$coldisplay++;
 	echo '<td class="bordertop nobottom linecolnum center"></td>';
 }
-
-$coldisplay++;
-print '<td class="bordertop nobottom linecoldescription minwidth200imp"></td>';
 
 $coldisplay++;
 print '<td class="bordertop nobottom linecol">';
@@ -98,7 +93,7 @@ if (!empty($conf->global->MAIN_AUTO_OPEN_SELECT2_ON_FOCUS_FOR_CUSTOMER_PRODUCTS)
 print '</td>';
 
 $coldisplay++;
-print '<td class="bordertop nobottom linecolqty"><input type="text" size="2" name="qty" id="qty" class="flat right" value="'.(isset($_POST["qty"]) ?GETPOST("qty", 'alpha', 2) : 1).'">';
+print '<td class="bordertop nobottom linecolqty right"><input type="text" size="2" name="qty" id="qty" class="flat right" value="'.(isset($_POST["qty"]) ?GETPOST("qty", 'alpha', 2) : 1).'">';
 print '</td>';
 
 if (!empty($conf->productbatch->enabled)) {

@@ -72,7 +72,7 @@ class modShipmentPackage extends DolibarrModules
 		$this->editor_url = 'https://www.z-application.com';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
-		$this->version = '1.0.3';
+		$this->version = '1.0.4';
 		// Url to the file with your last numberversion of this module
 		//$this->url_last_version = 'http://www.example.com/versionmodule.txt';
 
@@ -159,7 +159,7 @@ class modShipmentPackage extends DolibarrModules
 		// Example: $this->const=array(1 => array('SHIPMENTPACKAGE_MYNEWCONST1', 'chaine', 'myvalue', 'This is a constant to add', 1),
 		//                             2 => array('SHIPMENTPACKAGE_MYNEWCONST2', 'chaine', 'myvalue', 'This is another constant to add', 0, 'current', 1)
 		// );
-		$this->const = array();
+		$this->const = array(1 => array('SHIPMENTPACKAGE_SUBPERMCATEGORY_FOR_DOCUMENTS', 'chaine', 'shipmentpackage', '', 0, 'current', 1));
 
 		// Some keys to add into the overwriting translation tables
 		/*$this->overwrite_translation = array(
@@ -446,7 +446,7 @@ class modShipmentPackage extends DolibarrModules
 		// Document templates
 		$moduledir = 'shipmentpackage';
 		$myTmpObjects = array();
-		$myTmpObjects['ShipmentPackage'] = array('includerefgeneration'=>0, 'includedocgeneration'=>1);
+		$myTmpObjects['ShipmentPackage'] = array('includerefgeneration'=>1, 'includedocgeneration'=>1);
 
 		foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
 			if ($myTmpObjectArray['includedocgeneration']) {
@@ -468,6 +468,8 @@ class modShipmentPackage extends DolibarrModules
 				$sql = array_merge($sql, array(
 					"DELETE FROM ".MAIN_DB_PREFIX."document_model WHERE nom = 'standard_".strtolower($myTmpObjectKey)."' AND type = '".strtolower($myTmpObjectKey)."' AND entity = ".$conf->entity,
 					"INSERT INTO ".MAIN_DB_PREFIX."document_model (nom, type, entity, libelle) VALUES('standard_".strtolower($myTmpObjectKey)."','".strtolower($myTmpObjectKey)."',".$conf->entity.", 'Standard')",
+					"DELETE FROM ".MAIN_DB_PREFIX."document_model WHERE nom = 'label_".strtolower($myTmpObjectKey)."' AND type = '".strtolower($myTmpObjectKey)."' AND entity = ".$conf->entity,
+					"INSERT INTO ".MAIN_DB_PREFIX."document_model (nom, type, entity, libelle) VALUES('label_".strtolower($myTmpObjectKey)."','".strtolower($myTmpObjectKey)."',".$conf->entity.", 'Label')",
 					"DELETE FROM ".MAIN_DB_PREFIX."document_model WHERE nom = 'generic_".strtolower($myTmpObjectKey)."_odt' AND type = '".strtolower($myTmpObjectKey)."' AND entity = ".$conf->entity,
 					"INSERT INTO ".MAIN_DB_PREFIX."document_model (nom, type, entity, libelle) VALUES('generic_".strtolower($myTmpObjectKey)."_odt', '".strtolower($myTmpObjectKey)."', ".$conf->entity.",'Generic odt')"
 				));

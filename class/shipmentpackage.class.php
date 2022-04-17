@@ -435,18 +435,20 @@ class ShipmentPackage extends CommonObject
 		$result = 0;
 
 		$line = new ShipmentPackageLine($this->db);
-		$line->fetch($lineid);
-		$line->updatePackageValue($user, $this, 'decrease');
-		$line->fk_shipmentpackage = $this->id;
-		$line->qty = $qty;
-		$line->fk_product = $fk_product;
-		if (!empty($product_lot_batch)) $line->product_lot_batch = $product_lot_batch;
-		if (isset($fk_origin_line)) $line->fk_origin_line = $fk_origin_line;
-		if (isset($fk_origin_batch_line)) $line->fk_origin_batch_line = $fk_origin_batch_line;
+		$result = $line->fetch($lineid);
+		if ($result > 0) {
+			$line->updatePackageValue($user, $this, 'decrease');
+			$line->fk_shipmentpackage = $this->id;
+			$line->qty = $qty;
+			$line->fk_product = $fk_product;
+			if (!empty($product_lot_batch)) $line->product_lot_batch = $product_lot_batch;
+			if (isset($fk_origin_line)) $line->fk_origin_line = $fk_origin_line;
+			if (isset($fk_origin_batch_line)) $line->fk_origin_batch_line = $fk_origin_batch_line;
 
-		$lineid = $line->update($user);
-		if ($lineid > 0) {
-			$result = $line->updatePackageValue($user, $this, 'increase');
+			$lineid = $line->update($user);
+			if ($lineid > 0) {
+				$result = $line->updatePackageValue($user, $this, 'increase');
+			}
 		}
 		if ($result > 0) {
 			return $lineid;
@@ -468,16 +470,20 @@ class ShipmentPackage extends CommonObject
 		$result = $this->fetchCommon($id, $ref);
 		if ($result > 0) {
 			if (!empty($this->table_element_line)) {
-				$this->fetchLines();
+				$result = $this->fetchLines();
 			}
-			$result = $this->fetchObjectLinked(null, 'shipping', $this->id, 'shipmentpackage');
-			if (is_array($result)) {
-				if (count($this->linkedObjects['shipping']) > 0) {
-					$this->origin = 'shipping';
-					foreach ($this->linkedObjects['shipping'] as $shipment) {
-						$this->origin_id = $shipment->id;
-						break; // only one shipment possible
-					};
+			if ($result > 0) {
+				// Tracking url
+				$this->getUrlTrackingStatus($this->ref_supplier);
+				$result = $this->fetchObjectLinked(null, 'shipping', $this->id, 'shipmentpackage');
+				if ($result > 0 && is_array($this->linkedObjects['shipping'])) {
+					if (count($this->linkedObjects['shipping']) > 0) {
+						$this->origin = 'shipping';
+						foreach ($this->linkedObjects['shipping'] as $shipment) {
+							$this->origin_id = $shipment->id;
+							break; // only one shipment possible
+						}
+					}
 				}
 			}
 		}
@@ -560,7 +566,7 @@ class ShipmentPackage extends CommonObject
 			while ($i < ($limit ? min($limit, $num) : $num)) {
 				$obj = $this->db->fetch_object($resql);
 
-				$record = new self($this->db);
+				$record = new static($this->db);
 				$record->setVarsFromFetchObj($obj);
 
 				$records[$record->id] = $record;
@@ -1255,6 +1261,35 @@ class ShipmentPackage extends CommonObject
 	}
 
 	/**
+	 * set tracking url
+	 *
+	 * @param	string	$value		Value
+	 * @return	void
+	 */
+	public function getUrlTrackingStatus($value = '')
+	{
+		if (!empty($this->fk_shipping_method)) {
+			$sql = "SELECT em.code, em.tracking";
+			$sql .= " FROM ".MAIN_DB_PREFIX."c_shipment_mode as em";
+			$sql .= " WHERE em.rowid = ".((int) $this->fk_shipping_method);
+
+			$resql = $this->db->query($sql);
+			if ($resql) {
+				if ($obj = $this->db->fetch_object($resql)) {
+					$tracking = $obj->tracking;
+				}
+			}
+		}
+
+		if (!empty($tracking) && !empty($value)) {
+			$url = str_replace('{TRACKID}', $value, $tracking);
+			$this->tracking_url = sprintf('<a target="_blank" href="%s">'.($value ? $value : 'url').'</a>', $url, $url);
+		} else {
+			$this->tracking_url = '';
+		}
+	}
+
+	/**
 	 * get qty to ship for shipment
 	 *
 	 * @param int			$fk_expedition			shipment id
@@ -1342,7 +1377,7 @@ class ShipmentPackageLine extends CommonObjectLine
 	 */
 	public $fields=array(
 		'rowid' => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'position'=>1, 'notnull'=>1, 'visible'=>-1, 'noteditable'=>'1', 'index'=>1, 'comment'=>"Id"),
-		'fk_shipmentpackage' => array('type'=>'integer:ShipmentPackage:shipmentpackage/class/shipmentpackage.class.php', 'label'=>'SyncApi', 'enabled'=>1, 'visible'=>1, 'position'=>10, 'notnull'=>1, 'index'=>1,),
+		'fk_shipmentpackage' => array('type'=>'integer:ShipmentPackage:shipmentpackage/class/shipmentpackage.class.php', 'label'=>'ShipmentPackage', 'enabled'=>1, 'visible'=>1, 'position'=>10, 'notnull'=>1, 'index'=>1,),
 		'fk_origin_line' => array('type'=>'integer', 'label'=>'OriginLine', 'enabled'=>'1', 'position'=>20, 'notnull'=>1, 'visible'=>0),
 		'fk_origin_batch_line' => array('type'=>'integer', 'label'=>'OriginBatchLine', 'enabled'=>'1', 'position'=>30, 'notnull'=>1, 'visible'=>0),
 		'fk_product' => array('type'=>'integer:Product:product/class/product.class.php', 'label'=>'Product', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>1),
@@ -1369,11 +1404,6 @@ class ShipmentPackageLine extends CommonObjectLine
 	 * @var int    Name of subtable line
 	 */
 	public $table_element = 'expedition_packagedet';
-
-	/**
-	 * @var int  Does support multicompany module ? 0=No test on entity, 1=Test with field entity, 2=Test with link by societe
-	 */
-	public $ismultientitymanaged = 0;
 
 	/**
 	 * @var int  Does object support extrafields ? 0=No, 1=Yes
@@ -1465,8 +1495,7 @@ class ShipmentPackageLine extends CommonObjectLine
 		$sql = 'SELECT ';
 		$sql .= $this->getFieldList();
 		$sql .= ' FROM '.MAIN_DB_PREFIX.$this->table_element.' as t';
-		if (isset($this->ismultientitymanaged) && $this->ismultientitymanaged == 1) $sql .= ' WHERE t.entity IN ('.getEntity($this->table_element).')';
-		else $sql .= ' WHERE 1 = 1';
+		$sql .= ' WHERE 1 = 1';
 		// Manage filter
 		$sqlwhere = array();
 		if (count($filter) > 0) {
@@ -1501,7 +1530,7 @@ class ShipmentPackageLine extends CommonObjectLine
 			while ($i < $min) {
 				$obj = $this->db->fetch_object($resql);
 
-				$record = new self($this->db);
+				$record = new static($this->db);
 				$record->setVarsFromFetchObj($obj);
 
 				$records[] = $record;
@@ -1545,7 +1574,7 @@ class ShipmentPackageLine extends CommonObjectLine
 	}
 
 	/**
-	 * update shipmentpackage value with product pmp
+	 * update shipmentpackage value
 	 *
 	 * @param user				$user		User that do the action
 	 * @param ShipmentPackage	$package	package to update value
@@ -1582,12 +1611,13 @@ class ShipmentPackageLine extends CommonObjectLine
 			}
 		}
 		if ($result > 0) {
+			if (empty($package->value)) $package->value = 0;
 			if ($mode == 'increase') {
 				$package->value += $value;
 			} else {
 				$package->value -= $value;
 			}
-			return $package->update($user);
+			return $package->update($user, true);
 		} else {
 			return $result;
 		}

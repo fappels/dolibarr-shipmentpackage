@@ -20,7 +20,7 @@ CREATE TABLE llx_expedition_package(
 	ref varchar(128) DEFAULT '(PROV)' NOT NULL, 
 	ref_supplier varchar(128),		-- package ref supplier who handles package (tracking number)
 	fk_soc integer, 				-- customer
-	fk_supplier,					-- supplier who handles package
+	fk_supplier integer,					-- supplier who handles package
 	fk_project integer,
 	description varchar(255), 		--Description of goods in the package (required by the custom)
 	value double(24,8) DEFAULT 0,	--Value (Price of the content, for insurance & custom), 
@@ -37,7 +37,7 @@ CREATE TABLE llx_expedition_package(
 	note_public text, 
 	note_private text, 
 	date_creation datetime NOT NULL, 
-	tms timestamp, 
+	tms timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
 	fk_user_creat integer NOT NULL, 
 	fk_user_modif integer, 
 	last_main_doc varchar(255), 
