@@ -414,6 +414,7 @@ class ShipmentPackage extends CommonObject
 			return $lineid;
 		} else {
 			$this->error = $line->error;
+			$this->errors = $line->errors;
 			return $result;
 		}
 	}
@@ -454,6 +455,7 @@ class ShipmentPackage extends CommonObject
 			return $lineid;
 		} else {
 			$this->error = $line->error;
+			$this->errors = $line->errors;
 			return $result;
 		}
 	}
