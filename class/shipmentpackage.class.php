@@ -1619,10 +1619,12 @@ class ShipmentPackageLine extends CommonObjectLine
 			} else {
 				$package->value -= $value;
 			}
-			return $package->update($user, true);
-		} else {
-			return $result;
+			$result = $package->update($user, true);
+			if ($result < 0) {
+				$this->errors = $package->errors;
+			}
 		}
+		return $result;
 	}
 
 	/**
