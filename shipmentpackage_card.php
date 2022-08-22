@@ -198,7 +198,10 @@ if (empty($reshook)) {
 	// if view and origin set means add new reception to object
 	if (($action == 'add_object_linked' || $action == 'view') && $origin == 'shipping' && !empty($originid)) {
 		// link object
+		$object_module = $object->module;
+		$object->module = null; //avoid to have add module name to element, because module element name already in element
 		if ($object->add_object_linked($origin, $originid, $user) > 0) {
+			$object->module = $object_module;
 			dol_include_once('/expedition/class/expedition.class.php');
 			dol_include_once('/commande/class/commande.class.php');
 
@@ -886,7 +889,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			}
 
 			// Clone
-			print dolGetButtonAction($langs->trans('ToClone'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&socid='.$object->socid.'&action=clone&token='.newToken(), '', $permissiontoadd);
+			print dolGetButtonAction($langs->trans('ToClone'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.(!empty($object->socid) ? '&socid='.$object->socid : '').'&action=clone&token='.newToken(), '', $permissiontoadd);
 
 			/*
 			if ($permissiontoadd) {
