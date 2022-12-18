@@ -78,6 +78,7 @@ ProductLotBatch = Lot/Serial
 CreatePackage = Create Package
 TrackingUrl = Tracking Url
 ConfirmCloseShipmentPackage = Confirm Shipment package close.
+ConfirmReOpenShipmentPackage = Are you sure you want to re-open this package?
 
 #
 # Sample widget
