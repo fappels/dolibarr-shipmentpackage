@@ -810,7 +810,7 @@ class ShipmentPackage extends CommonObject
 	public function reopen($user, $notrigger = 0)
 	{
 		// Protection
-		if ($this->status != self::STATUS_CANCELED) {
+		if ($this->status != self::STATUS_CANCELED || $this->status != self::STATUS_CLOSED) {
 			return 0;
 		}
 
