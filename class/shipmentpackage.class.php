@@ -67,6 +67,7 @@ class ShipmentPackage extends CommonObject
 
 	const STATUS_DRAFT = 0;
 	const STATUS_VALIDATED = 1;
+	const STATUS_CLOSED = 2;
 	const STATUS_CANCELED = 9;
 
 
@@ -147,7 +148,7 @@ class ShipmentPackage extends CommonObject
 		'last_main_doc' => array('type'=>'varchar(255)', 'label'=>'LastMainDoc', 'enabled'=>'1', 'position'=>230, 'notnull'=>0, 'visible'=>0,),
 		'import_key' => array('type'=>'varchar(14)', 'label'=>'ImportId', 'enabled'=>'1', 'position'=>240, 'notnull'=>-1, 'visible'=>-2,),
 		'model_pdf' => array('type'=>'varchar(255)', 'label'=>'Model pdf', 'enabled'=>'1', 'position'=>250, 'notnull'=>-1, 'visible'=>0,),
-		'status' => array('type'=>'smallint', 'label'=>'Status', 'enabled'=>'1', 'position'=>260, 'notnull'=>1, 'visible'=>5, 'index'=>1, 'default'=>0, 'arrayofkeyval'=>array('0'=>'Draft', '1'=>'Validated', '9'=>'Canceled'),),
+		'status' => array('type'=>'smallint', 'label'=>'Status', 'enabled'=>'1', 'position'=>260, 'notnull'=>1, 'visible'=>5, 'index'=>1, 'default'=>0, 'arrayofkeyval'=>array('0'=>'Draft', '1'=>'Validated', '2' => 'Closed', '9'=>'Canceled'),),
 	);
 	public $rowid;
 	public $ref;
@@ -788,7 +789,7 @@ class ShipmentPackage extends CommonObject
 	}
 
 	/**
-	 *	Set cancel status
+	 *	cancel method run by actions_addupdatedelete, should perform the close action
 	 *
 	 *	@param	User	$user			Object user that modify
 	 *  @param	int		$notrigger		1=Does not execute triggers, 0=Execute triggers
@@ -796,19 +797,7 @@ class ShipmentPackage extends CommonObject
 	 */
 	public function cancel($user, $notrigger = 0)
 	{
-		// Protection
-		if ($this->status != self::STATUS_VALIDATED) {
-			return 0;
-		}
-
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->shipmentpackage_advance->validate))))
-		 {
-		 $this->error='Permission denied';
-		 return -1;
-		 }*/
-
-		return $this->setStatusCommon($user, self::STATUS_CANCELED, $notrigger, 'SHIPMENTPACKAGE_CANCEL');
+		return $this->close($user, $notrigger);
 	}
 
 	/**
@@ -833,6 +822,30 @@ class ShipmentPackage extends CommonObject
 		 }*/
 
 		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'SHIPMENTPACKAGE_REOPEN');
+	}
+
+	/**
+	 *	Set to processed status
+	 *
+	 *	@param	User	$user			Object user that modify
+	 *  @param	int		$notrigger		1=Does not execute triggers, 0=Execute triggers
+	 *	@return	int						<0 if KO, 0=Nothing done, >0 if OK
+	 */
+	public function close($user, $notrigger = 0)
+	{
+		// Protection
+		if ($this->status != self::STATUS_VALIDATED) {
+			return 0;
+		}
+
+		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->harisons->write))
+		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->harisons->harisons_advance->validate))))
+		 {
+		 $this->error='Permission denied';
+		 return -1;
+		 }*/
+
+		return $this->setStatusCommon($user, self::STATUS_CLOSED, $notrigger, 'SHIPMENTPACKAGE_CLOSE');
 	}
 
 	/**
@@ -977,14 +990,15 @@ class ShipmentPackage extends CommonObject
 			//$langs->load("shipmentpackage@shipmentpackage");
 			$this->labelStatus[self::STATUS_DRAFT] = $langs->trans('Draft');
 			$this->labelStatus[self::STATUS_VALIDATED] = $langs->trans('Validated');
+			$this->labelStatus[self::STATUS_CLOSED] = $langs->trans('Processed');
 			$this->labelStatus[self::STATUS_CANCELED] = $langs->trans('Canceled');
 			$this->labelStatusShort[self::STATUS_DRAFT] = $langs->trans('Draft');
 			$this->labelStatusShort[self::STATUS_VALIDATED] = $langs->trans('Validated');
+			$this->labelStatusShort[self::STATUS_CLOSED] = $langs->trans('Processed');
 			$this->labelStatusShort[self::STATUS_CANCELED] = $langs->trans('Canceled');
 		}
 
 		$statusType = 'status'.$status;
-		//if ($status == self::STATUS_VALIDATED) $statusType = 'status1';
 		if ($status == self::STATUS_CANCELED) {
 			$statusType = 'status6';
 		}

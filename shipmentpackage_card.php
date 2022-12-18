@@ -643,6 +643,20 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 	}
 
+	// Close confirmation
+	if ($action == 'close') {
+		// Create an array for form
+		$formquestion = array();
+		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('Close'), $langs->trans('ConfirmCloseAsk', $object->ref), 'confirm_close', $formquestion, 'yes', 1);
+	}
+
+	// re-open confirmation
+	if ($action == 'reopen') {
+		// Create an array for form
+		$formquestion = array();
+		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ReOpen'), $langs->trans('ConfirmReOpenProp', $object->ref), 'confirm_reopen', $formquestion, 'yes', 1);
+	}
+
 	// Confirmation of action xxxx
 	if ($action == 'xxx') {
 		$formquestion = array();
@@ -891,22 +905,13 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			// Clone
 			print dolGetButtonAction($langs->trans('ToClone'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.(!empty($object->socid) ? '&socid='.$object->socid : '').'&action=clone&token='.newToken(), '', $permissiontoadd);
 
-			/*
-			if ($permissiontoadd) {
-				if ($object->status == $object::STATUS_ENABLED) {
-					print dolGetButtonAction($langs->trans('Disable'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=disable&token='.newToken(), '', $permissiontoadd);
-				} else {
-					print dolGetButtonAction($langs->trans('Enable'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=enable&token='.newToken(), '', $permissiontoadd);
-				}
-			}
 			if ($permissiontoadd) {
 				if ($object->status == $object::STATUS_VALIDATED) {
-					print dolGetButtonAction($langs->trans('Cancel'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=close&token='.newToken(), '', $permissiontoadd);
+					print dolGetButtonAction($langs->trans('Close'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=close&token='.newToken(), '', $permissiontoadd);
 				} else {
 					print dolGetButtonAction($langs->trans('Re-Open'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=reopen&token='.newToken(), '', $permissiontoadd);
 				}
 			}
-			*/
 
 			// Delete (need delete permission, or if draft, just need create/modify permission)
 			print dolGetButtonAction($langs->trans('Delete'), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), '', $permissiontodelete || ($object->status == $object::STATUS_DRAFT && $permissiontoadd));
