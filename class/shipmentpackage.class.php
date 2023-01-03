@@ -178,6 +178,7 @@ class ShipmentPackage extends CommonObject
 	public $import_key;
 	public $model_pdf;
 	public $status;
+	public $tracking_url;
 	/**
 	 * var string $origin origin object type returned with fetch method
 	 */
@@ -321,9 +322,6 @@ class ShipmentPackage extends CommonObject
 		if (property_exists($object, 'ref')) {
 			$object->ref = empty($this->fields['ref']['default']) ? "Copy_Of_".$object->ref : $this->fields['ref']['default'];
 		}
-		if (property_exists($object, 'label')) {
-			$object->label = empty($this->fields['label']['default']) ? $langs->trans("CopyOf")." ".$object->label : $this->fields['label']['default'];
-		}
 		if (property_exists($object, 'status')) {
 			$object->status = self::STATUS_DRAFT;
 		}
@@ -364,7 +362,7 @@ class ShipmentPackage extends CommonObject
 
 		if (!$error) {
 			// copy external contacts if same company
-			if (property_exists($this, 'fk_soc') && $this->fk_soc == $object->socid) {
+			if (property_exists($this, 'fk_soc') && $this->fk_soc == $object->fk_soc) {
 				if ($this->copy_linked_contact($object, 'external') < 0) {
 					$error++;
 				}
@@ -814,13 +812,6 @@ class ShipmentPackage extends CommonObject
 			return 0;
 		}
 
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->shipmentpackage->shipmentpackage_advance->validate))))
-		 {
-		 $this->error='Permission denied';
-		 return -1;
-		 }*/
-
 		return $this->setStatusCommon($user, self::STATUS_VALIDATED, $notrigger, 'SHIPMENTPACKAGE_REOPEN');
 	}
 
@@ -837,13 +828,6 @@ class ShipmentPackage extends CommonObject
 		if ($this->status != self::STATUS_VALIDATED) {
 			return 0;
 		}
-
-		/*if (! ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->harisons->write))
-		 || (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && ! empty($user->rights->harisons->harisons_advance->validate))))
-		 {
-		 $this->error='Permission denied';
-		 return -1;
-		 }*/
 
 		return $this->setStatusCommon($user, self::STATUS_CLOSED, $notrigger, 'SHIPMENTPACKAGE_CLOSE');
 	}
@@ -1394,7 +1378,7 @@ class ShipmentPackageLine extends CommonObjectLine
 	public $fk_origin_line;
 	public $fk_origin_batch_line;
 	public $fk_product;
-	public $fk_product_lot;
+	public $product_lot_batch;
 	public $qty;
 	public $rang;
 
