@@ -27,12 +27,10 @@ ModuleShipmentPackageDesc = Create final shipping packages to handover to transp
 #
 ShipmentPackageSetup = Shipment Package setup
 Settings = Settings
-ShipmentPackageSetupPage = Shipment Package setup page
-SHIPMENTPACKAGE_MYPARAM1 = TODO add ref numbering model
-SHIPMENTPACKAGE_MYPARAM1Tooltip = My param 1 tooltip
-SHIPMENTPACKAGE_MYPARAM2= TODO add doc model
-SHIPMENTPACKAGE_MYPARAM2Tooltip=PDF model or for example external label from shipper
-SHIPMENTPACKAGE_WAP_PACKAGEVALUE=Calculate total package value from WAP
+ShipmentPackageSetupPage = Pallet setup page
+SHIPMENTPACKAGE_EMPTY_WEIGHT = Empty package weight
+SHIPMENTPACKAGE_EMPTY_WEIGHTTooltip = Weight used to add to total package weight.
+SHIPMENTPACKAGE_WAP_PACKAGEVALUE=Calculate total Outbound Pallet value from WAP
 SHIPMENTPACKAGE_WAP_PACKAGEVALUETooltip=Calculate total package value by weighted average price of products, when off calculate from product sell price.
 ShipmentPackageDocumentModules = Shipment package document models
 ShipmentPackageNumberingModules = Shipment package numbering models
