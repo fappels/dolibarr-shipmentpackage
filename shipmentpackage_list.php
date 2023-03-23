@@ -185,15 +185,11 @@ if (empty($conf->shipmentpackage->enabled)) {
 }
 
 // Security check (enable the most restrictive one)
-if ($user->socid > 0) accessforbidden();
 //if ($user->socid > 0) accessforbidden();
-//$socid = 0; if ($user->socid > 0) $socid = $user->socid;
-//$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
-//restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
-//if (empty($conf->shipmentpackage->enabled)) accessforbidden();
-//if (!$permissiontoread) accessforbidden();
-
-
+$socid = 0; if ($user->socid > 0) $socid = $user->socid;
+$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
+restrictedArea($user, 'shipmentpackage', 0, $object->table_element.'&'.$object->element, $object->element);
+if (!$permissiontoread) accessforbidden();
 
 /*
  * Actions
@@ -286,6 +282,7 @@ if ($object->ismultientitymanaged == 1) {
 } else {
 	$sql .= " WHERE 1 = 1";
 }
+if ($socid > 0) $sql .= " AND fk_soc = ".(int) $socid;
 foreach ($search as $key => $val) {
 	if (array_key_exists($key, $object->fields)) {
 		if ($key == 'status' && $search[$key] == -1) {

@@ -328,7 +328,7 @@ class modShipmentPackage extends DolibarrModules
 			'enabled'=>'$conf->shipmentpackage->enabled',  // Define condition to show or hide menu entry. Use '$conf->shipmentpackage->enabled' if entry must be visible if module is enabled.
 			'perms'=>'$user->rights->shipmentpackage->shipmentpackage->read',			                // Use 'perms'=>'$user->rights->shipmentpackage->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
-			'user'=>0,				                // 0=Menu for internal users, 1=external users, 2=both
+			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=products,fk_leftmenu=shipmentpackage',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
@@ -342,7 +342,7 @@ class modShipmentPackage extends DolibarrModules
 			'enabled'=>'$conf->shipmentpackage->enabled',  // Define condition to show or hide menu entry. Use '$conf->shipmentpackage->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
 			'perms'=>'$user->rights->shipmentpackage->shipmentpackage->write',			                // Use 'perms'=>'$user->rights->shipmentpackage->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
-			'user'=>0,				                // 0=Menu for internal users, 1=external users, 2=both
+			'user'=>2,				                // 0=Menu for internal users, 1=external users, 2=both
 		);
 		$this->menu[$r++]=array(
 			'fk_menu'=>'fk_mainmenu=products,fk_leftmenu=shipmentpackage',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
