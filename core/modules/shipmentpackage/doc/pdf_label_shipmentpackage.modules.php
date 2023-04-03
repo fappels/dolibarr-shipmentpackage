@@ -221,6 +221,8 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 
 		$hidetop = 0;
 
+		$showaddress = 1;
+
 		if ($conf->shipmentpackage->dir_output.'/receptionpackage') {
 			$object->fetch_thirdparty();
 
@@ -314,7 +316,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 				}
 				$pagenb++;
 
-				$top_shift = $this->_pagehead($pdf, $object, 1, $outputlangs, $outputlangsbis);
+				$top_shift = $this->_pagehead($pdf, $object, $showaddress, $outputlangs, $outputlangsbis);
 				$pdf->SetFont('', '', $default_font_size - 1);
 				$pdf->MultiCell(0, 3, ''); // Set interline to 3
 				$pdf->SetTextColor(0, 0, 0);
@@ -408,7 +410,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 									$pdf->useTemplate($tplidx);
 								}
 								if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-									$this->_pagehead($pdf, $object, 1, $outputlangs);
+									$this->_pagehead($pdf, $object, $showaddress, $outputlangs);
 								}
 								// $this->_pagefoot($pdf,$object,$outputlangs,1);
 								$pdf->setTopMargin($tab_top_newpage);
@@ -466,7 +468,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 								$pdf->useTemplate($tplidx);
 							}
 							if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-								$this->_pagehead($pdf, $object, 1, $outputlangs);
+								$this->_pagehead($pdf, $object, $showaddress, $outputlangs);
 							}
 							$height_note = $posyafter - $tab_top_newpage;
 							$pdf->Rect($this->marge_gauche, $tab_top_newpage - 1, $tab_width, $height_note + 1);
@@ -488,7 +490,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 									$pdf->useTemplate($tplidx);
 								}
 								if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-									$this->_pagehead($pdf, $object, 1, $outputlangs);
+									$this->_pagehead($pdf, $object, $showaddress, $outputlangs);
 								}
 
 								$posyafter = $tab_top_newpage;
@@ -645,7 +647,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 						$pdf->setPage($pagenb);
 						$pdf->setPageOrientation('', 1, 0); // The only function to edit the bottom margin of current page to set it.
 						if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-							$this->_pagehead($pdf, $object, 1, $outputlangs);
+							$this->_pagehead($pdf, $object, $showaddress, $outputlangs);
 						}
 					}
 
@@ -663,7 +665,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 						}
 						$pagenb++;
 						if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-							$this->_pagehead($pdf, $object, 1, $outputlangs);
+							$this->_pagehead($pdf, $object, $showaddress, $outputlangs);
 						}
 					}
 				}
@@ -984,29 +986,29 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 			$pdf->MultiCell($widthrecbox, 2, $carac_client_name, 0, 'L');
 
 			$posy = $pdf->getY();
-
-			// Show pallet barcode
-			//$pdf->SetTextColor(0, 0, 0);
-			//$pdf->SetFont('', '', $default_font_size - 2);
-			//$pdf->Rect($posx, $posy + 6, $widthrecbox, 14);
-
-			// Show  ref in CODE128
-			$style = array(
-				'position' => 'C',
-				'align' => 'C',
-				'stretch' => false,
-				'fitwidth' => true,
-				'cellfitalign' => '',
-				'border' => false,
-				'padding' => 'auto',
-				'fgcolor' => array(0,0,0),
-				'bgcolor' => false,
-				'text' => false
-			);
-			$pdf->write1DBarcode($object->ref_supplier, 'C128', '',  $posy + 3, '', '', 0.3, $style, '');
-
-			$posy = $pdf->getY();
 		}
+
+		// Show pallet barcode
+		//$pdf->SetTextColor(0, 0, 0);
+		//$pdf->SetFont('', '', $default_font_size - 2);
+		//$pdf->Rect($posx, $posy + 6, $widthrecbox, 14);
+
+		// Show  ref in CODE128
+		$style = array(
+			'position' => 'C',
+			'align' => 'C',
+			'stretch' => false,
+			'fitwidth' => true,
+			'cellfitalign' => '',
+			'border' => false,
+			'padding' => 'auto',
+			'fgcolor' => array(0,0,0),
+			'bgcolor' => false,
+			'text' => false
+		);
+		$pdf->write1DBarcode($object->ref_supplier, 'C128', '',  $posy + 3, '', '', 0.3, $style, '');
+
+		$posy = $pdf->getY();
 
 		$pdf->SetTextColor(0, 0, 0);
 		return $top_shift;

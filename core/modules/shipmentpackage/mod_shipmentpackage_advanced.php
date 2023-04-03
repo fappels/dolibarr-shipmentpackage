@@ -139,7 +139,7 @@ class mod_shipmentpackage_advanced extends ModeleNumRefShipmentPackage
 			return 0;
 		}
 
-		$date = $object->date;
+		$date = $object->date_creation;
 
 		$numFinal = get_next_value($db, $mask, 'expedition_package', 'ref', '', null, $date);
 

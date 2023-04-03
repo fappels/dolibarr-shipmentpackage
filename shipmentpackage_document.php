@@ -98,7 +98,7 @@ $page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("pa
 if (empty($page) || $page == -1) {
 	$page = 0;
 }     // If $page is not defined, or '' or -1
-$offset = $liste_limit * $page;
+$offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortorder) {
@@ -128,11 +128,11 @@ $permissiontoadd = $user->rights->shipmentpackage->shipmentpackage->write; // Us
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
-//if ($user->socid > 0) $socid = $user->socid;
-//$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
-//restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
-//if (empty($conf->shipmentpackage->enabled)) accessforbidden();
-//if (!$permissiontoread) accessforbidden();
+if ($user->socid > 0) $socid = $user->socid;
+$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
+restrictedArea($user, 'shipmentpackage', $object->id, $object->table_element.'&'.$object->element, $object->element, 'fk_soc', 'rowid', $isdraft);
+if (empty($conf->shipmentpackage->enabled)) accessforbidden();
+if (!$permissiontoread) accessforbidden();
 
 
 /*

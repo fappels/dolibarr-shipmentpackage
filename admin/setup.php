@@ -75,7 +75,7 @@ $scandir = GETPOST('scan_dir', 'alpha');
 $type = GETPOST('type', 'alpha');
 
 $arrayofparameters = array(
-	//'SHIPMENTPACKAGE_MYPARAM1'=>array('type'=>'string', 'css'=>'minwidth500' ,'enabled'=>1),
+	'SHIPMENTPACKAGE_EMPTY_WEIGHT'=>array('type'=>'string', 'css'=>'minwidth200' ,'enabled'=>1),
 	//'SHIPMENTPACKAGE_MYPARAM2'=>array('type'=>'textarea','enabled'=>1),
 	//'SHIPMENTPACKAGE_MYPARAM3'=>array('type'=>'category:'.Categorie::TYPE_CUSTOMER, 'enabled'=>1),
 	//'SHIPMENTPACKAGE_MYPARAM4'=>array('type'=>'emailtemplate:thirdparty', 'enabled'=>1),

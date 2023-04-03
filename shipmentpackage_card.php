@@ -138,11 +138,11 @@ $upload_dir = $conf->shipmentpackage->multidir_output[isset($object->entity) ? $
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
-//if ($user->socid > 0) $socid = $user->socid;
-//$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
-//restrictedArea($user, $object->element, $object->id, $object->table_element, '', 'fk_soc', 'rowid', $isdraft);
-//if (empty($conf->shipmentpackage->enabled)) accessforbidden();
-//if (!$permissiontoread) accessforbidden();
+if ($user->socid > 0) $socid = $user->socid;
+$isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
+restrictedArea($user, 'shipmentpackage', $object->id, $object->table_element.'&'.$object->element, $object->element, 'fk_soc', 'rowid', $isdraft);
+if (empty($conf->shipmentpackage->enabled)) accessforbidden();
+if (!$permissiontoread) accessforbidden();
 
 
 /*
@@ -198,7 +198,10 @@ if (empty($reshook)) {
 	// if view and origin set means add new reception to object
 	if (($action == 'add_object_linked' || $action == 'view') && $origin == 'shipping' && !empty($originid)) {
 		// link object
+		$object_module = $object->module;
+		$object->module = null; //avoid to have add module name to element, because module element name already in element
 		if ($object->add_object_linked($origin, $originid, $user) > 0) {
+			$object->module = $object_module;
 			dol_include_once('/expedition/class/expedition.class.php');
 			dol_include_once('/commande/class/commande.class.php');
 
@@ -640,6 +643,20 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ToClone'), $langs->trans('ConfirmCloneAsk', $object->ref), 'confirm_clone', $formquestion, 'yes', 1);
 	}
 
+	// Close confirmation
+	if ($action == 'close') {
+		// Create an array for form
+		$formquestion = array();
+		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('Close'), $langs->trans('ConfirmCloseShipmentPackage', $object->ref), 'confirm_close', $formquestion, 'yes', 1);
+	}
+
+	// re-open confirmation
+	if ($action == 'reopen') {
+		// Create an array for form
+		$formquestion = array();
+		$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"].'?id='.$object->id, $langs->trans('ReOpen'), $langs->trans('ConfirmReOpenShipmentPackage', $object->ref), 'confirm_reopen', $formquestion, 'yes', 1);
+	}
+
 	// Confirmation of action xxxx
 	if ($action == 'xxx') {
 		$formquestion = array();
@@ -886,24 +903,15 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 			}
 
 			// Clone
-			print dolGetButtonAction($langs->trans('ToClone'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&socid='.$object->socid.'&action=clone&token='.newToken(), '', $permissiontoadd);
+			print dolGetButtonAction($langs->trans('ToClone'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.(!empty($object->fk_soc) ? '&socid='.$object->fk_soc : '').'&action=clone&token='.newToken(), '', $permissiontoadd);
 
-			/*
-			if ($permissiontoadd) {
-				if ($object->status == $object::STATUS_ENABLED) {
-					print dolGetButtonAction($langs->trans('Disable'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=disable&token='.newToken(), '', $permissiontoadd);
-				} else {
-					print dolGetButtonAction($langs->trans('Enable'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=enable&token='.newToken(), '', $permissiontoadd);
-				}
-			}
 			if ($permissiontoadd) {
 				if ($object->status == $object::STATUS_VALIDATED) {
-					print dolGetButtonAction($langs->trans('Cancel'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=close&token='.newToken(), '', $permissiontoadd);
-				} else {
+					print dolGetButtonAction($langs->trans('Close'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=close&token='.newToken(), '', $permissiontoadd);
+				} elseif ($object->status == $object::STATUS_CLOSED || $object->status == $object::STATUS_CANCELED) {
 					print dolGetButtonAction($langs->trans('Re-Open'), '', 'default', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=reopen&token='.newToken(), '', $permissiontoadd);
 				}
 			}
-			*/
 
 			// Delete (need delete permission, or if draft, just need create/modify permission)
 			print dolGetButtonAction($langs->trans('Delete'), '', 'delete', $_SERVER['PHP_SELF'].'?id='.$object->id.'&action=delete&token='.newToken(), '', $permissiontodelete || ($object->status == $object::STATUS_DRAFT && $permissiontoadd));
