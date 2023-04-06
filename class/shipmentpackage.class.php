@@ -250,6 +250,12 @@ class ShipmentPackage extends CommonObject
 			$this->fields['myfield']['noteditable'] = 0;
 		}*/
 
+		// update field type for backward dolibarr version compatibility
+		if (!function_exists('forgeSQLFromUniversalSearchCriteria')) {
+			$this->fields['fk_soc']['type'] = 'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)';
+			$this->fields['fk_supplier']['type'] = 'integer:Societe:societe/class/societe.class.php:1:status=1 AND fournisseur=1 AND entity IN (__SHARED_ENTITIES__)';
+		}
+
 		// Unset fields that are disabled
 		foreach ($this->fields as $key => $val) {
 			if (isset($val['enabled']) && empty($val['enabled'])) {
