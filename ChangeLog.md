@@ -1,5 +1,7 @@
 # CHANGELOG SHIPMENTPACKAGE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
+## 1.0.7
+Fix Dolibarr -17 backward compatiblity
 ## 1.0.6
 Improve permission checks
 Add closed status
