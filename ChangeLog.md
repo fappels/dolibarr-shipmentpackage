@@ -1,5 +1,12 @@
 # CHANGELOG SHIPMENTPACKAGE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
+## 1.0.6
+Improve permission checks
+Add closed status
+Fix for Dolibarr 17
+
+## 1.0.5
+Add empty weight constant
 ## 1.0.3
 Add shipping method and set defaults from expedition.
 Fix for missing migration parcel to package in core.
