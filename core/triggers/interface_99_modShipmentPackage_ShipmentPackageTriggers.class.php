@@ -312,7 +312,25 @@ class InterfacePackageTriggers extends DolibarrTriggers
 			case 'SHIPPING_CLOSED':
 				// TODO if shipmentpackage enabled and no shipmentpackage show warning
 				break;
-			//case 'SHIPPING_REOPEN':
+			case 'SHIPPING_REOPEN':
+				// if closed shipment package show-return error
+				$packageLine = new ShipmentPackageLine($this->db);
+				$result = $packageLine->fetchAll('', '', 0, 0, array('fk_origin'=>$object->id));
+				if (is_array($result) && count($result) > 0) {
+					foreach ($result as $packageLine) {
+						$package = new ShipmentPackage($this->db);
+						$packageId = $packageLine->fk_shipmentpackage;
+						$package->fetch($packageId);
+						if ($package->status == ShipmentPackage::STATUS_CLOSED) {
+							$result = -1;
+							$this->errors[] = $langs->trans("NoReopenShipmentWithClosedPackage");
+							break;
+						}
+					}
+				} elseif ($result < 0) {
+					$this->errors = $packageLine->errors;
+				}
+				break;
 			case 'SHIPPING_DELETE':
 				// TODO check if shipmentpackage exist, if yes refuse delete
 				break;
