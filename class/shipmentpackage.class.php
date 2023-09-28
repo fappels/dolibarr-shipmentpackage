@@ -1190,27 +1190,6 @@ class ShipmentPackage extends CommonObject
 		return $error;
 	}
 
-	// workaround for dolibarr 13
-	/**
-	 * Function to concat keys of fields
-	 *
-	 * @param   string   $alias   	String of alias of table for fields. For example 't'.
-	 * @return  string				list of alias fields
-	 */
-	public function getFieldList($alias = '')
-	{
-		$keys = array_keys($this->fields);
-		if (!empty($alias)) {
-			$keys_with_alias = array();
-			foreach ($keys as $fieldname) {
-				$keys_with_alias[] = $alias . '.' . $fieldname;
-			}
-			return implode(',', $keys_with_alias);
-		} else {
-			return implode(',', $keys);
-		}
-	}
-
 	/**
 	 * get qty packaged for shipment
 	 *
