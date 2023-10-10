@@ -58,7 +58,6 @@ foreach ($object->fields as $key => $val) {
 	print '">';
 
 	print $object->showOutputField($val, $key, $object, '', '', '', 0);
-	//print dol_escape_htmltag($object->$key, 1, 1);
 	print '</td>';
 	print '</tr>';
 }
@@ -100,7 +99,6 @@ foreach ($object->fields as $key => $val) {
 	print '</td>';
 	print '<td>';
 	print $object->showOutputField($val, $key, $value, '', '', '', 0);
-	//print dol_escape_htmltag($object->$key, 1, 1);
 	print '</td>';
 	print '</tr>';
 }

@@ -105,7 +105,7 @@ if ($action == 'updateMask') {
 
 	if ($maskconst) {
 		$res = dolibarr_set_const($db, $maskconst, $mask, 'chaine', 0, '', $conf->entity);
-		if (!($res > 0)) {
+		if ($res <= 0) {
 			$error++;
 		}
 	}
@@ -258,7 +258,6 @@ if ($action == 'edit') {
 				$arrayofmessagename = array();
 				if (is_array($formmail->lines_model)) {
 					foreach ($formmail->lines_model as $modelmail) {
-						//var_dump($modelmail);
 						$moreonlabel = '';
 						if (!empty($arrayofmessagename[$modelmail->label])) {
 							$moreonlabel = ' <span class="opacitymedium">(' . $langs->trans("SeveralLangugeVariatFound") . ')</span>';
@@ -587,7 +586,7 @@ foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
 
 									if ($modulequalified) {
 										print '<tr class="oddeven"><td width="100">';
-										print (empty($module->name) ? $name : $module->name);
+										print empty($module->name) ? $name : $module->name;
 										print "</td><td>\n";
 										if (method_exists($module, 'info')) {
 											print $module->info($langs);

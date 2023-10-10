@@ -40,12 +40,10 @@ function shipmentpackageAdminPrepareHead()
 	$head[$h][2] = 'settings';
 	$h++;
 
-	/*
-	$head[$h][0] = dol_buildpath("/shipmentpackage/admin/myobject_extrafields.php", 1);
+	$head[$h][0] = dol_buildpath("/shipmentpackage/admin/shipmentpackage_extrafields.php", 1);
 	$head[$h][1] = $langs->trans("ExtraFields");
-	$head[$h][2] = 'myobject_extrafields';
+	$head[$h][2] = 'extrafields';
 	$h++;
-	*/
 
 	$head[$h][0] = dol_buildpath("/shipmentpackage/admin/about.php", 1);
 	$head[$h][1] = $langs->trans("About");
