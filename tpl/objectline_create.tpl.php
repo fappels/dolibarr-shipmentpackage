@@ -48,7 +48,6 @@ if ($nolinesbefore) {
 		print '<td class="linecolnum center"></td>';
 	}
 	print '<div id="add"></div><span class="hideonsmartphone">'.$langs->trans('AddNewLine').'</span>';
-	// echo $langs->trans("FreeZone");
 	print '<td class="linecol">'.$langs->trans('Product').'</td>';
 	print '<td class="linecolqty right">'.$langs->trans('Quantity').'</td>';
 	if (!empty($conf->productbatch->enabled)) print '<td class="linecoldescription minwidth200imp">'.$langs->trans('ProductLotBatch').'</td>';
