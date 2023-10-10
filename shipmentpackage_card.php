@@ -842,9 +842,9 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		if (!empty($object->lines) || ($object->status == $object::STATUS_DRAFT && $permissiontoadd && $action != 'selectlines' && $action != 'editline')) {
 			print '<table id="tablelines" class="noborder noshadow" width="100%">';
 		}
-
+		$defaulttpldir = '/custom/shipmentpackage/tpl';
 		if (!empty($object->lines)) {
-			$object->printObjectLines($action, $mysoc, null, GETPOST('lineid', 'int'), 1, '/custom/shipmentpackage/tpl'); // TODO find solution to not need to use this
+			$object->printObjectLines($action, $mysoc, null, GETPOST('lineid', 'int'), 1, $defaulttpldir); // TODO find solution to not need to use this
 		}
 
 		// Form to add new line
@@ -856,7 +856,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 				$reshook = $hookmanager->executeHooks('formAddObjectLine', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 				if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
 				if (empty($reshook))
-					$object->formAddObjectLine(1, $mysoc, $soc, '/custom/shipmentpackage/tpl');  // TODO find solution to not need to use this
+					$object->formAddObjectLine(1, $mysoc, $soc, $defaulttpldir);  // TODO find solution to not need to use this
 			}
 		}
 
