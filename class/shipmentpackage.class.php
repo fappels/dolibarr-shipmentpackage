@@ -1428,15 +1428,15 @@ class ShipmentPackageLine extends CommonObjectLine
 	/**
 	 * Load list of objects in memory from the database.
 	 *
-	 * @param  string      $sortorder    Sort Order
-	 * @param  string      $sortfield    Sort field
-	 * @param  int         $limit        limit
-	 * @param  int         $offset       Offset
-	 * @param  array       $filter       Filter array. Example array('field'=>'valueforlike', 'customurl'=>...)
-	 * @param  string      $filtermode   Filter mode (AND or OR)
+	 * @param  string       $sortorder    Sort Order
+	 * @param  string       $sortfield    Sort field
+	 * @param  int          $limit        limit
+	 * @param  int          $offset       Offset
+	 * @param  string|array $filter       Filter array. Example array('field'=>'valueforlike', 'customurl'=>...)
+	 * @param  string       $filtermode   Filter mode (AND or OR)
 	 * @return array|int                 int <0 if KO, array of pages if OK
 	 */
-	public function fetchAll($sortorder = '', $sortfield = '', $limit = 0, $offset = 0, array $filter = array(), $filtermode = 'AND')
+	public function fetchAll($sortorder = '', $sortfield = '', $limit = 0, $offset = 0, $filter = array(), $filtermode = 'AND')
 	{
 		global $conf;
 
