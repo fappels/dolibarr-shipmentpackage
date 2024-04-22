@@ -132,6 +132,7 @@ if ($id > 0 || !empty($ref)) {
 	$upload_dir = $conf->shipmentpackage->multidir_output[!empty($object->entity) ? $object->entity : $conf->entity]."/".$object->id;
 }
 
+$permissiontoread = $user->rights->shipmentpackage->shipmentpackage->read;
 $permissiontoadd = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_addupdatedelete.inc.php
 
 // Security check (enable the most restrictive one)
