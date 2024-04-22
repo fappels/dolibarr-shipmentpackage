@@ -112,8 +112,8 @@ class ShipmentPackage extends CommonObject
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>'1', 'position'=>55, 'notnull'=>1, 'visible'=>5,),
 		'description' => array('type'=>'varchar(255)', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>-1,),
 		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>4, 'default'=>0, 'help'=>"ValueOfPackage"),
-		'fk_package_type' => array('type'=>'sellist:c_shipment_package_type:label:rowid::active=1', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1, 'help'=>"PackageParcelType"),
-		'fk_shipping_method' =>array('type'=>'sellist:c_shipment_mode:libelle:rowid::active=1', 'label'=>'SendingMethod', 'enabled'=>1, 'visible'=>5, 'position'=>81),
+		'fk_package_type' => array('type'=>'sellist:c_shipment_package_type:label:rowid::(active:=:1)', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1, 'help'=>"PackageParcelType"),
+		'fk_shipping_method' =>array('type'=>'sellist:c_shipment_mode:libelle:rowid::(active:=:1)', 'label'=>'SendingMethod', 'enabled'=>1, 'visible'=>5, 'position'=>81),
 		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>82, 'notnull'=>0, 'default'=>0, 'visible'=>1,
 			'arrayofkeyval'=>array(
 				'-1'=>'',
@@ -478,7 +478,7 @@ class ShipmentPackage extends CommonObject
 				// Tracking url
 				$this->getUrlTrackingStatus($this->ref_supplier);
 				$result = $this->fetchObjectLinked(null, 'shipping', $this->id, 'shipmentpackage');
-				if ($result > 0 && is_array($this->linkedObjects['shipping'])) {
+				if ($result > 0 && !empty($this->linkedObjects['shipping'])) {
 					if (count($this->linkedObjects['shipping']) > 0) {
 						$this->origin = 'shipping';
 						foreach ($this->linkedObjects['shipping'] as $shipment) {
@@ -1549,7 +1549,7 @@ class ShipmentPackageLine extends CommonObjectLine
 				$this->error = $product->error;
 			}
 		} else {
-			if ($user->rights->commande->lire) {
+			if ($user->rights->commande->lire && $this->fk_origin_line > 0) {
 				dol_include_once('/expedition/class/expedition.class.php');
 				dol_include_once('/commande/class/commande.class.php');
 				$shipmentLine = new ExpeditionLigne($this->db);
