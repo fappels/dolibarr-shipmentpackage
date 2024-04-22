@@ -801,7 +801,8 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 		if ($object->status == 0 && $permissiontoadd && $action != 'selectlines') {
 			if ($action != 'editline' && $action != 'addto') {
 				// Add products/services form
-
+				$soc = new Societe($db);
+				if ($object->fk_soc > 0) $soc->fetch($object->fk_soc);
 				$parameters = array();
 				$reshook = $hookmanager->executeHooks('formAddObjectLine', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
 				if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
