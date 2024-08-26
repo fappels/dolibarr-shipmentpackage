@@ -79,7 +79,7 @@ class mod_shipmentpackage_advanced extends ModeleNumRefShipmentPackage
 
 		// Parametrage du prefix
 		$texte .= '<tr><td>'.$langs->trans("Mask").':</td>';
-		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskShipmentPackage" value="'.$conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADVANCED_MASK.'">', $tooltip, 1, 1).'</td>';
+		$texte .= '<td class="right">'.$form->textwithpicto('<input type="text" class="flat minwidth175" name="maskShipmentPackage" value="'.(!empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADVANCED_MASK) ? $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADVANCED_MASK : '') .'">', $tooltip, 1, 1).'</td>';
 
 		$texte .= '<td class="left" rowspan="2">&nbsp; <input type="submit" class="button" value="'.$langs->trans("Modify").'" name="Button"></td>';
 
@@ -132,7 +132,7 @@ class mod_shipmentpackage_advanced extends ModeleNumRefShipmentPackage
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 
 		// We get cursor rule
-		$mask = $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADVANCED_MASK;
+		$mask = !empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADVANCED_MASK) ? $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADVANCED_MASK : '';
 
 		if (!$mask) {
 			$this->error = 'NotConfigured';
