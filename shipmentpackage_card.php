@@ -106,6 +106,15 @@ $object = new ShipmentPackage($db);
 $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('shipmentpackagecard', 'globalcard')); // Note that conf->hooks_modules contains array
+$selectedLines = array(0);
+if (!empty($originid)) {
+	if ($action == 'update') $noback = 1;
+	dol_include_once('/expedition/class/expedition.class.php');
+	dol_include_once('/commande/class/commande.class.php');
+
+	$objectsrc = new Expedition($db);
+	$objectsrc->fetch($originid);
+}
 
 // Fetch optionals attributes and labels
 $extrafields->fetch_name_optionals_label($object->table_element);
@@ -195,20 +204,14 @@ if (empty($reshook)) {
 	include DOL_DOCUMENT_ROOT.'/core/actions_lineupdown.inc.php';
 
 	// link object and replicate extrafield, contacts and lines
-	// if view and origin set means add new reception to object
+	// if view and origin set means add new shipment to object
 	if (($action == 'add_object_linked' || $action == 'view') && $origin == 'shipping' && !empty($originid)) {
 		// link object
 		$object_module = $object->module;
 		$object->module = null; //avoid to have add module name to element, because module element name already in element
-		if ($object->add_object_linked($origin, $originid, $user) > 0) {
+		if ($action == 'add_object_linked') {
 			$object->module = $object_module;
-			dol_include_once('/expedition/class/expedition.class.php');
-			dol_include_once('/commande/class/commande.class.php');
-
-			$objectsrc = new Expedition($db);
-			$objectsrc->fetch($originid);
-
-			if ($action == 'add_object_linked') {
+			if ($object->add_object_linked($origin, $originid, $user) > 0) {
 				// Replicate extrafields
 				$objectsrc->fetch_optionals();
 				$object->array_options = $objectsrc->array_options;
@@ -216,11 +219,6 @@ if (empty($reshook)) {
 				// Repicate notes
 				$object->note_private = $object->getDefaultCreateValueFor('note_private', (!empty($objectsrc->note_private) ? $objectsrc->note_private : null));
 				$object->note_public = $object->getDefaultCreateValueFor('note_public', (!empty($objectsrc->note_public) ? $objectsrc->note_public : null));
-			} else {
-				// if add new reception append notes
-				// Repicate notes
-				$object->note_private .= $object->getDefaultCreateValueFor('note_private', (!empty($objectsrc->note_private) ? $objectsrc->note_private : null));
-				$object->note_public .= $object->getDefaultCreateValueFor('note_public', (!empty($objectsrc->note_public) ? $objectsrc->note_public : null));
 			}
 			// Replicate source contacts list
 			// TODO add shipmentpackage type contact
@@ -232,7 +230,7 @@ if (empty($reshook)) {
 				}
 			}*/
 		}
-		if (is_array($toSelect) && count($toSelect) > 0) {
+		if (!empty($objectsrc) && is_array($toSelect) && count($toSelect) > 0) {
 			if (empty($objectsrc->lines) && method_exists($objectsrc, 'fetch_lines')) {
 				$objectsrc->fetch_lines();
 			}
