@@ -114,7 +114,7 @@ class ShipmentPackage extends CommonObject
 		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>4, 'default'=>0, 'help'=>"ValueOfPackage"),
 		'fk_package_type' => array('type'=>'sellist:c_shipment_package_type:label:rowid::(active:=:1)', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1, 'help'=>"PackageParcelType"),
 		'fk_shipping_method' =>array('type'=>'sellist:c_shipment_mode:libelle:rowid::(active:=:1)', 'label'=>'SendingMethod', 'enabled'=>1, 'notnull'=>0, 'visible'=>5, 'position'=>81),
-		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>82, 'notnull'=>0, 'default'=>0, 'visible'=>1,
+		'dangerous_goods' => array('type'=>'checkbox', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>82, 'notnull'=>0, 'default'=>0, 'visible'=>1,
 			'arrayofkeyval'=>array(
 				'-1'=>'',
 				'1'=>'PackageExplosives',
