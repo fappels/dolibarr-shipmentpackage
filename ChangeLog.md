@@ -1,5 +1,11 @@
 # CHANGELOG SHIPMENTPACKAGE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
+## 1.0.9
+- Tested on Dolibarr 20
+- Tested on PHP 8.2
+- Fix add shipment lines to draft package.
+- Fix contact, notes, document and event tabs.
+
 ## 1.0.8
 - Tested on Dolibarr 18
 - Tested on PHP 8.1
