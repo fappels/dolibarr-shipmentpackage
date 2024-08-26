@@ -105,7 +105,7 @@ class ActionsShipmentPackage
 				// check for draft package for customer
 				dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
 				$shipmentpackage = new ShipmentPackage($this->db);
-				$result = $shipmentpackage->fetchAll('', '', 0, 0, array('customsql'=>'fk_soc = ' . (int) $object->socid.' AND status = '.ShipmentPackage::STATUS_DRAFT));
+				$result = $shipmentpackage->fetchAll('', '', 0, 0, array('fk_soc'=>(int) $object->socid, 'status'=>ShipmentPackage::STATUS_DRAFT));
 				if (is_array($result) && count($result) > 0) {
 					foreach ($result as $package) {
 						print '<div class="inline-block divButAction"><a class="butAction" href="' . $href . '?origin=shipping&id=' . $package->id . '&originid=' . $object->id . '&fk_soc=' . $object->socid . '&fk_project=' . $object->fk_project . '&action=addto">' . $langs->trans('AddToPackage', $package->ref) . '</a></div>';

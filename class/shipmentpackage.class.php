@@ -113,7 +113,7 @@ class ShipmentPackage extends CommonObject
 		'description' => array('type'=>'varchar(255)', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>-1,),
 		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>4, 'default'=>0, 'help'=>"ValueOfPackage"),
 		'fk_package_type' => array('type'=>'sellist:c_shipment_package_type:label:rowid::(active:=:1)', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1, 'help'=>"PackageParcelType"),
-		'fk_shipping_method' =>array('type'=>'sellist:c_shipment_mode:libelle:rowid::(active:=:1)', 'label'=>'SendingMethod', 'enabled'=>1, 'visible'=>5, 'position'=>81),
+		'fk_shipping_method' =>array('type'=>'sellist:c_shipment_mode:libelle:rowid::(active:=:1)', 'label'=>'SendingMethod', 'enabled'=>1, 'notnull'=>0, 'visible'=>5, 'position'=>81),
 		'dangerous_goods' => array('type'=>'smallint', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>82, 'notnull'=>0, 'default'=>0, 'visible'=>1,
 			'arrayofkeyval'=>array(
 				'-1'=>'',
@@ -1034,7 +1034,7 @@ class ShipmentPackage extends CommonObject
 		$this->lines = array();
 
 		$objectline = new ShipmentPackageLine($this->db);
-		$result = $objectline->fetchAll('ASC', 'rang', 0, 0, array('customsql'=>'fk_shipmentpackage = '.$this->id));
+		$result = $objectline->fetchAll('ASC', 'rang', 0, 0, array('fk_shipmentpackage'=>$this->id));
 
 		if (is_numeric($result)) {
 			$this->error = $objectline->error;
