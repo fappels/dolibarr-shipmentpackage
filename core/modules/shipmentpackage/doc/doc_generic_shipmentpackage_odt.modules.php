@@ -129,7 +129,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 		// List of directories area
 		$texte .= '<tr><td>';
 		$texttitle = $langs->trans("ListOfDirectories");
-		$listofdir = explode(',', preg_replace('/[\r\n]+/', ',', trim($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH)));
+		$listofdir = !empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH) ? explode(',', preg_replace('/[\r\n]+/', ',', trim($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH))) : array();
 		$listoffiles = array();
 		foreach ($listofdir as $key => $tmpdir) {
 			$tmpdir = trim($tmpdir);
@@ -155,7 +155,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 		$texte .= $form->textwithpicto($texttitle, $texthelp, 1, 'help', '', 1);
 		$texte .= '<div><div style="display: inline-block; min-width: 100px; vertical-align: middle;">';
 		$texte .= '<textarea class="flat" cols="60" name="value1">';
-		$texte .= $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH;
+		$texte .= !empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH) ? $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH : '';
 		$texte .= '</textarea>';
 		$texte .= '</div><div style="display: inline-block; vertical-align: middle;">';
 		$texte .= '<input type="submit" class="button small" value="'.$langs->trans("Modify").'" name="Button">';

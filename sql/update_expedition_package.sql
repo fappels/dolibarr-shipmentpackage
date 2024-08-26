@@ -38,6 +38,7 @@ ALTER TABLE llx_expedition_package ADD COLUMN fk_shipping_method integer;
 ALTER TABLE llx_expedition_package CHANGE COLUMN tms tms timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ALTER TABLE llx_expedition_package DROP INDEX idx_expedition_package_ref;
 ALTER TABLE llx_expedition_package ADD UNIQUE INDEX idx_reception_uk_ref (ref, entity);
+ALTER TABLE llx_expedition_package MODIFY COLUMN dangerous_goods varchar(60) DEFAULT '0';
 ALTER TABLE llx_expedition_packagedet DROP COLUMN fk_product_lot;
 ALTER TABLE llx_expedition_packagedet ADD COLUMN product_lot_batch varchar(128);
 ALTER TABLE llx_expedition_packagedet DROP INDEX idx_expedition_packagedet_fk_expedition_package;
@@ -46,7 +47,7 @@ ALTER TABLE llx_expedition_packagedet CHANGE COLUMN fk_expedition_package fk_shi
 ALTER TABLE llx_expedition_packagedet ADD INDEX idx_expedition_packagedet_fk_shipmentpackage (fk_shipmentpackage);
 ALTER TABLE llx_expedition_packagedet ADD CONSTRAINT fk_expeditiondet_fk_shipmentpackage FOREIGN KEY (fk_shipmentpackage) REFERENCES llx_expedition_package (rowid);
 
-UPDATE llx_expedition_package SET dangerous_goods = 0 WHERE dangerous_goods IS NULL;
+UPDATE llx_expedition_package SET dangerous_goods = '0' WHERE dangerous_goods IS NULL;
 UPDATE llx_expedition_package SET tail_lift = 0 WHERE tail_lift IS NULL;
 
 INSERT INTO llx_c_shipment_package_type (rowid, label, active) SELECT rowid, label, active FROM llx_c_parcel_type;

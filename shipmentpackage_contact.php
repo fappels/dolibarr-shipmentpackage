@@ -84,21 +84,25 @@ $permission = $user->rights->shipmentpackage->shipmentpackage->write;
 $origin = 'shipping';
 $object->origin = $origin;
 $object->fetchObjectLinked();
-$originid = array_pop(array_reverse($object->linkedObjectsIds[$origin]));
-$object->origin_id = $originid;
-$object->fetch_origin();
-$expedition = $object->expedition;
-$origin = 'commande';
-$expedition->origin = $origin;
-$expedition->fetchObjectLinked();
-$originid = array_pop(array_reverse($expedition->linkedObjectsIds[$origin]));
-$expedition->origin_id = $originid;
-$expedition->fetch_origin();
-$objectsrc = $expedition->commande;
-
+if (!empty($object->linkedObjectsIds[$origin])) {
+	$originid = array_pop(array_reverse($object->linkedObjectsIds[$origin]));
+	$object->origin_id = $originid;
+	$object->fetch_origin();
+	$expedition = $object->expedition;
+	$origin = 'commande';
+	$expedition->origin = $origin;
+	$expedition->fetchObjectLinked();
+	$originid = array_pop(array_reverse($expedition->linkedObjectsIds[$origin]));
+	$expedition->origin_id = $originid;
+	$expedition->fetch_origin();
+	$objectsrc = $expedition->commande;
+} else {
+	$objectsrc = null;
+}
 
 // Security check (enable the most restrictive one)
 //if ($user->socid > 0) accessforbidden();
+$permissiontoread = $user->rights->shipmentpackage->shipmentpackage->read;
 if ($user->socid > 0) $socid = $user->socid;
 $isdraft = (($object->status == $object::STATUS_DRAFT) ? 1 : 0);
 restrictedArea($user, 'shipmentpackage', $object->id, $object->table_element.'&'.$object->element, $object->element, 'fk_soc', 'rowid', $isdraft);

@@ -123,6 +123,7 @@ if ($id > 0 || !empty($ref)) {
 	$upload_dir = $conf->shipmentpackage->multidir_output[$object->entity ? $object->entity : $conf->entity]."/shipmentpackage/".get_exdir(0, 0, 0, 1, $object);
 }
 
+$permissiontoread = $user->rights->shipmentpackage->shipmentpackage->read;
 $permissiontoadd = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_addupdatedelete.inc.php and actions_linkedfiles.inc.php
 
 // Security check (enable the most restrictive one)

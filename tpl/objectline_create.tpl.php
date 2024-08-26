@@ -68,9 +68,9 @@ print '<td class="bordertop nobottom linecol">';
 $statustoshow = 1;
 if (!empty($conf->global->ENTREPOT_EXTRA_STATUS)) {
 	// hide products in closed warehouse, but show products for internal transfer
-	$form->select_produits(GETPOST('fk_product'), 'fk_product', $filtertype, $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, 'warehouseopen,warehouseinternal');
+	$form->select_produits(GETPOST('fk_product'), 'fk_product', 0, $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, 'warehouseopen,warehouseinternal');
 } else {
-	$form->select_produits(GETPOST('fk_product'), 'fk_product', $filtertype, $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, '');
+	$form->select_produits(GETPOST('fk_product'), 'fk_product', 0, $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, '');
 }
 if (!empty($conf->global->MAIN_AUTO_OPEN_SELECT2_ON_FOCUS_FOR_CUSTOMER_PRODUCTS)) {
 	?>

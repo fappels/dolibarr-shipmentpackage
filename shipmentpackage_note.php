@@ -101,6 +101,7 @@ if ($id > 0 || !empty($ref)) {
 	$upload_dir = $conf->shipmentpackage->multidir_output[!empty($object->entity) ? $object->entity : $conf->entity]."/".$object->id;
 }
 
+$permissiontoread = $user->rights->shipmentpackage->shipmentpackage->read;
 $permissionnote = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_setnotes.inc.php
 $permissiontoadd = $user->rights->shipmentpackage->shipmentpackage->write; // Used by the include of actions_addupdatedelete.inc.php
 
