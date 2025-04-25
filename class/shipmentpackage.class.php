@@ -255,6 +255,10 @@ class ShipmentPackage extends CommonObject
 			$this->fields['fk_soc']['type'] = 'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)';
 			$this->fields['fk_supplier']['type'] = 'integer:Societe:societe/class/societe.class.php:1:status=1 AND fournisseur=1 AND entity IN (__SHARED_ENTITIES__)';
 		}
+		if ((int) DOL_VERSION < 20) {
+			$this->fields['fk_package_type']['type'] = 'sellist:c_shipment_package_type:label:rowid::active=1';
+			$this->fields['fk_shipping_method']['type'] = 'sellist:c_shipment_mode:libelle:rowid::active=1';
+		}
 
 		// Unset fields that are disabled
 		foreach ($this->fields as $key => $val) {
