@@ -1,5 +1,10 @@
 # CHANGELOG SHIPMENTPACKAGE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
+## 1.0.10
+- Tested on Dolibarr 21
+- Tested on PHP 8.3
+- Fix backward compatiblity for V19 and lower
+
 ## 1.0.9
 - Tested on Dolibarr 20
 - Tested on PHP 8.2
