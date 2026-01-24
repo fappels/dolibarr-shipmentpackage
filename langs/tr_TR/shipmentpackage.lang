@@ -1,0 +1,91 @@
+# Copyright (C) 2021       Francis Appels          <francis.appels@z-application.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#
+# Generic
+#
+
+# Module label 'ModuleShipmentPackageName'
+ModuleShipmentPackageName = Sevkiyat Paketleri
+# Module description 'ModuleShipmentPackageDesc'
+ModuleShipmentPackageDesc = Taşıyıcıya teslim edilecek son sevkiyat paketlerini oluşturun.
+
+#
+# Admin page
+#
+ShipmentPackageSetup = Sevkiyat Paketi kurulumu
+Settings = Ayarlar
+ShipmentPackageSetupPage = Palet kurulum sayfası
+SHIPMENTPACKAGE_EMPTY_WEIGHT = Boş paket ağırlığı
+SHIPMENTPACKAGE_EMPTY_WEIGHTTooltip = Toplam paket ağırlığına eklenecek ağırlık.
+SHIPMENTPACKAGE_WAP_PACKAGEVALUE=WAP'tan toplam Giden Palet değerini hesaplayın
+SHIPMENTPACKAGE_WAP_PACKAGEVALUETooltip=Ürünlerin ağırlıklı ortalama fiyatından hesaplanan toplam paket değeri, hesaplandığında ürün satış fiyatından hesaplanır.
+ShipmentPackageDocumentModules = Sevkiyat paketi belge modelleri
+ShipmentPackageNumberingModules = Sevkiyat paketi numaralandırma modelleri
+DocumentModelLabelPDF = Sevkiyat Etiketi PDF şablonu
+
+#
+# About page
+#
+About = Hakkında
+ShipmentPackageAbout = Sevkiyat Paketi Hakkında
+ShipmentPackageAboutPage = Sevkiyat Paketi hakkında sayfası
+
+#
+# Sample page
+#
+ReadShipmentPackage = Sevkiyat Paketinin nesnelerini oku
+WriteShipmentPackage = Sevkiyat Paketinin nesnelerini Oluştur/Güncelle
+DeleteShipmentPackage = Sevkiyat Paketinin nesnelerini sil
+ShipmentPackage = Sevkiyat Paketleri
+New_ShipmentPackage = Yeni paket
+List_ShipmentPackage = Paketlerin listesi
+ValueOfPackage = Değer (İçeriğin, sigorta ve gümrük bedelinin fiyatı)
+TransportSupplier = Sevkiyat Tedarikçisi
+LinkToTransporter = Taşımayı yapan ve kargo ücretini faturalandıran tedarikçi.
+LinkToThirparty = Müşteri paketi teslim alacak.
+ShipmentPackageRefSupplier = Tedarikçi nakliye referansı (takip numarası)
+Fkparceltype = Parsel türü
+PackageParcelType = Paket parsel türü sözlüğünde tanımlamak için
+c_shipment_package_type = Paket parsel türü
+Dangerousgoods = Tehlikeli maddeler
+PackageExplosives = Patlayıcılar
+PackageFlammableGases = Yanıcı Gazlar
+PackageFlammableLiquids = Yanıcı katılar
+PackageFlammableSolids = Yanıcı katılar
+PackageOxidizing = Oksitleyici
+PackageToxicAndInfectious = Zehirli ve Bulaşıcı
+PackageRadioactive = Radyoaktif
+PackageCorrosives = Aşındırıcı
+PackageMiscellaneous = Çeşitli
+Taillift = Taşıma Platformu
+PackageTailLiftRequired = Taşıma platformu gereklidir
+ProductLotBatch = Parti / Seri
+CreatePackage = Paket Oluştur
+TrackingUrl = Takip Url'si
+ConfirmCloseShipmentPackage = Sevkiyat paketinin kapandığını onaylayın.
+ConfirmReOpenShipmentPackage = Bu paketi tekrar açmak istediğine emin misin?
+AddToPackage = Pakete ekle %s
+
+#
+# Sample widget
+#
+MyWidget = Bileşenim
+MyWidgetDescription = Bileşenimin açıklaması
+
+#
+# doc
+#
+PdfTitle = Paket
