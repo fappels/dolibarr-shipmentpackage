@@ -41,8 +41,12 @@ function shipmentpackagePrepareHead($object)
 	$head[$h][2] = 'card';
 	$h++;
 
+	$nbContact = count($object->liste_contact(-1, 'internal')) + count($object->liste_contact(-1, 'external'));
 	$head[$h][0] = dol_buildpath("/shipmentpackage/shipmentpackage_contact.php", 1).'?id='.$object->id.'&socid='.$object->fk_soc;
 	$head[$h][1] = $langs->trans("Contacts");
+	if ($nbContact > 0) {
+		$head[$h][1] .= '<span class="badge marginleftonlyshort">'.$nbContact.'</span>';
+	}
 	$head[$h][2] = 'contact';
 	$h++;
 
