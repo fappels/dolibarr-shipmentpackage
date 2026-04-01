@@ -39,7 +39,7 @@ print '<td class="right">';
 print '<input type="text" size="2" name="qty[]" id="cb_qty'.$this->tpl['id'].'" class="flat right" value="'.$this->tpl['qty'].'">';
 print '<input type="hidden" name="ol[]" value="'.$this->tpl['id'].'">';
 print '</td>';
-if (!empty($conf->global->PRODUCT_USE_UNITS)) {
+if (getDolGlobalInt('PRODUCT_USE_UNITS')) {
 	print '<td class="left">'.$langs->trans($this->tpl['unit']).'</td>';
 }
 

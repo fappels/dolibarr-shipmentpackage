@@ -237,10 +237,10 @@ class ShipmentPackage extends CommonObject
 
 		$this->db = $db;
 
-		if (empty($conf->global->MAIN_SHOW_TECHNICAL_ID) && isset($this->fields['rowid'])) {
+		if (!getDolGlobalInt('MAIN_SHOW_TECHNICAL_ID') && isset($this->fields['rowid'])) {
 			$this->fields['rowid']['visible'] = 0;
 		}
-		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) {
+		if (!getDolGlobalInt('MULTICOMPANY_ENABLED') && isset($this->fields['entity'])) {
 			$this->fields['entity']['enabled'] = 0;
 		}
 
@@ -864,7 +864,7 @@ class ShipmentPackage extends CommonObject
 
 		$linkclose = '';
 		if (empty($notooltip)) {
-			if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER)) {
+			if (getDolGlobalInt('MAIN_OPTIMIZEFORTEXTBROWSER')) {
 				$label = $langs->trans("ShowShipmentPackage");
 				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
 			}
@@ -904,11 +904,7 @@ class ShipmentPackage extends CommonObject
 					$pospoint = strpos($filearray[0]['name'], '.');
 
 					$pathtophoto = $class.'/'.$this->ref.'/thumbs/'.substr($filename, 0, $pospoint).'_mini'.substr($filename, $pospoint);
-					if (empty($conf->global->{strtoupper($module.'_'.$class).'_FORMATLISTPHOTOSASUSERS'})) {
-						$result .= '<div class="floatleft inline-block valignmiddle divphotoref"><div class="photoref"><img class="photo'.$module.'" alt="No photo" border="0" src="'.DOL_URL_ROOT.'/viewimage.php?modulepart='.$module.'&entity='.$conf->entity.'&file='.urlencode($pathtophoto).'"></div></div>';
-					} else {
-						$result .= '<div class="floatleft inline-block valignmiddle divphotoref"><img class="photouserphoto userphoto" alt="No photo" border="0" src="'.DOL_URL_ROOT.'/viewimage.php?modulepart='.$module.'&entity='.$conf->entity.'&file='.urlencode($pathtophoto).'"></div>';
-					}
+					$result .= '<div class="floatleft inline-block valignmiddle divphotoref"><img class="photouserphoto userphoto" alt="No photo" border="0" src="'.DOL_URL_ROOT.'/viewimage.php?modulepart='.$module.'&entity='.$conf->entity.'&file='.urlencode($pathtophoto).'"></div>';
 
 					$result .= '</div>';
 				} else {
@@ -1060,15 +1056,15 @@ class ShipmentPackage extends CommonObject
 		global $langs, $conf;
 		$langs->load("shipmentpackage@shipmentpackage");
 
-		if (empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON)) {
+		if (!getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON')) {
 			$conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON = 'mod_shipmentpackage_standard';
 		}
 
-		if (!empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON)) {
+		if (getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON')!=='') {
 			$mybool = false;
 
-			$file = $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON.".php";
-			$classname = $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON;
+			$file = getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON').".php";
+			$classname = getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON');
 
 			// Include file with class
 			$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
@@ -1130,8 +1126,8 @@ class ShipmentPackage extends CommonObject
 
 			if (!empty($this->model_pdf)) {
 				$modele = $this->model_pdf;
-			} elseif (!empty($conf->global->SHIPMENTPACKAGE_ADDON_PDF)) {
-				$modele = $conf->global->SHIPMENTPACKAGE_ADDON_PDF;
+			} elseif (getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF')) {
+				$modele = getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF');
 			}
 		}
 
@@ -1382,8 +1378,8 @@ class ShipmentPackageLine extends CommonObjectLine
 
 		$this->db = $db;
 
-		if (empty($conf->global->MAIN_SHOW_TECHNICAL_ID) && isset($this->fields['rowid'])) $this->fields['rowid']['visible'] = 0;
-		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) $this->fields['entity']['enabled'] = 0;
+		if (!getDolGlobalInt('MAIN_SHOW_TECHNICAL_ID') && isset($this->fields['rowid'])) $this->fields['rowid']['visible'] = 0;
+		if (!getDolGlobalInt('MULTICOMPANY_ENABLED') && isset($this->fields['entity'])) $this->fields['entity']['enabled'] = 0;
 
 		// Unset fields that are disabled
 		foreach ($this->fields as $key => $val) {
@@ -1545,7 +1541,7 @@ class ShipmentPackageLine extends CommonObjectLine
 		// update package value
 		$result = 0;
 		$product = new Product($this->db);
-		if ($this->fk_product > 0 && !empty($conf->global->SHIPMENTPACKAGE_WAP_PACKAGEVALUE)) {
+		if ($this->fk_product > 0 && getDolGlobalInt('SHIPMENTPACKAGE_WAP_PACKAGEVALUE')) {
 			$result = $product->fetch($this->fk_product);
 			if ($result > 0) {
 				$value = $product->pmp * $this->qty;

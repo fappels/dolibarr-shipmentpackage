@@ -49,7 +49,7 @@ print "<!-- BEGIN PHP TEMPLATE objectline_edit.tpl.php -->\n";
 $coldisplay=0;
 print '<tr class="oddeven tredited">';
 // Adds a line numbering column
-if (! empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
+if (getDolGlobalInt('MAIN_VIEW_LINE_NUMBER')) {
 	print '<td class="linecolnum center">'.($i+1).'</td>';
 	$coldisplay++;
 }
@@ -59,13 +59,13 @@ $coldisplay++;
 print '<td class="bordertop nobottom linecol">';
 $statustoshow = 1;
 if ($line->fk_product) {
-	if (!empty($conf->global->ENTREPOT_EXTRA_STATUS)) {
+	if (getDolGlobalInt('ENTREPOT_EXTRA_STATUS')) {
 		// hide products in closed warehouse, but show products for internal transfer
 		$form->select_produits($line->fk_product, 'fk_product', '', $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, 'warehouseopen,warehouseinternal');
 	} else {
 		$form->select_produits($line->fk_product, 'fk_product', '', $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, '');
 	}
-	if (!empty($conf->global->MAIN_AUTO_OPEN_SELECT2_ON_FOCUS_FOR_CUSTOMER_PRODUCTS)) {
+	if (getDolGlobalInt('MAIN_AUTO_OPEN_SELECT2_ON_FOCUS_FOR_CUSTOMER_PRODUCTS')) {
 		?>
 	<script>
 		$(document).ready(function(){

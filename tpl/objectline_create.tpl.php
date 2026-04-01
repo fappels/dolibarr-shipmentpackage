@@ -44,7 +44,7 @@ print "<!-- BEGIN PHP TEMPLATE objectline_create.tpl.php -->\n";
 $nolinesbefore = (count($object->lines) == 0 || $forcetoshowtitlelines);
 if ($nolinesbefore) {
 	print '<tr class="liste_titre nodrag nodrop">';
-	if (!empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
+	if (getDolGlobalInt('MAIN_VIEW_LINE_NUMBER')) {
 		print '<td class="linecolnum center"></td>';
 	}
 	print '<div id="add"></div><span class="hideonsmartphone">'.$langs->trans('AddNewLine').'</span>';
@@ -58,7 +58,7 @@ print '<tr class="pair nodrag nodrop nohoverpair'.($nolinesbefore || $object->el
 $coldisplay = 0;
 
 // Adds a line numbering column
-if (!empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
+if (getDolGlobalInt('MAIN_VIEW_LINE_NUMBER')) {
 	$coldisplay++;
 	echo '<td class="bordertop nobottom linecolnum center"></td>';
 }
@@ -72,13 +72,13 @@ if ((int) DOL_VERSION < 21 && !empty($conf->product->limit_size)) {
 } else {
 	$limit_size = getDolGlobalInt('PRODUIT_LIMIT_SIZE');
 }
-if (!empty($conf->global->ENTREPOT_EXTRA_STATUS)) {
+if (getDolGlobalInt('ENTREPOT_EXTRA_STATUS')) {
 	// hide products in closed warehouse, but show products for internal transfer
 	$form->select_produits(GETPOST('fk_product'), 'fk_product', 0, $limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, 'warehouseopen,warehouseinternal');
 } else {
 	$form->select_produits(GETPOST('fk_product'), 'fk_product', 0, $limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, '');
 }
-if (!empty($conf->global->MAIN_AUTO_OPEN_SELECT2_ON_FOCUS_FOR_CUSTOMER_PRODUCTS)) {
+if (getDolGlobalInt('MAIN_AUTO_OPEN_SELECT2_ON_FOCUS_FOR_CUSTOMER_PRODUCTS')) {
 	?>
 <script>
 	$(document).ready(function(){

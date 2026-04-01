@@ -129,7 +129,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 		// List of directories area
 		$texte .= '<tr><td>';
 		$texttitle = $langs->trans("ListOfDirectories");
-		$listofdir = !empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH) ? explode(',', preg_replace('/[\r\n]+/', ',', trim($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH))) : array();
+		$listofdir = getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH') ? explode(',', preg_replace('/[\r\n]+/', ',', trim(getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH')))) : array();
 		$listoffiles = array();
 		foreach ($listofdir as $key => $tmpdir) {
 			$tmpdir = trim($tmpdir);
@@ -155,7 +155,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 		$texte .= $form->textwithpicto($texttitle, $texthelp, 1, 'help', '', 1);
 		$texte .= '<div><div style="display: inline-block; min-width: 100px; vertical-align: middle;">';
 		$texte .= '<textarea class="flat" cols="60" name="value1">';
-		$texte .= !empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH) ? $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH : '';
+		$texte .= getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH');
 		$texte .= '</textarea>';
 		$texte .= '</div><div style="display: inline-block; vertical-align: middle;">';
 		$texte .= '<input type="submit" class="button small" value="'.$langs->trans("Modify").'" name="Button">';
@@ -163,7 +163,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 
 		// Scan directories
 		$nbofiles = count($listoffiles);
-		if (!empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH)) {
+		if (getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF_ODT_PATH')) {
 			$texte .= $langs->trans("NumberOfModelFilesFound").': <b>';
 			//$texte.=$nbofiles?'<a id="a_'.get_class($this).'" href="#">':'';
 			$texte .= count($listoffiles);
@@ -268,8 +268,8 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 				//$file=$dir.'/'.$newfiletmp.'.'.dol_print_date(dol_now(),'%Y%m%d%H%M%S').'.odt';
 				// Get extension (ods or odt)
 				$newfileformat = substr($newfile, strrpos($newfile, '.') + 1);
-				if (!empty($conf->global->MAIN_DOC_USE_TIMING)) {
-					$format = $conf->global->MAIN_DOC_USE_TIMING;
+				if (getDolGlobalString('MAIN_DOC_USE_TIMING')) {
+					$format = getDolGlobalString('MAIN_DOC_USE_TIMING');
 					if ($format == '1') {
 						$format = '%Y%m%d%H%M%S';
 					}
@@ -301,7 +301,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 				// Recipient name
 				$contactobject = null;
 				if (!empty($usecontact)) {
-					if ($usecontact && ($object->contact->fk_soc != $object->thirdparty->id && (!isset($conf->global->MAIN_USE_COMPANY_NAME_OF_CONTACT) || !empty($conf->global->MAIN_USE_COMPANY_NAME_OF_CONTACT)))) {
+					if ($usecontact && ($object->contact->fk_soc != $object->thirdparty->id && (!isset($conf->global->MAIN_USE_COMPANY_NAME_OF_CONTACT) || getDolGlobalString('MAIN_USE_COMPANY_NAME_OF_CONTACT')))) {
 						$socobject = $object->contact;
 					} else {
 						$socobject = $object->thirdparty;
@@ -328,8 +328,8 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 				// Line of free text
 				$newfreetext = '';
 				$paramfreetext = 'ORDER_FREE_TEXT';
-				if (!empty($conf->global->$paramfreetext)) {
-					$newfreetext = make_substitutions($conf->global->$paramfreetext, $substitutionarray);
+				if (getDolGlobalString($paramfreetext)) {
+					$newfreetext = make_substitutions(getDolGlobalString($paramfreetext), $substitutionarray);
 				}
 
 				// Open and load template
@@ -455,7 +455,7 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 				$reshook = $hookmanager->executeHooks('beforeODTSave', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 
 				// Write new file
-				if (!empty($conf->global->MAIN_ODT_AS_PDF)) {
+				if (getDolGlobalInt('MAIN_ODT_AS_PDF')) {
 					try {
 						$odfHandler->exportAsAttachedPDF($file);
 					} catch (Exception $e) {
@@ -476,8 +476,8 @@ class doc_generic_shipmentpackage_odt extends ModelePDFShipmentPackage
 				$parameters = array('odfHandler'=>&$odfHandler, 'file'=>$file, 'object'=>$object, 'outputlangs'=>$outputlangs, 'substitutionarray'=>&$tmparray);
 				$reshook = $hookmanager->executeHooks('afterODTCreation', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 
-				if (!empty($conf->global->MAIN_UMASK)) {
-					@chmod($file, octdec($conf->global->MAIN_UMASK));
+				if (getDolGlobalString('MAIN_UMASK')) {
+					@chmod($file, octdec(getDolGlobalString('MAIN_UMASK')));
 				}
 
 				$odfHandler = null; // Destroy object

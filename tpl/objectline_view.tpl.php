@@ -55,7 +55,7 @@ $objectline = new ShipmentPackageLine($object->db);
 $coldisplay = 0;
 print "<!-- BEGIN PHP TEMPLATE objectline_view.tpl.php -->\n";
 print '<tr id="row-'.$line->id.'" class="drag drop oddeven" '.$domData.' >';
-if (!empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
+if (getDolGlobalInt('MAIN_VIEW_LINE_NUMBER')) {
 	print '<td class="linecolnum center">'.($i + 1).'</td>';
 	$coldisplay++;
 }
