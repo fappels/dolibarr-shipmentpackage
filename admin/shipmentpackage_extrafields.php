@@ -113,7 +113,7 @@ print dol_get_fiche_end();
 // Buttons
 if ($action != 'create' && $action != 'edit') {
 	print '<div class="tabsAction">';
-	print "<a class=\"butAction\" href=\"".$_SERVER["PHP_SELF"]."?action=create#newattrib\">".$langs->trans("NewAttribute")."</a>";
+	print "<a class=\"butAction\" href=\"".$_SERVER["PHP_SELF"]."?action=create&token=".newToken()."&#newattrib\">".$langs->trans("NewAttribute")."</a>";
 	print "</div>";
 }
 
