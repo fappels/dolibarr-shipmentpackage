@@ -599,6 +599,34 @@ class ShipmentPackage extends CommonObject
 	 */
 	public function update(User $user, $notrigger = false)
 	{
+		$this->fetchLines();
+		foreach ($this->lines as $line) {
+			if ($line->fk_product > 0 && !isset($line->product)) {
+				$line->product = new Product($this->db);
+				$line->product->fetch($line->fk_product);
+			}
+		}
+		$weightArray = $this->getTotalWeightVolume();
+		$weight = $weightArray['weight'];
+		$weightUnit = (!empty($this->weight_units) ? $this->weight_units : 0);
+		$totalWeight = getDolGlobalFloat('SHIPMENTPACKAGE_EMPTY_WEIGHT', 0);
+		if ($weightUnit < 50) {   // < 50 means a standard unit (power of 10 of official unit), > 50 means an exotic unit (like inch)
+			$trueWeightUnit = pow(10, $weightUnit);
+			$totalWeight += $weight / $trueWeightUnit;
+		} else {
+			if ($weightUnit == 99) {
+				// conversion 1 Pound = 0.45359237 KG
+				$trueWeightUnit = 0.45359237;
+				$totalWeight += $weight / $trueWeightUnit;
+			} elseif ($weightUnit == 98) {
+				// conversion 1 Ounce = 0.0283495 KG
+				$trueWeightUnit = 0.0283495;
+				$totalWeight += $weight / $trueWeightUnit;
+			} else {
+				$totalWeight += $weight; // This may be wrong if we mix different units
+			}
+		}
+		$this->weight = $totalWeight;
 		return $this->updateCommon($user, $notrigger);
 	}
 
@@ -1540,6 +1568,7 @@ class ShipmentPackageLine extends CommonObjectLine
 
 		// update package value
 		$result = 0;
+		$value = 0;
 		$product = new Product($this->db);
 		if ($this->fk_product > 0 && getDolGlobalInt('SHIPMENTPACKAGE_WAP_PACKAGEVALUE')) {
 			$result = $product->fetch($this->fk_product);
@@ -1563,7 +1592,7 @@ class ShipmentPackageLine extends CommonObjectLine
 				}
 			}
 		}
-		if ($result > 0) {
+		if ($result >= 0) {
 			if (empty($package->value)) $package->value = 0;
 			if ($mode == 'increase') {
 				$package->value += $value;
