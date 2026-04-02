@@ -1,5 +1,11 @@
 # CHANGELOG SHIPMENTPACKAGE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
+## 1.0.11
+- Tested on Dolibarr 23
+- Fix CSRF token issues
+- Fix setup page
+- Add weight calculation
+
 ## 1.0.10
 - Tested on Dolibarr 21
 - Tested on PHP 8.3
