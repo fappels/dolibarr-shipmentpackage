@@ -100,6 +100,7 @@ $originid = GETPOST('originid', 'int');
 $toSelect = GETPOST('toselect', 'array');
 $lineQtys = GETPOST('qty', 'array');
 $originLineIds = GETPOST('ol', 'array');
+$noback = GETPOST('noback', 'int');
 
 // Initialize technical objects
 $object = new ShipmentPackage($db);
@@ -205,31 +206,29 @@ if (empty($reshook)) {
 
 	// link object and replicate extrafield, contacts and lines
 	// if view and origin set means add new shipment to object
-	if (($action == 'add_object_linked' || $action == 'view') && $origin == 'shipping' && !empty($originid)) {
+	if (($action == 'add' || $action == 'view') && $origin == 'shipping' && !empty($originid)) {
 		// link object
 		$object_module = $object->module;
 		$object->module = null; //avoid to have add module name to element, because module element name already in element
-		if ($action == 'add_object_linked') {
-			$object->module = $object_module;
-			if ($object->add_object_linked($origin, $originid, $user) > 0) {
-				// Replicate extrafields
-				$objectsrc->fetch_optionals();
-				$object->array_options = $objectsrc->array_options;
+		$object->module = $object_module;
+		if ($object->add_object_linked($origin, $originid, $user) > 0) {
+			// Replicate extrafields
+			$objectsrc->fetch_optionals();
+			$object->array_options = $objectsrc->array_options;
 
-				// Repicate notes
-				$object->note_private = $object->getDefaultCreateValueFor('note_private', (!empty($objectsrc->note_private) ? $objectsrc->note_private : null));
-				$object->note_public = $object->getDefaultCreateValueFor('note_public', (!empty($objectsrc->note_public) ? $objectsrc->note_public : null));
-			}
-			// Replicate source contacts list
-			// TODO add shipmentpackage type contact
-			/*$objectsrc->fetch_origin();
-			$srccontactslist = $objectsrc->commande->liste_contact(-1, 'external', 0, 'SHIPPING');
-			if (is_array($srccontactslist) && count($srccontactslist) > 0) {
-				foreach ($srccontactslist as $key => $srccontact) {
-					$object->add_contact($srccontact['id'], $srccontact['code'], 'external');
-				}
-			}*/
+			// Repicate notes
+			$object->note_private = $object->getDefaultCreateValueFor('note_private', (!empty($objectsrc->note_private) ? $objectsrc->note_private : null));
+			$object->note_public = $object->getDefaultCreateValueFor('note_public', (!empty($objectsrc->note_public) ? $objectsrc->note_public : null));
 		}
+		// Replicate source contacts list
+		// TODO add shipmentpackage type contact
+		/*$objectsrc->fetch_origin();
+		$srccontactslist = $objectsrc->commande->liste_contact(-1, 'external', 0, 'SHIPPING');
+		if (is_array($srccontactslist) && count($srccontactslist) > 0) {
+			foreach ($srccontactslist as $key => $srccontact) {
+				$object->add_contact($srccontact['id'], $srccontact['code'], 'external');
+			}
+		}*/
 		if (!empty($objectsrc) && is_array($toSelect) && count($toSelect) > 0) {
 			if (empty($objectsrc->lines) && method_exists($objectsrc, 'fetch_lines')) {
 				$objectsrc->fetch_lines();
@@ -390,13 +389,18 @@ if ($action == 'create') {
 	print '<input type="hidden" name="action" value="add">';
 
 	if ($backtopage) {
-		if ($origin == 'shipping' && !empty($originid)) {
-			$backtopage .= '&origin=' . $origin . '&originid=' . $objectsrc->id . '&action=add_object_linked';
-		}
 		print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
 	}
 	if ($backtopageforcancel) {
 		print '<input type="hidden" name="backtopageforcancel" value="'.$backtopageforcancel.'">';
+	}
+	if ($origin == 'shipping' && !empty($originid)) {
+		print '<input type="hidden" name="origin" value="'.$origin.'">';
+		print '<input type="hidden" name="originid" value="'.$objectsrc->id.'">';
+		$noback = 1; // When we create from shipping, we don't want to have a back button to shipping, but to list of shipmentpackage or card of shipmentpackage once created
+	}
+	if ($noback) {
+		print '<input type="hidden" name="noback" value="1">';
 	}
 
 	print dol_get_fiche_head(array(), '');
