@@ -1340,7 +1340,11 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 				$result = $shipmentLine->fetch($object->lines[$i]->fk_origin_line);
 				if ($result > 0) {
 					$orderLine = new OrderLine($this->db);
-					$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+					if ((int) DOL_VERSION < 20) {
+						$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+					} else {
+						$result = $orderLine->fetch($shipmentLine->fk_elementdet);
+					}
 					if ($result > 0) {
 						$labelproductservice = $orderLine->desc;
 					}

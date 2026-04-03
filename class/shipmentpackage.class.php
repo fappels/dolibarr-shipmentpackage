@@ -442,7 +442,7 @@ class ShipmentPackage extends CommonObject
 		$line = new ShipmentPackageLine($this->db);
 		$result = $line->fetch($lineid);
 		if ($result > 0) {
-			$line->updatePackageValue($user, $this, 'decrease');
+			if ($this->value > 0) $line->updatePackageValue($user, $this, 'decrease');
 			$line->fk_shipmentpackage = $this->id;
 			$line->qty = $qty;
 			$line->fk_product = $fk_product;
@@ -609,7 +609,7 @@ class ShipmentPackage extends CommonObject
 		$weightArray = $this->getTotalWeightVolume();
 		$weight = $weightArray['weight'];
 		$weightUnit = (!empty($this->weight_units) ? $this->weight_units : 0);
-		$totalWeight = getDolGlobalFloat('SHIPMENTPACKAGE_EMPTY_WEIGHT', 0);
+		$totalWeight = 0;
 		if ($weightUnit < 50) {   // < 50 means a standard unit (power of 10 of official unit), > 50 means an exotic unit (like inch)
 			$trueWeightUnit = pow(10, $weightUnit);
 			$totalWeight += $weight / $trueWeightUnit;
@@ -1585,14 +1585,18 @@ class ShipmentPackageLine extends CommonObjectLine
 				$result = $shipmentLine->fetch($this->fk_origin_line);
 				if ($result > 0) {
 					$orderLine = new OrderLine($this->db);
-					$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+					if ((int) DOL_VERSION < 20) {
+						$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+					} else {
+						$result = $orderLine->fetch($shipmentLine->fk_elementdet);
+					}
 					if ($result > 0) {
 						$value = $orderLine->subprice * $this->qty;
 					}
 				}
 			}
 		}
-		if ($result >= 0) {
+		if ($result >= 0 && $value > 0) {
 			if (empty($package->value)) $package->value = 0;
 			if ($mode == 'increase') {
 				$package->value += $value;

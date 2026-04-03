@@ -44,6 +44,9 @@ if (getDolGlobalInt('PRODUCT_USE_UNITS')) {
 }
 
 print '<td class="right">'.$this->tpl['remise_percent'].'</td>';
+if ((int) DOL_VERSION >= 16) {
+	print '<td class="right">'.$this->tpl['total_ht'].'</td>';
+}
 
 $selected = 1;
 if (!empty($selectedLines) && !in_array($this->tpl['id'], $selectedLines)) {
