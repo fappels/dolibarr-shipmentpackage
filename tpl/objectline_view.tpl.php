@@ -28,6 +28,17 @@
  * $type, $text, $description, $line
  */
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ * @var int $i line number
+ * @var String $action
+ * @var int $num number of lines
+ */
+
 // Protection to avoid direct call of template
 if (empty($object) || !is_object($object)) {
 	print "Error, template page can't be called as URL";

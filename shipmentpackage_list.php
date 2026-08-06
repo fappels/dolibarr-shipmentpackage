@@ -84,6 +84,14 @@ require_once __DIR__.'/class/shipmentpackage.class.php';
 // for other modules
 //dol_include_once('/othermodule/class/otherobject.class.php');
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Load translation files required by the page
 $langs->loadLangs(array("shipmentpackage@shipmentpackage", "other"));
 

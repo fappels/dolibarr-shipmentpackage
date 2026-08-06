@@ -50,12 +50,18 @@ if (!$res) {
 	die("Include of main fails");
 }
 
-global $langs, $user;
-
 // Libraries
 require_once DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php";
 require_once '../lib/shipmentpackage.lib.php';
 require_once "../class/shipmentpackage.class.php";
+
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
 
 // Translations
 $langs->loadLangs(array("admin", "shipmentpackage@shipmentpackage"));

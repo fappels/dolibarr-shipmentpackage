@@ -25,6 +25,16 @@
  * $inputalsopricewithtax (0 by default, 1 to also show column with unit price including tax)
  */
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ * @var int $i line number
+ * @var String $action
+ */
+
 // Protection to avoid direct call of template
 if (empty($object) || !is_object($object)) {
 	print "Error, template page can't be called as URL";

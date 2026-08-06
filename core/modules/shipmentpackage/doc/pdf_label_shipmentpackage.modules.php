@@ -967,6 +967,8 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 
 			if (is_object($thirdparty)) {
 				$carac_client_name = pdfBuildThirdpartyName($thirdparty, $outputlangs);
+			} else {
+				$carac_client_name = '';
 			}
 
 			// Show recipient
@@ -1163,6 +1165,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 		$pdf->setCellPaddings($colDef['content']['padding'][3], $colDef['content']['padding'][0], $colDef['content']['padding'][1], $colDef['content']['padding'][2]);
 
 		// line description
+		$labelproductservice = '';
 		if ($object->lines[$i]->fk_product > 0) {
 			$product = new Product($this->db);
 			$product->fetch($object->lines[$i]->fk_product);

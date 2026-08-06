@@ -82,6 +82,14 @@ require_once DOL_DOCUMENT_ROOT.'/product/class/html.formproduct.class.php';
 dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
 dol_include_once('/shipmentpackage/lib/shipmentpackage_shipmentpackage.lib.php');
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Load translation files required by the page
 $langs->loadLangs(array("shipmentpackage@shipmentpackage", "other", "sendings", "bills"));
 
@@ -108,12 +116,12 @@ $extrafields = new ExtraFields($db);
 $diroutputmassaction = $conf->shipmentpackage->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('shipmentpackagecard', 'globalcard')); // Note that conf->hooks_modules contains array
 $selectedLines = array(0);
+$objectsrc = new Expedition($db);
 if (!empty($originid)) {
 	if ($action == 'update') $noback = 1;
 	dol_include_once('/expedition/class/expedition.class.php');
 	dol_include_once('/commande/class/commande.class.php');
 
-	$objectsrc = new Expedition($db);
 	$objectsrc->fetch($originid);
 }
 
@@ -238,7 +246,7 @@ if (empty($reshook)) {
 					if (!empty($line->detail_batch)) {
 						foreach ($line->detail_batch as $batch) {
 							if ($batch->id == $expeditionDetId) {
-								foreach ($originLineIds as $key => $originLineId) {
+								foreach ($originLineIds as $originLineId) {
 									if ($originLineId == $expeditionDetId) {
 										$object->addLine($user, $lineQtys[$key], $line->fk_product, $line->id, $batch->batch, $batch->id);
 									}
@@ -247,7 +255,7 @@ if (empty($reshook)) {
 						}
 					} else {
 						if ($line->id == $expeditionDetId) {
-							foreach ($originLineIds as $key => $originLineId) {
+							foreach ($originLineIds as $originLineId) {
 								if ($originLineId == $expeditionDetId) {
 									$object->addLine($user, $lineQtys[$key], $line->fk_product, $line->id);
 								}

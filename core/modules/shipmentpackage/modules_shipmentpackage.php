@@ -74,6 +74,11 @@ abstract class ModeleNumRefShipmentPackage
 	public $error = '';
 
 	/**
+	 * @var string Version of numbering module ('development', 'experimental', 'dolibarr', or a version string)
+	 */
+	public $version = '';
+
+	/**
 	 *	Return if a module can be used or not
 	 *
 	 *	@return		boolean     true if module can be used
@@ -91,7 +96,7 @@ abstract class ModeleNumRefShipmentPackage
 	public function info()
 	{
 		global $langs;
-		$langs->load("package@package");
+		$langs->load("shipmentpackage@shipmentpackage");
 		return $langs->trans("NoDescription");
 	}
 
@@ -103,7 +108,7 @@ abstract class ModeleNumRefShipmentPackage
 	public function getExample()
 	{
 		global $langs;
-		$langs->load("package@package");
+		$langs->load("shipmentpackage@shipmentpackage");
 		return $langs->trans("NoExample");
 	}
 

@@ -150,43 +150,90 @@ class ShipmentPackage extends CommonObject
 		'model_pdf' => array('type'=>'varchar(255)', 'label'=>'Model pdf', 'enabled'=>'1', 'position'=>250, 'notnull'=>-1, 'visible'=>0,),
 		'status' => array('type'=>'smallint', 'label'=>'Status', 'enabled'=>'1', 'position'=>260, 'notnull'=>1, 'visible'=>5, 'index'=>1, 'default'=>0, 'arrayofkeyval'=>array('0'=>'Draft', '1'=>'Validated', '2' => 'Closed', '9'=>'Canceled'),),
 	);
+	/**
+	 * @var int ID
+	 */
 	public $rowid;
-	public $ref;
+
+	/**
+	 * @var string Reference of supplier
+	 */
 	public $ref_supplier;
+
+	/**
+	 * @var int Thirdparty ID
+	 */
 	public $fk_soc;
+
+	/**
+	 * @var int Transport supplier (thirdparty) ID
+	 */
 	public $fk_supplier;
-	public $fk_project;
+
+	/**
+	 * @var string Description
+	 */
 	public $description;
+
+	/**
+	 * @var double Value of package
+	 */
 	public $value;
+
+	/**
+	 * @var int Package/parcel type ID (c_shipment_package_type)
+	 */
 	public $fk_package_type;
+
+	/**
+	 * @var int Sending method ID (c_shipment_mode)
+	 */
 	public $fk_shipping_method;
+
+	/**
+	 * @var double Height
+	 */
 	public $height;
+
+	/**
+	 * @var double Width
+	 */
 	public $width;
+
+	/**
+	 * @var double Length
+	 */
 	public $length;
+
+	/**
+	 * @var int Unit code used for height/width/length
+	 */
 	public $size_units;
+
+	/**
+	 * @var double Weight
+	 */
 	public $weight;
+
+	/**
+	 * @var int Unit code used for weight
+	 */
 	public $weight_units;
+
+	/**
+	 * @var int Dangerous goods code
+	 */
 	public $dangerous_goods;
+
+	/**
+	 * @var int Tail lift required
+	 */
 	public $tail_lift;
-	public $note_public;
-	public $note_private;
-	public $date_creation;
-	public $tms;
-	public $fk_user_creat;
-	public $fk_user_modif;
-	public $last_main_doc;
-	public $import_key;
-	public $model_pdf;
-	public $status;
+
+	/**
+	 * @var string Tracking URL html link built from the shipping method's tracking pattern
+	 */
 	public $tracking_url;
-	/**
-	 * var string $origin origin object type returned with fetch method
-	 */
-	public $origin;
-	/**
-	 * var int $origin origin object id returned with fetch method
-	 */
-	public $origin_id;
 	// END MODULEBUILDER PROPERTIES
 
 
@@ -1366,13 +1413,29 @@ class ShipmentPackageLine extends CommonObjectLine
 		'rang' => array('type'=>'integer', 'label'=>'Rang', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>0)
 	);
 
-	public $rowid;
+	/**
+	 * @var int ShipmentPackage ID
+	 */
 	public $fk_shipmentpackage;
+
+	/**
+	 * @var int Line ID of the origin object (shipment line)
+	 */
 	public $fk_origin_line;
+
+	/**
+	 * @var int Lot/batch line ID of the origin object (shipment line batch)
+	 */
 	public $fk_origin_batch_line;
-	public $fk_product;
+
+	/**
+	 * @var string Product lot/batch value
+	 */
 	public $product_lot_batch;
-	public $qty;
+
+	/**
+	 * @var int Rank/position of the line
+	 */
 	public $rang;
 
 	/**

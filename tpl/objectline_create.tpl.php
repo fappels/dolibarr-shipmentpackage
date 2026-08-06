@@ -21,6 +21,14 @@
  * $forceall (0 by default, 1 for supplier invoices/orders)
  */
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Protection to avoid direct call of template
 if (empty($object) || !is_object($object)) {
 	print "Error: this template page cannot be called directly as an URL";

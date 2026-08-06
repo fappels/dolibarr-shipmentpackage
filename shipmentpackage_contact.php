@@ -60,6 +60,14 @@ dol_include_once('/shipmentpackage/lib/shipmentpackage_shipmentpackage.lib.php')
 dol_include_once('/expedition/class/expedition.class.php');
 dol_include_once('/commande/class/commande.class.php');
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Load translation files required by the page
 $langs->loadLangs(array("shipmentpackage@shipmentpackage", "companies", "other", "mails"));
 
@@ -85,14 +93,16 @@ $origin = 'shipping';
 $object->origin = $origin;
 $object->fetchObjectLinked();
 if (!empty($object->linkedObjectsIds[$origin])) {
-	$originid = array_pop(array_reverse($object->linkedObjectsIds[$origin]));
+	$originIds = $object->linkedObjectsIds[$origin];
+	$originid = array_pop($originIds);
 	$object->origin_id = $originid;
 	$object->fetch_origin();
 	$expedition = $object->expedition;
 	$origin = 'commande';
 	$expedition->origin = $origin;
 	$expedition->fetchObjectLinked();
-	$originid = array_pop(array_reverse($expedition->linkedObjectsIds[$origin]));
+	$originIds = $expedition->linkedObjectsIds[$origin];
+	$originid = array_pop($originIds);
 	$expedition->origin_id = $originid;
 	$expedition->fetch_origin();
 	$objectsrc = $expedition->commande;
