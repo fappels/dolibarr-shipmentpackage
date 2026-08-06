@@ -16,6 +16,14 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
 	print "Error, template page can't be called as URL";
@@ -39,11 +47,14 @@ print '<td class="right">';
 print '<input type="text" size="2" name="qty[]" id="cb_qty'.$this->tpl['id'].'" class="flat right" value="'.$this->tpl['qty'].'">';
 print '<input type="hidden" name="ol[]" value="'.$this->tpl['id'].'">';
 print '</td>';
-if (!empty($conf->global->PRODUCT_USE_UNITS)) {
+if (getDolGlobalInt('PRODUCT_USE_UNITS')) {
 	print '<td class="left">'.$langs->trans($this->tpl['unit']).'</td>';
 }
 
 print '<td class="right">'.$this->tpl['remise_percent'].'</td>';
+if ((int) DOL_VERSION >= 16) {
+	print '<td class="right">'.$this->tpl['total_ht'].'</td>';
+}
 
 $selected = 1;
 if (!empty($selectedLines) && !in_array($this->tpl['id'], $selectedLines)) {

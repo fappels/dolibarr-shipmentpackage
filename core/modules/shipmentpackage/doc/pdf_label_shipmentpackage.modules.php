@@ -967,6 +967,8 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 
 			if (is_object($thirdparty)) {
 				$carac_client_name = pdfBuildThirdpartyName($thirdparty, $outputlangs);
+			} else {
+				$carac_client_name = '';
 			}
 
 			// Show recipient
@@ -1163,20 +1165,25 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 		$pdf->setCellPaddings($colDef['content']['padding'][3], $colDef['content']['padding'][0], $colDef['content']['padding'][1], $colDef['content']['padding'][2]);
 
 		// line description
+		$labelproductservice = '';
 		if ($object->lines[$i]->fk_product > 0) {
 			$product = new Product($this->db);
 			$product->fetch($object->lines[$i]->fk_product);
 			$labelproductservice = $product->ref;
 		} else {
 			// free product
-			if ($user->rights->fournisseur->commande->lire) {
-				dol_include_once('/reception/class/reception.class.php');
-				dol_include_once('/fourn/class/fournisseur.commande.class.php');
-				$receptionLine = new CommandeFournisseurDispatch($this->db);
-				$result = $receptionLine->fetch($this->fk_origin_line);
+			if ($user->rights->commande->lire) {
+				dol_include_once('/expedition/class/expedition.class.php');
+				dol_include_once('/commande/class/commande.class.php');
+				$shipmentLine = new ExpeditionLigne($this->db);
+				$result = $shipmentLine->fetch($object->lines[$i]->fk_origin_line);
 				if ($result > 0) {
-					$orderLine = new CommandeFournisseurLigne($this->db);
-					$result = $orderLine->fetch($receptionLine->fk_commandefourndet);
+					$orderLine = new OrderLine($this->db);
+					if ((int) DOL_VERSION < 20) {
+						$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+					} else {
+						$result = $orderLine->fetch($shipmentLine->fk_elementdet);
+					}
 					if ($result > 0) {
 						$labelproductservice = $orderLine->desc;
 					}

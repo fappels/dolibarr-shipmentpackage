@@ -25,6 +25,16 @@
  * $inputalsopricewithtax (0 by default, 1 to also show column with unit price including tax)
  */
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ * @var int $i line number
+ * @var String $action
+ */
+
 // Protection to avoid direct call of template
 if (empty($object) || !is_object($object)) {
 	print "Error, template page can't be called as URL";
@@ -49,7 +59,7 @@ print "<!-- BEGIN PHP TEMPLATE objectline_edit.tpl.php -->\n";
 $coldisplay=0;
 print '<tr class="oddeven tredited">';
 // Adds a line numbering column
-if (! empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
+if (getDolGlobalInt('MAIN_VIEW_LINE_NUMBER')) {
 	print '<td class="linecolnum center">'.($i+1).'</td>';
 	$coldisplay++;
 }
@@ -59,13 +69,13 @@ $coldisplay++;
 print '<td class="bordertop nobottom linecol">';
 $statustoshow = 1;
 if ($line->fk_product) {
-	if (!empty($conf->global->ENTREPOT_EXTRA_STATUS)) {
+	if (getDolGlobalInt('ENTREPOT_EXTRA_STATUS')) {
 		// hide products in closed warehouse, but show products for internal transfer
 		$form->select_produits($line->fk_product, 'fk_product', '', $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, 'warehouseopen,warehouseinternal');
 	} else {
 		$form->select_produits($line->fk_product, 'fk_product', '', $conf->product->limit_size, 0, $statustoshow, 2, '', 1, array(), 0, '1', 0, 'maxwidth500', 0, '');
 	}
-	if (!empty($conf->global->MAIN_AUTO_OPEN_SELECT2_ON_FOCUS_FOR_CUSTOMER_PRODUCTS)) {
+	if (getDolGlobalInt('MAIN_AUTO_OPEN_SELECT2_ON_FOCUS_FOR_CUSTOMER_PRODUCTS')) {
 		?>
 	<script>
 		$(document).ready(function(){
@@ -91,7 +101,11 @@ if ($line->fk_product) {
 		$result = $shipmentLine->fetch($line->fk_origin_line);
 		if ($result > 0) {
 			$orderLine = new OrderLine($object->db);
-			$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+			if ((int) DOL_VERSION < 20) {
+				$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+			} else {
+				$result = $orderLine->fetch($shipmentLine->fk_elementdet);
+			}
 			if ($result > 0) {
 				print $orderLine->desc;
 			}

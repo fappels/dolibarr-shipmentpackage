@@ -108,10 +108,10 @@ class ActionsShipmentPackage
 				$result = $shipmentpackage->fetchAll('', '', 0, 0, array('fk_soc'=>(int) $object->socid, 'status'=>ShipmentPackage::STATUS_DRAFT));
 				if (is_array($result) && count($result) > 0) {
 					foreach ($result as $package) {
-						print '<div class="inline-block divButAction"><a class="butAction" href="' . $href . '?origin=shipping&id=' . $package->id . '&originid=' . $object->id . '&fk_soc=' . $object->socid . '&fk_project=' . $object->fk_project . '&action=addto">' . $langs->trans('AddToPackage', $package->ref) . '</a></div>';
+						print '<div class="inline-block divButAction"><a class="butAction" href="' . $href . '?origin=shipping&id=' . $package->id . '&originid=' . $object->id . '&fk_soc=' . $object->socid . '&fk_project=' . $object->fk_project . '&action=addto&token=' . newToken() . '&backtopageforcancel='.urlencode($_SERVER["PHP_SELF"].'?id='.$object->id) . '">' . $langs->trans('AddToPackage', $package->ref) . '</a></div>';
 					}
 				}
-				print '<div class="inline-block divButAction"><a class="butAction" href="' . $href . '?origin=shipping&originid=' . $object->id . '&fk_soc=' . $object->socid . '&fk_project=' . $object->fk_project . '&action=create">' . $langs->trans('CreatePackage') . '</a></div>';
+				print '<div class="inline-block divButAction"><a class="butAction" href="' . $href . '?origin=shipping&originid=' . $object->id . '&fk_soc=' . $object->socid . '&fk_project=' . $object->fk_project . '&action=create&token=' . newToken() .'&backtopageforcancel='.urlencode($_SERVER["PHP_SELF"].'?id='.$object->id) . '">' . $langs->trans('CreatePackage') . '</a></div>';
 			}
 		}
 		return $error;

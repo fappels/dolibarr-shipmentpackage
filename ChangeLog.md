@@ -1,5 +1,23 @@
 # CHANGELOG SHIPMENTPACKAGE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
+## 1.0.12
+- Remove setup for SHIPMENTPACKAGE_EMPTY_WEIGHT.
+- Fix create package from shipment CSRF.
+- Fix possible sql error when list hook is used.
+- Add backtopageforcancel for shipment actionbuttons.
+- Fix some dolibarr version compatibility issues
+
+## 1.0.11
+- Tested on Dolibarr 23
+- Fix CSRF token issues
+- Fix setup page
+- Add weight calculation
+
+## 1.0.10
+- Tested on Dolibarr 21
+- Tested on PHP 8.3
+- Fix backward compatiblity for V19 and lower
+
 ## 1.0.9
 - Tested on Dolibarr 20
 - Tested on PHP 8.2

@@ -58,6 +58,14 @@ if (!$res) {
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Load translation files required by the page
 $langs->loadLangs(array("shipmentpackage@shipmentpackage"));
 
@@ -177,8 +185,8 @@ END MODULEBUILDER DRAFT MYOBJECT */
 print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 
 
-$NBMAX = $conf->global->MAIN_SIZE_SHORTLIST_LIMIT;
-$max = $conf->global->MAIN_SIZE_SHORTLIST_LIMIT;
+$NBMAX = getDolGlobalInt('MAIN_SIZE_SHORTLIST_LIMIT');
+$max = getDolGlobalInt('MAIN_SIZE_SHORTLIST_LIMIT');
 
 /* BEGIN MODULEBUILDER LASTMODIFIED MYOBJECT
 // Last modified myobject

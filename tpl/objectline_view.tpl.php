@@ -28,6 +28,17 @@
  * $type, $text, $description, $line
  */
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ * @var int $i line number
+ * @var String $action
+ * @var int $num number of lines
+ */
+
 // Protection to avoid direct call of template
 if (empty($object) || !is_object($object)) {
 	print "Error, template page can't be called as URL";
@@ -55,7 +66,7 @@ $objectline = new ShipmentPackageLine($object->db);
 $coldisplay = 0;
 print "<!-- BEGIN PHP TEMPLATE objectline_view.tpl.php -->\n";
 print '<tr id="row-'.$line->id.'" class="drag drop oddeven" '.$domData.' >';
-if (!empty($conf->global->MAIN_VIEW_LINE_NUMBER)) {
+if (getDolGlobalInt('MAIN_VIEW_LINE_NUMBER')) {
 	print '<td class="linecolnum center">'.($i + 1).'</td>';
 	$coldisplay++;
 }
@@ -73,7 +84,11 @@ if ($line->fk_product > 0) {
 		$result = $shipmentLine->fetch($line->fk_origin_line);
 		if ($result > 0) {
 			$orderLine = new OrderLine($object->db);
-			$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+			if ((int) DOL_VERSION < 20) {
+				$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+			} else {
+				$result = $orderLine->fetch($shipmentLine->fk_elementdet);
+			}
 			if ($result > 0) {
 				print $orderLine->desc;
 			}
@@ -109,7 +124,7 @@ if ($this->status == 0 && ($permissiontoadd) && $action != 'selectlines' ) {
 	$coldisplay++;
 	if (($line->info_bits & 2) == 2 || ! empty($disableedit)) {
 	} else {
-		print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&amp;action=editline&amp;lineid='.$line->id.'#line_'.$line->id.'">'.img_edit().'</a>';
+		print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&amp;action=editline&amp;lineid='.$line->id.'&amp;token='.newToken().'#line_'.$line->id.'">'.img_edit().'</a>';
 	}
 	print '</td>';
 
@@ -117,7 +132,7 @@ if ($this->status == 0 && ($permissiontoadd) && $action != 'selectlines' ) {
 	$coldisplay++;
 	if (($line->fk_prev_id == null) && empty($disableremove)) {
 		//La suppression n'est autorisée que si il n'y a pas de ligne dans une précédente situation
-		print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&amp;action=deleteline&amp;lineid='.$line->id.'">';
+		print '<a href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&amp;action=deleteline&amp;lineid='.$line->id.'&amp;token='.newToken().'">';
 		print img_delete();
 		print '</a>';
 	}
@@ -132,7 +147,7 @@ if ($this->status == 0 && ($permissiontoadd) && $action != 'selectlines' ) {
 			print '</a>';
 		}
 		if ($i < $num - 1) {
-			print '<a class="lineupdown" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&amp;action=down&amp;rowid='.$line->id.'">';
+			print '<a class="lineupdown" href="'.$_SERVER["PHP_SELF"].'?id='.$this->id.'&amp;action=down&amp;rowid='.$line->id.'&amp;token='.newToken().'">';
 			echo img_down('default', 0, 'imgdownforline');
 			print '</a>';
 		}

@@ -77,6 +77,14 @@ if (!$res) {
 dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
 dol_include_once('/shipmentpackage/lib/shipmentpackage_shipmentpackage.lib.php');
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Load translation files required by the page
 $langs->loadLangs(array("shipmentpackage@shipmentpackage", "companies"));
 

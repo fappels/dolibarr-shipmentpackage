@@ -22,6 +22,14 @@
  * $form
  */
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Protection to avoid direct call of template
 if (empty($conf) || !is_object($conf)) {
 	print "Error, template page can't be called as URL";
@@ -53,7 +61,10 @@ foreach ($object->fields as $key => $val) {
 	print '<td>';
 	if (in_array($val['type'], array('int', 'integer'))) $value = GETPOST($key, 'int');
 	elseif ($val['type'] == 'text' || $val['type'] == 'html') $value = GETPOST($key, 'none');
-	else $value = GETPOST($key, 'alpha');
+	elseif ($val['type'] == 'checkbox') {
+		$value_arr = GETPOST($key, 'array');
+		$value = !empty($value_arr) ? implode(',', $value_arr) : '';
+	} else $value = GETPOST($key, 'alpha');
 	print $object->showInputField($val, $key, $value, '', '', '', 0);
 	print '</td>';
 	print '</tr>';

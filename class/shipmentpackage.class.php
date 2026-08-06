@@ -112,8 +112,8 @@ class ShipmentPackage extends CommonObject
 		'date_creation' => array('type'=>'datetime', 'label'=>'DateCreation', 'enabled'=>'1', 'position'=>55, 'notnull'=>1, 'visible'=>5,),
 		'description' => array('type'=>'varchar(255)', 'label'=>'Description', 'enabled'=>'1', 'position'=>60, 'notnull'=>0, 'visible'=>-1,),
 		'value' => array('type'=>'double(24,8)', 'label'=>'Value', 'enabled'=>'1', 'position'=>70, 'notnull'=>0, 'visible'=>4, 'default'=>0, 'help'=>"ValueOfPackage"),
-		'fk_package_type' => array('type'=>'sellist:c_shipment_package_type:label:rowid::(active:=:1)', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>0, 'visible'=>-1, 'help'=>"PackageParcelType"),
-		'fk_shipping_method' =>array('type'=>'sellist:c_shipment_mode:libelle:rowid::(active:=:1)', 'label'=>'SendingMethod', 'enabled'=>1, 'notnull'=>0, 'visible'=>5, 'position'=>81),
+		'fk_package_type' => array('type'=>'sellist:c_shipment_package_type:label:rowid::(active:=:1)', 'label'=>'Fkparceltype', 'enabled'=>'1', 'position'=>80, 'notnull'=>-1, 'visible'=>-1, 'help'=>"PackageParcelType"),
+		'fk_shipping_method' =>array('type'=>'sellist:c_shipment_mode:libelle:rowid::(active:=:1)', 'label'=>'SendingMethod', 'enabled'=>1, 'notnull'=>-1, 'visible'=>5, 'position'=>81),
 		'dangerous_goods' => array('type'=>'checkbox', 'label'=>'Dangerousgoods', 'enabled'=>'1', 'position'=>82, 'notnull'=>0, 'default'=>0, 'visible'=>1,
 			'arrayofkeyval'=>array(
 				'-1'=>'',
@@ -150,43 +150,90 @@ class ShipmentPackage extends CommonObject
 		'model_pdf' => array('type'=>'varchar(255)', 'label'=>'Model pdf', 'enabled'=>'1', 'position'=>250, 'notnull'=>-1, 'visible'=>0,),
 		'status' => array('type'=>'smallint', 'label'=>'Status', 'enabled'=>'1', 'position'=>260, 'notnull'=>1, 'visible'=>5, 'index'=>1, 'default'=>0, 'arrayofkeyval'=>array('0'=>'Draft', '1'=>'Validated', '2' => 'Closed', '9'=>'Canceled'),),
 	);
+	/**
+	 * @var int ID
+	 */
 	public $rowid;
-	public $ref;
+
+	/**
+	 * @var string Reference of supplier
+	 */
 	public $ref_supplier;
+
+	/**
+	 * @var int Thirdparty ID
+	 */
 	public $fk_soc;
+
+	/**
+	 * @var int Transport supplier (thirdparty) ID
+	 */
 	public $fk_supplier;
-	public $fk_project;
+
+	/**
+	 * @var string Description
+	 */
 	public $description;
+
+	/**
+	 * @var double Value of package
+	 */
 	public $value;
+
+	/**
+	 * @var int Package/parcel type ID (c_shipment_package_type)
+	 */
 	public $fk_package_type;
+
+	/**
+	 * @var int Sending method ID (c_shipment_mode)
+	 */
 	public $fk_shipping_method;
+
+	/**
+	 * @var double Height
+	 */
 	public $height;
+
+	/**
+	 * @var double Width
+	 */
 	public $width;
+
+	/**
+	 * @var double Length
+	 */
 	public $length;
+
+	/**
+	 * @var int Unit code used for height/width/length
+	 */
 	public $size_units;
+
+	/**
+	 * @var double Weight
+	 */
 	public $weight;
+
+	/**
+	 * @var int Unit code used for weight
+	 */
 	public $weight_units;
+
+	/**
+	 * @var int Dangerous goods code
+	 */
 	public $dangerous_goods;
+
+	/**
+	 * @var int Tail lift required
+	 */
 	public $tail_lift;
-	public $note_public;
-	public $note_private;
-	public $date_creation;
-	public $tms;
-	public $fk_user_creat;
-	public $fk_user_modif;
-	public $last_main_doc;
-	public $import_key;
-	public $model_pdf;
-	public $status;
+
+	/**
+	 * @var string Tracking URL html link built from the shipping method's tracking pattern
+	 */
 	public $tracking_url;
-	/**
-	 * var string $origin origin object type returned with fetch method
-	 */
-	public $origin;
-	/**
-	 * var int $origin origin object id returned with fetch method
-	 */
-	public $origin_id;
 	// END MODULEBUILDER PROPERTIES
 
 
@@ -237,10 +284,10 @@ class ShipmentPackage extends CommonObject
 
 		$this->db = $db;
 
-		if (empty($conf->global->MAIN_SHOW_TECHNICAL_ID) && isset($this->fields['rowid'])) {
+		if (!getDolGlobalInt('MAIN_SHOW_TECHNICAL_ID') && isset($this->fields['rowid'])) {
 			$this->fields['rowid']['visible'] = 0;
 		}
-		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) {
+		if (!getDolGlobalInt('MULTICOMPANY_ENABLED') && isset($this->fields['entity'])) {
 			$this->fields['entity']['enabled'] = 0;
 		}
 
@@ -254,6 +301,10 @@ class ShipmentPackage extends CommonObject
 		if (!function_exists('forgeSQLFromUniversalSearchCriteria')) {
 			$this->fields['fk_soc']['type'] = 'integer:Societe:societe/class/societe.class.php:1:status=1 AND entity IN (__SHARED_ENTITIES__)';
 			$this->fields['fk_supplier']['type'] = 'integer:Societe:societe/class/societe.class.php:1:status=1 AND fournisseur=1 AND entity IN (__SHARED_ENTITIES__)';
+		}
+		if ((int) DOL_VERSION < 20) {
+			$this->fields['fk_package_type']['type'] = 'sellist:c_shipment_package_type:label:rowid::active=1';
+			$this->fields['fk_shipping_method']['type'] = 'sellist:c_shipment_mode:libelle:rowid::active=1';
 		}
 
 		// Unset fields that are disabled
@@ -438,7 +489,7 @@ class ShipmentPackage extends CommonObject
 		$line = new ShipmentPackageLine($this->db);
 		$result = $line->fetch($lineid);
 		if ($result > 0) {
-			$line->updatePackageValue($user, $this, 'decrease');
+			if ($this->value > 0) $line->updatePackageValue($user, $this, 'decrease');
 			$line->fk_shipmentpackage = $this->id;
 			$line->qty = $qty;
 			$line->fk_product = $fk_product;
@@ -595,6 +646,34 @@ class ShipmentPackage extends CommonObject
 	 */
 	public function update(User $user, $notrigger = false)
 	{
+		$this->fetchLines();
+		foreach ($this->lines as $line) {
+			if ($line->fk_product > 0 && !isset($line->product)) {
+				$line->product = new Product($this->db);
+				$line->product->fetch($line->fk_product);
+			}
+		}
+		$weightArray = $this->getTotalWeightVolume();
+		$weight = $weightArray['weight'];
+		$weightUnit = (!empty($this->weight_units) ? $this->weight_units : 0);
+		$totalWeight = 0;
+		if ($weightUnit < 50) {   // < 50 means a standard unit (power of 10 of official unit), > 50 means an exotic unit (like inch)
+			$trueWeightUnit = pow(10, $weightUnit);
+			$totalWeight += $weight / $trueWeightUnit;
+		} else {
+			if ($weightUnit == 99) {
+				// conversion 1 Pound = 0.45359237 KG
+				$trueWeightUnit = 0.45359237;
+				$totalWeight += $weight / $trueWeightUnit;
+			} elseif ($weightUnit == 98) {
+				// conversion 1 Ounce = 0.0283495 KG
+				$trueWeightUnit = 0.0283495;
+				$totalWeight += $weight / $trueWeightUnit;
+			} else {
+				$totalWeight += $weight; // This may be wrong if we mix different units
+			}
+		}
+		$this->weight = $totalWeight;
 		return $this->updateCommon($user, $notrigger);
 	}
 
@@ -860,7 +939,7 @@ class ShipmentPackage extends CommonObject
 
 		$linkclose = '';
 		if (empty($notooltip)) {
-			if (!empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER)) {
+			if (getDolGlobalInt('MAIN_OPTIMIZEFORTEXTBROWSER')) {
 				$label = $langs->trans("ShowShipmentPackage");
 				$linkclose .= ' alt="'.dol_escape_htmltag($label, 1).'"';
 			}
@@ -900,11 +979,7 @@ class ShipmentPackage extends CommonObject
 					$pospoint = strpos($filearray[0]['name'], '.');
 
 					$pathtophoto = $class.'/'.$this->ref.'/thumbs/'.substr($filename, 0, $pospoint).'_mini'.substr($filename, $pospoint);
-					if (empty($conf->global->{strtoupper($module.'_'.$class).'_FORMATLISTPHOTOSASUSERS'})) {
-						$result .= '<div class="floatleft inline-block valignmiddle divphotoref"><div class="photoref"><img class="photo'.$module.'" alt="No photo" border="0" src="'.DOL_URL_ROOT.'/viewimage.php?modulepart='.$module.'&entity='.$conf->entity.'&file='.urlencode($pathtophoto).'"></div></div>';
-					} else {
-						$result .= '<div class="floatleft inline-block valignmiddle divphotoref"><img class="photouserphoto userphoto" alt="No photo" border="0" src="'.DOL_URL_ROOT.'/viewimage.php?modulepart='.$module.'&entity='.$conf->entity.'&file='.urlencode($pathtophoto).'"></div>';
-					}
+					$result .= '<div class="floatleft inline-block valignmiddle divphotoref"><img class="photouserphoto userphoto" alt="No photo" border="0" src="'.DOL_URL_ROOT.'/viewimage.php?modulepart='.$module.'&entity='.$conf->entity.'&file='.urlencode($pathtophoto).'"></div>';
 
 					$result .= '</div>';
 				} else {
@@ -1056,15 +1131,15 @@ class ShipmentPackage extends CommonObject
 		global $langs, $conf;
 		$langs->load("shipmentpackage@shipmentpackage");
 
-		if (empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON)) {
+		if (!getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON')) {
 			$conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON = 'mod_shipmentpackage_standard';
 		}
 
-		if (!empty($conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON)) {
+		if (getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON')!=='') {
 			$mybool = false;
 
-			$file = $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON.".php";
-			$classname = $conf->global->SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON;
+			$file = getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON').".php";
+			$classname = getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON');
 
 			// Include file with class
 			$dirmodels = array_merge(array('/'), (array) $conf->modules_parts['models']);
@@ -1126,8 +1201,8 @@ class ShipmentPackage extends CommonObject
 
 			if (!empty($this->model_pdf)) {
 				$modele = $this->model_pdf;
-			} elseif (!empty($conf->global->SHIPMENTPACKAGE_ADDON_PDF)) {
-				$modele = $conf->global->SHIPMENTPACKAGE_ADDON_PDF;
+			} elseif (getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF')) {
+				$modele = getDolGlobalString('SHIPMENTPACKAGE_SHIPMENTPACKAGE_ADDON_PDF');
 			}
 		}
 
@@ -1338,13 +1413,29 @@ class ShipmentPackageLine extends CommonObjectLine
 		'rang' => array('type'=>'integer', 'label'=>'Rang', 'enabled'=>'1', 'notnull'=>-1, 'visible'=>0)
 	);
 
-	public $rowid;
+	/**
+	 * @var int ShipmentPackage ID
+	 */
 	public $fk_shipmentpackage;
+
+	/**
+	 * @var int Line ID of the origin object (shipment line)
+	 */
 	public $fk_origin_line;
+
+	/**
+	 * @var int Lot/batch line ID of the origin object (shipment line batch)
+	 */
 	public $fk_origin_batch_line;
-	public $fk_product;
+
+	/**
+	 * @var string Product lot/batch value
+	 */
 	public $product_lot_batch;
-	public $qty;
+
+	/**
+	 * @var int Rank/position of the line
+	 */
 	public $rang;
 
 	/**
@@ -1378,8 +1469,8 @@ class ShipmentPackageLine extends CommonObjectLine
 
 		$this->db = $db;
 
-		if (empty($conf->global->MAIN_SHOW_TECHNICAL_ID) && isset($this->fields['rowid'])) $this->fields['rowid']['visible'] = 0;
-		if (empty($conf->multicompany->enabled) && isset($this->fields['entity'])) $this->fields['entity']['enabled'] = 0;
+		if (!getDolGlobalInt('MAIN_SHOW_TECHNICAL_ID') && isset($this->fields['rowid'])) $this->fields['rowid']['visible'] = 0;
+		if (!getDolGlobalInt('MULTICOMPANY_ENABLED') && isset($this->fields['entity'])) $this->fields['entity']['enabled'] = 0;
 
 		// Unset fields that are disabled
 		foreach ($this->fields as $key => $val) {
@@ -1540,8 +1631,9 @@ class ShipmentPackageLine extends CommonObjectLine
 
 		// update package value
 		$result = 0;
+		$value = 0;
 		$product = new Product($this->db);
-		if ($this->fk_product > 0 && !empty($conf->global->SHIPMENTPACKAGE_WAP_PACKAGEVALUE)) {
+		if ($this->fk_product > 0 && getDolGlobalInt('SHIPMENTPACKAGE_WAP_PACKAGEVALUE')) {
 			$result = $product->fetch($this->fk_product);
 			if ($result > 0) {
 				$value = $product->pmp * $this->qty;
@@ -1556,14 +1648,18 @@ class ShipmentPackageLine extends CommonObjectLine
 				$result = $shipmentLine->fetch($this->fk_origin_line);
 				if ($result > 0) {
 					$orderLine = new OrderLine($this->db);
-					$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+					if ((int) DOL_VERSION < 20) {
+						$result = $orderLine->fetch($shipmentLine->fk_origin_line);
+					} else {
+						$result = $orderLine->fetch($shipmentLine->fk_elementdet);
+					}
 					if ($result > 0) {
 						$value = $orderLine->subprice * $this->qty;
 					}
 				}
 			}
 		}
-		if ($result > 0) {
+		if ($result >= 0 && $value > 0) {
 			if (empty($package->value)) $package->value = 0;
 			if ($mode == 'increase') {
 				$package->value += $value;

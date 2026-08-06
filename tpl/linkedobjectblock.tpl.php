@@ -61,7 +61,11 @@ foreach ($linkedObjectBlock as $key => $objectlink) {
 				$shipmentLine->fetch($packageLine->fk_origin_line);
 				if ($shipmentLine->id > 0) {
 					$orderLine = new OrderLine($db);
-					$orderLine->fetch($shipmentLine->fk_origin_line);
+					if ((int) DOL_VERSION < 20) {
+						$orderLine->fetch($shipmentLine->fk_origin_line);
+					} else {
+						$orderLine->fetch($shipmentLine->fk_elementdet);
+					}
 					if ($orderLine->id > 0) {
 						$lineTotal = $lineTotal + ($orderLine->subprice * $packageLine->qty);
 					}

@@ -81,6 +81,14 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 dol_include_once('/shipmentpackage/class/shipmentpackage.class.php');
 dol_include_once('/shipmentpackage/lib/shipmentpackage_shipmentpackage.lib.php');
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Load translation files required by the page
 $langs->loadLangs(array("shipmentpackage@shipmentpackage", "companies", "other", "mails"));
 
@@ -161,12 +169,13 @@ if ($object->id) {
 
 	print dol_get_fiche_head($head, 'document', '', -1, $object->picto);
 
-
 	// Build file list
-	$filearray = dol_dir_list($upload_dir, "files", 0, '', '(\.meta|_preview.*\.png)$', $sortfield, (strtolower($sortorder) == 'desc' ?SORT_DESC:SORT_ASC), 1);
 	$totalsize = 0;
-	foreach ($filearray as $key => $file) {
-		$totalsize += $file['size'];
+	if (isset($upload_dir)) {
+		$filearray = dol_dir_list($upload_dir, "files", 0, '', '(\.meta|_preview.*\.png)$', $sortfield, (strtolower($sortorder) == 'desc' ?SORT_DESC:SORT_ASC), 1);
+		foreach ($filearray as $key => $file) {
+			$totalsize += $file['size'];
+		}
 	}
 
 	// Object card

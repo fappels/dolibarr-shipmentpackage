@@ -57,6 +57,14 @@ if (!$res) {
 require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 require_once '../lib/shipmentpackage.lib.php';
 
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var HookManager $hookmanager
+ * @var Translate $langs
+ * @var User $user
+ */
+
 // Load translation files required by the page
 $langs->loadLangs(array('shipmentpackage@shipmentpackage', 'admin'));
 
@@ -113,7 +121,7 @@ print dol_get_fiche_end();
 // Buttons
 if ($action != 'create' && $action != 'edit') {
 	print '<div class="tabsAction">';
-	print "<a class=\"butAction\" href=\"".$_SERVER["PHP_SELF"]."?action=create#newattrib\">".$langs->trans("NewAttribute")."</a>";
+	print "<a class=\"butAction\" href=\"".$_SERVER["PHP_SELF"]."?action=create&token=".newToken()."&#newattrib\">".$langs->trans("NewAttribute")."</a>";
 	print "</div>";
 }
 
