@@ -61,7 +61,10 @@ foreach ($object->fields as $key => $val) {
 	print '<td>';
 	if (in_array($val['type'], array('int', 'integer'))) $value = GETPOST($key, 'int');
 	elseif ($val['type'] == 'text' || $val['type'] == 'html') $value = GETPOST($key, 'none');
-	else $value = GETPOST($key, 'alpha');
+	elseif ($val['type'] == 'checkbox') {
+		$value_arr = GETPOST($key, 'array');
+		$value = !empty($value_arr) ? implode(',', $value_arr) : '';
+	} else $value = GETPOST($key, 'alpha');
 	print $object->showInputField($val, $key, $value, '', '', '', 0);
 	print '</td>';
 	print '</tr>';
