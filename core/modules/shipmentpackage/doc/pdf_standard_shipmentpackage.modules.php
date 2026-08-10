@@ -1338,20 +1338,9 @@ class pdf_standard_shipmentpackage extends ModelePDFShipmentPackage
 		} else {
 			// free product
 			if ($user->rights->commande->lire) {
-				dol_include_once('/expedition/class/expedition.class.php');
-				dol_include_once('/commande/class/commande.class.php');
-				$shipmentLine = new ExpeditionLigne($this->db);
-				$result = $shipmentLine->fetch($object->lines[$i]->fk_origin_line);
-				if ($result > 0) {
-					$orderLine = new OrderLine($this->db);
-					if ((int) DOL_VERSION < 20) {
-						$result = $orderLine->fetch($shipmentLine->fk_origin_line);
-					} else {
-						$result = $orderLine->fetch($shipmentLine->fk_elementdet);
-					}
-					if ($result > 0) {
-						$labelproductservice = $orderLine->desc;
-					}
+				$orderLine = ShipmentPackageLine::getOrderLineFromShipmentLineId($this->db, $object->lines[$i]->fk_origin_line);
+				if ($orderLine) {
+					$labelproductservice = $orderLine->desc;
 				}
 			}
 		}

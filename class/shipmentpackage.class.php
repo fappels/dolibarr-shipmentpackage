@@ -1618,6 +1618,37 @@ class ShipmentPackageLine extends CommonObjectLine
 	}
 
 	/**
+	 * Fetch the order line that is the origin of a shipment line, handling the Dolibarr <20 / >=20
+	 * fk_origin_line -> fk_elementdet rename in ExpeditionLigne so callers don't have to duplicate the version check.
+	 *
+	 * @param DoliDB	$db					Database handler
+	 * @param int		$fk_shipment_line	Id of the shipment line (ExpeditionLigne) to resolve the order line from
+	 * @return OrderLine|null				Fetched order line, or null if the shipment line or order line can't be fetched
+	 */
+	public static function getOrderLineFromShipmentLineId($db, $fk_shipment_line)
+	{
+		if (empty($fk_shipment_line) || $fk_shipment_line <= 0) {
+			return null;
+		}
+
+		dol_include_once('/expedition/class/expedition.class.php');
+		dol_include_once('/commande/class/commande.class.php');
+
+		$shipmentLine = new ExpeditionLigne($db);
+		if ($shipmentLine->fetch($fk_shipment_line) <= 0) {
+			return null;
+		}
+
+		$orderLine = new OrderLine($db);
+		$fk_order_line = ((int) DOL_VERSION < 20) ? $shipmentLine->fk_origin_line : $shipmentLine->fk_elementdet;
+		if ($orderLine->fetch($fk_order_line) <= 0) {
+			return null;
+		}
+
+		return $orderLine;
+	}
+
+	/**
 	 * update shipmentpackage value
 	 *
 	 * @param user				$user		User that do the action
@@ -1642,20 +1673,10 @@ class ShipmentPackageLine extends CommonObjectLine
 			}
 		} else {
 			if ($user->rights->commande->lire && $this->fk_origin_line > 0) {
-				dol_include_once('/expedition/class/expedition.class.php');
-				dol_include_once('/commande/class/commande.class.php');
-				$shipmentLine = new ExpeditionLigne($this->db);
-				$result = $shipmentLine->fetch($this->fk_origin_line);
-				if ($result > 0) {
-					$orderLine = new OrderLine($this->db);
-					if ((int) DOL_VERSION < 20) {
-						$result = $orderLine->fetch($shipmentLine->fk_origin_line);
-					} else {
-						$result = $orderLine->fetch($shipmentLine->fk_elementdet);
-					}
-					if ($result > 0) {
-						$value = $orderLine->subprice * $this->qty;
-					}
+				$orderLine = self::getOrderLineFromShipmentLineId($this->db, $this->fk_origin_line);
+				if ($orderLine) {
+					$value = $orderLine->subprice * $this->qty;
+					$result = 1;
 				}
 			}
 		}

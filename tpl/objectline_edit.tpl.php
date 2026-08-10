@@ -95,20 +95,9 @@ if ($line->fk_product) {
 } else {
 	// free product
 	if ($user->rights->commande->lire) {
-		dol_include_once('/expedition/class/expedition.class.php');
-		dol_include_once('/commande/class/commande.class.php');
-		$shipmentLine = new ExpeditionLigne($object->db);
-		$result = $shipmentLine->fetch($line->fk_origin_line);
-		if ($result > 0) {
-			$orderLine = new OrderLine($object->db);
-			if ((int) DOL_VERSION < 20) {
-				$result = $orderLine->fetch($shipmentLine->fk_origin_line);
-			} else {
-				$result = $orderLine->fetch($shipmentLine->fk_elementdet);
-			}
-			if ($result > 0) {
-				print $orderLine->desc;
-			}
+		$orderLine = ShipmentPackageLine::getOrderLineFromShipmentLineId($object->db, $line->fk_origin_line);
+		if ($orderLine) {
+			print $orderLine->desc;
 		}
 	}
 }
