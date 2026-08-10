@@ -646,34 +646,49 @@ class ShipmentPackage extends CommonObject
 	 */
 	public function update(User $user, $notrigger = false)
 	{
+		global $langs;
+
 		$this->fetchLines();
+		$allProductsHaveWeight = !empty($this->lines);
 		foreach ($this->lines as $line) {
 			if ($line->fk_product > 0 && !isset($line->product)) {
 				$line->product = new Product($this->db);
 				$line->product->fetch($line->fk_product);
 			}
-		}
-		$weightArray = $this->getTotalWeightVolume();
-		$weight = $weightArray['weight'];
-		$weightUnit = (!empty($this->weight_units) ? $this->weight_units : 0);
-		$totalWeight = 0;
-		if ($weightUnit < 50) {   // < 50 means a standard unit (power of 10 of official unit), > 50 means an exotic unit (like inch)
-			$trueWeightUnit = pow(10, $weightUnit);
-			$totalWeight += $weight / $trueWeightUnit;
-		} else {
-			if ($weightUnit == 99) {
-				// conversion 1 Pound = 0.45359237 KG
-				$trueWeightUnit = 0.45359237;
-				$totalWeight += $weight / $trueWeightUnit;
-			} elseif ($weightUnit == 98) {
-				// conversion 1 Ounce = 0.0283495 KG
-				$trueWeightUnit = 0.0283495;
-				$totalWeight += $weight / $trueWeightUnit;
-			} else {
-				$totalWeight += $weight; // This may be wrong if we mix different units
+			if (empty($line->product) || empty($line->product->weight)) {
+				$allProductsHaveWeight = false;
 			}
 		}
-		$this->weight = $totalWeight;
+
+		if ($allProductsHaveWeight) {
+			// All lines have a product with a weight defined: auto calculate package weight from product weight * qty
+			$weightArray = $this->getTotalWeightVolume();
+			$weight = $weightArray['weight'];
+			$weightUnit = (!empty($this->weight_units) ? $this->weight_units : 0);
+			$totalWeight = 0;
+			if ($weightUnit < 50) {   // < 50 means a standard unit (power of 10 of official unit), > 50 means an exotic unit (like inch)
+				$trueWeightUnit = pow(10, $weightUnit);
+				$totalWeight += $weight / $trueWeightUnit;
+			} else {
+				if ($weightUnit == 99) {
+					// conversion 1 Pound = 0.45359237 KG
+					$trueWeightUnit = 0.45359237;
+					$totalWeight += $weight / $trueWeightUnit;
+				} elseif ($weightUnit == 98) {
+					// conversion 1 Ounce = 0.0283495 KG
+					$trueWeightUnit = 0.0283495;
+					$totalWeight += $weight / $trueWeightUnit;
+				} else {
+					$totalWeight += $weight; // This may be wrong if we mix different units
+				}
+			}
+			$this->weight = $totalWeight;
+		} elseif (!empty($this->lines)) {
+			// Not all products have a weight defined: keep weight as entered by user and warn instead of calculating a partial/wrong total
+			$message = is_object($langs) ? $langs->trans('ShipmentPackageWeightNotAutoCalculated') : 'Weight was not automatically calculated because not all products in the package have a weight defined';
+			setEventMessages($message, null, 'warnings');
+		}
+
 		return $this->updateCommon($user, $notrigger);
 	}
 

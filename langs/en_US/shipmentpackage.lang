@@ -76,6 +76,7 @@ TrackingUrl = Tracking Url
 ConfirmCloseShipmentPackage = Confirm Shipment package close.
 ConfirmReOpenShipmentPackage = Are you sure you want to re-open this package?
 AddToPackage = Add to package %s
+ShipmentPackageWeightNotAutoCalculated = Weight was not automatically calculated because not all products in this package have a weight defined. Please set weight manually or fill in the missing product weights.
 
 #
 # Sample widget
