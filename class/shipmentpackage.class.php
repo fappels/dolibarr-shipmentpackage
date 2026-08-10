@@ -1659,7 +1659,7 @@ class ShipmentPackageLine extends CommonObjectLine
 				}
 			}
 		}
-		if ($result >= 0 && $value > 0) {
+		if ($result >= 0 && is_numeric($value)) {
 			if (empty($package->value)) $package->value = 0;
 			if ($mode == 'increase') {
 				$package->value += $value;
