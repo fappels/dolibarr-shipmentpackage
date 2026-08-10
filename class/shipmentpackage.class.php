@@ -1337,7 +1337,7 @@ class ShipmentPackage extends CommonObject
 		$sql = 'SELECT SUM(tl.qty) as qty_toship';
 		$sql .= ' FROM '.MAIN_DB_PREFIX.$shipment->table_element.' as t';
 		$sql .= ' INNER JOIN '.MAIN_DB_PREFIX.$shipment->table_element_line. ' as tl ON tl.fk_expedition = t.rowid';
-		$sql .= ' INNER JOIN '.MAIN_DB_PREFIX.$order->table_element_line. ' as cl ON cl.rowid = tl.fk_origin_line';
+		$sql .= ' INNER JOIN '.MAIN_DB_PREFIX.$order->table_element_line. ' as cl ON cl.rowid = tl.'.((int) DOL_VERSION < 20 ? 'fk_origin_line' : 'fk_elementdet');
 		if ($conf->productbatch->enabled) {
 			$sql .= ' LEFT JOIN '.MAIN_DB_PREFIX.'expeditiondet_batch as eb ON eb.fk_expeditiondet = tl.rowid';
 		}
@@ -1658,8 +1658,6 @@ class ShipmentPackageLine extends CommonObjectLine
 	 */
 	public function updatePackageValue($user, $package, $mode = 'increase')
 	{
-		global $conf;
-
 		// update package value
 		$result = 0;
 		$value = 0;
