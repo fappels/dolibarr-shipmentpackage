@@ -411,7 +411,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 									$pdf->useTemplate($tplidx);
 								}
 								if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-									$this->_pagehead($pdf, $object, $showaddress, $outputlangs);
+									$this->_pagehead($pdf, $object, $showaddress, $outputlangs, null, 0);
 								}
 								// $this->_pagefoot($pdf,$object,$outputlangs,1);
 								$pdf->setTopMargin($tab_top_newpage);
@@ -469,7 +469,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 								$pdf->useTemplate($tplidx);
 							}
 							if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-								$this->_pagehead($pdf, $object, $showaddress, $outputlangs);
+								$this->_pagehead($pdf, $object, $showaddress, $outputlangs, null, 0);
 							}
 							$height_note = $posyafter - $tab_top_newpage;
 							$pdf->Rect($this->marge_gauche, $tab_top_newpage - 1, $tab_width, $height_note + 1);
@@ -491,7 +491,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 									$pdf->useTemplate($tplidx);
 								}
 								if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-									$this->_pagehead($pdf, $object, $showaddress, $outputlangs);
+									$this->_pagehead($pdf, $object, $showaddress, $outputlangs, null, 0);
 								}
 
 								$posyafter = $tab_top_newpage;
@@ -648,7 +648,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 						$pdf->setPage($pagenb);
 						$pdf->setPageOrientation('', 1, 0); // The only function to edit the bottom margin of current page to set it.
 						if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-							$this->_pagehead($pdf, $object, $showaddress, $outputlangs);
+							$this->_pagehead($pdf, $object, $showaddress, $outputlangs, null, 0);
 						}
 					}
 
@@ -666,7 +666,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 						}
 						$pagenb++;
 						if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-							$this->_pagehead($pdf, $object, $showaddress, $outputlangs);
+							$this->_pagehead($pdf, $object, $showaddress, $outputlangs, null, 0);
 						}
 					}
 				}
@@ -695,7 +695,7 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 				*/
 
 				// Pagefoot
-				$this->_pagefoot($pdf, $object, $outputlangs);
+				$this->_pagefoot($pdf, $object, $outputlangs, 1);
 				if (method_exists($pdf, 'AliasNbPages')) {
 					$pdf->AliasNbPages();
 				}
@@ -799,9 +799,10 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 	 *  @param  int	    	$showaddress    0=no, 1=yes
 	 *  @param  Translate	$outputlangs	Object lang for output
 	 *  @param  Translate	$outputlangsbis	Object lang for output bis
+	 *  @param  int	    	$showbarcode    0=no, 1=yes (only first page should show it)
 	 *  @return	int top_head
 	 */
-	protected function _pagehead(&$pdf, $object, $showaddress, $outputlangs, $outputlangsbis = null)
+	protected function _pagehead(&$pdf, $object, $showaddress, $outputlangs, $outputlangsbis = null, $showbarcode = 1)
 	{
 		global $conf, $langs;
 
@@ -996,22 +997,34 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 		//$pdf->SetFont('', '', $default_font_size - 2);
 		//$pdf->Rect($posx, $posy + 6, $widthrecbox, 14);
 
-		// Show  ref in CODE128
-		$style = array(
-			'position' => 'C',
-			'align' => 'C',
-			'stretch' => false,
-			'fitwidth' => true,
-			'cellfitalign' => '',
-			'border' => false,
-			'padding' => 'auto',
-			'fgcolor' => array(0,0,0),
-			'bgcolor' => false,
-			'text' => false
-		);
-		$pdf->write1DBarcode($object->ref_supplier, 'C128', '',  $posy + 3, '', '', 0.3, $style, '');
+		// Show  ref in CODE128 (only on first page)
+		if ($showbarcode) {
+			$style = array(
+				'position' => 'C',
+				'align' => 'C',
+				'stretch' => false,
+				'fitwidth' => true,
+				'cellfitalign' => '',
+				'border' => false,
+				'padding' => 'auto',
+				'fgcolor' => array(0,0,0),
+				'bgcolor' => false,
+				'text' => false
+			);
+			if (!empty($object->ref_supplier)) {
+				$pdf->write1DBarcode($object->ref_supplier, 'C128', '',  $posy + 3, '', '', 0.3, $style, 'M');
 
-		$posy = $pdf->getY();
+				$posy = $pdf->getY();
+			} else {
+				// No ref_supplier to show as barcode: measure the height it would have used and shift the table up by that much instead of leaving it blank
+				$posybeforebarcode = $posy;
+				$pdf->startTransaction();
+				$pdf->write1DBarcode('DUMMY', 'C128', '', $posy + 3, '', '', 0.3, $style, 'M');
+				$posyafterbarcode = $pdf->getY();
+				$top_shift = $posybeforebarcode - $posyafterbarcode;
+				$pdf->rollbackTransaction(true);
+			}
+		}
 
 		$pdf->SetTextColor(0, 0, 0);
 		return $top_shift;
@@ -1029,9 +1042,10 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 	 */
 	protected function _pagefoot(&$pdf, $object, $outputlangs, $hidefreetext = 0)
 	{
-		global $conf;
 		$showdetails = 0;
-		return pdf_pagefoot($pdf, $outputlangs, 'INVOICE_FREE_TEXT', $this->emetteur, $this->marge_basse, $this->marge_gauche, $this->page_hauteur, $object, $showdetails, $hidefreetext);
+		$emptyCompanyToSkipShowInfo = new Societe($this->db);
+		$emptyCompanyToSkipShowInfo->id = 0;
+		return pdf_pagefoot($pdf, $outputlangs, 'INVOICE_FREE_TEXT', $emptyCompanyToSkipShowInfo, $this->marge_basse, $this->marge_gauche, $this->page_hauteur, $object, $showdetails, $hidefreetext);
 	}
 
 	/**
@@ -1170,6 +1184,9 @@ class pdf_label_shipmentpackage extends ModelePDFShipmentPackage
 			$product = new Product($this->db);
 			$product->fetch($object->lines[$i]->fk_product);
 			$labelproductservice = $product->ref;
+			if (!empty($object->lines[$i]->product_lot_batch)) {
+				$labelproductservice .= ' - '.$object->lines[$i]->product_lot_batch;
+			}
 		} else {
 			// free product
 			if ($user->rights->commande->lire) {
