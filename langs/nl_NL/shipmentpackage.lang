@@ -1,0 +1,91 @@
+# Copyright (C) 2021       Francis Appels          <francis.appels@z-application.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#
+# Generic
+#
+
+# Module label 'ModuleShipmentPackageName'
+ModuleShipmentPackageName = Verzendpakketten
+# Module description 'ModuleShipmentPackageDesc'
+ModuleShipmentPackageDesc = Maak definitieve verzendpakketten aan om over te dragen aan de vervoerder.
+
+#
+# Admin page
+#
+ShipmentPackageSetup = Instellingen Verzendpakketten
+Settings = Instellingen
+ShipmentPackageSetupPage = Pakketconfiguratiepagina
+SHIPMENTPACKAGE_WAP_PACKAGEVALUE=Bereken de totale pakketwaarde op basis van WAP.
+SHIPMENTPACKAGE_WAP_PACKAGEVALUETooltip=Bereken totale pakketwaarde op basis van gewogen gemiddelde prijs van producten, indien uit wordt berekend op basis van verkoopprijs van het product.
+ShipmentPackageDocumentModules = Documentmodellen verzendpakketten
+ShipmentPackageNumberingModules = Nummeringsmodellen verzendpakketten
+DocumentModelLabelPDF = PDF-sjabloon verzendlabel
+
+#
+# About page
+#
+About = Over
+ShipmentPackageAbout = Over Verzendpakketten
+ShipmentPackageAboutPage = Over-pagina Verzendpakketten
+
+#
+# Sample page
+#
+ShipmentPackageArea = Overzicht Verzendpakketten
+ReadShipmentPackage = Objecten van Verzendpakket lezen
+WriteShipmentPackage = Objecten van Verzendpakket aanmaken/wijzigen
+DeleteShipmentPackage = Objecten van Verzendpakket verwijderen
+ShipmentPackage = Verzendpakketten
+New_ShipmentPackage = Nieuw pakket
+List_ShipmentPackage = Lijst van pakketten
+ValueOfPackage = Waarde (prijs van de inhoud, voor verzekering en douane)
+TransportSupplier = Transportleverancier
+LinkToTransporter = Leverancier die het transport uitvoert en de verzending factureert.
+LinkToThirparty = Klant die het pakket ontvangt.
+ShipmentPackageRefSupplier = Verzendreferentie leverancier (trackingnummer)
+Fkparceltype = Type pakket
+PackageParcelType = Te definiëren in de woordenlijst pakkettypes
+c_shipment_package_type = Type pakket
+Dangerousgoods = Gevaarlijke goederen
+PackageExplosives = Explosieven
+PackageFlammableGases = Ontvlambare gassen
+PackageFlammableLiquids = Ontvlambare vloeistoffen
+PackageFlammableSolids = Ontvlambare vaste stoffen
+PackageOxidizing = Oxiderend
+PackageToxicAndInfectious = Toxisch en besmettelijk
+PackageRadioactive = Radioactief
+PackageCorrosives = Bijtend
+PackageMiscellaneous = Overig
+Taillift = Laadklep
+PackageTailLiftRequired = Laadklep vereist
+ProductLotBatch = Lot/Serienummer
+CreatePackage = Pakket aanmaken
+TrackingUrl = Tracking-URL
+ConfirmCloseShipmentPackage = Bevestig het sluiten van het verzendpakket.
+ConfirmReOpenShipmentPackage = Weet u zeker dat u dit pakket opnieuw wilt openen?
+AddToPackage = Toevoegen aan pakket %s
+ShipmentPackageWeightNotAutoCalculated = Het gewicht is niet automatisch berekend omdat niet alle producten in dit pakket een gedefinieerd gewicht hebben. Stel het gewicht handmatig in of vul de ontbrekende productgewichten aan.
+
+#
+# Sample widget
+#
+MyWidget = Mijn widget
+MyWidgetDescription = Beschrijving van mijn widget
+
+#
+# doc
+#
+PdfTitle = Pakket

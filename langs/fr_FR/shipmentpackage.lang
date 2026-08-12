@@ -27,8 +27,8 @@ ModuleShipmentPackageDesc = Créer les colis d'expédition finaux à remettre au
 #
 ShipmentPackageSetup = Configuration Colis d'expédition
 Settings = Paramètres
-ShipmentPackageSetupPage = Page de configuration des palettes
-SHIPMENTPACKAGE_WAP_PACKAGEVALUE=Calculer la valeur totale de la palette sortante à partir du PMP
+ShipmentPackageSetupPage = page de configuration du Colis
+SHIPMENTPACKAGE_WAP_PACKAGEVALUE=Calculer la valeur totale du Colis à partir du WAP
 SHIPMENTPACKAGE_WAP_PACKAGEVALUETooltip=Calculer la valeur totale du colis à partir du prix moyen pondéré des produits, sinon calculer à partir du prix de vente du produit.
 ShipmentPackageDocumentModules = Modèles de documents des colis d'expédition
 ShipmentPackageNumberingModules = Modèles de numérotation des colis d'expédition

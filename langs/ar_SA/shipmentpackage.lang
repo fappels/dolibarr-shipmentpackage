@@ -1,0 +1,91 @@
+# Copyright (C) 2021       Francis Appels          <francis.appels@z-application.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#
+# Generic
+#
+
+# Module label 'ModuleShipmentPackageName'
+ModuleShipmentPackageName = طرود الشحن
+# Module description 'ModuleShipmentPackageDesc'
+ModuleShipmentPackageDesc = إنشاء طرود الشحن النهائية لتسليمها إلى الناقل.
+
+#
+# Admin page
+#
+ShipmentPackageSetup = إعداد طرود الشحن
+Settings = الإعدادات
+ShipmentPackageSetupPage = صفحة إعداد حزمة البرامج
+SHIPMENTPACKAGE_WAP_PACKAGEVALUE=احسب القيمة الإجمالية للباقة من WAP
+SHIPMENTPACKAGE_WAP_PACKAGEVALUETooltip=احتساب القيمة الإجمالية للطرد من متوسط السعر المرجح للمنتجات، وفي حال إيقافه يتم الاحتساب من سعر بيع المنتج.
+ShipmentPackageDocumentModules = نماذج مستندات طرود الشحن
+ShipmentPackageNumberingModules = نماذج ترقيم طرود الشحن
+DocumentModelLabelPDF = قالب PDF لملصق الشحن
+
+#
+# About page
+#
+About = حول
+ShipmentPackageAbout = حول طرود الشحن
+ShipmentPackageAboutPage = صفحة حول طرود الشحن
+
+#
+# Sample page
+#
+ShipmentPackageArea = منطقة طرود الشحن
+ReadShipmentPackage = قراءة كائنات طرد الشحن
+WriteShipmentPackage = إنشاء/تحديث كائنات طرد الشحن
+DeleteShipmentPackage = حذف كائنات طرد الشحن
+ShipmentPackage = طرود الشحن
+New_ShipmentPackage = طرد جديد
+List_ShipmentPackage = قائمة الطرود
+ValueOfPackage = القيمة (سعر المحتوى، لأغراض التأمين والجمارك)
+TransportSupplier = مورد النقل
+LinkToTransporter = المورد الذي يقوم بالنقل ويصدر فاتورة الشحن.
+LinkToThirparty = العميل الذي يستلم الطرد.
+ShipmentPackageRefSupplier = مرجع شحن المورد (رقم التتبع)
+Fkparceltype = نوع الطرد
+PackageParcelType = يُحدد في قاموس أنواع الطرود
+c_shipment_package_type = نوع الطرد
+Dangerousgoods = البضائع الخطرة
+PackageExplosives = متفجرات
+PackageFlammableGases = غازات قابلة للاشتعال
+PackageFlammableLiquids = سوائل قابلة للاشتعال
+PackageFlammableSolids = مواد صلبة قابلة للاشتعال
+PackageOxidizing = مواد مؤكسدة
+PackageToxicAndInfectious = مواد سامة ومعدية
+PackageRadioactive = مواد مشعة
+PackageCorrosives = مواد أكالة
+PackageMiscellaneous = متنوعة
+Taillift = رافعة خلفية
+PackageTailLiftRequired = يلزم رافعة خلفية
+ProductLotBatch = الدفعة/الرقم التسلسلي
+CreatePackage = إنشاء طرد
+TrackingUrl = رابط التتبع
+ConfirmCloseShipmentPackage = تأكيد إغلاق طرد الشحن.
+ConfirmReOpenShipmentPackage = هل أنت متأكد من رغبتك في إعادة فتح هذا الطرد؟
+AddToPackage = إضافة إلى الطرد %s
+ShipmentPackageWeightNotAutoCalculated = لم يتم احتساب الوزن تلقائياً لأن أوزان بعض المنتجات في هذا الطرد غير محددة. يرجى تحديد الوزن يدوياً أو استكمال أوزان المنتجات الناقصة.
+
+#
+# Sample widget
+#
+MyWidget = أداتي
+MyWidgetDescription = وصف أداتي
+
+#
+# doc
+#
+PdfTitle = طرد

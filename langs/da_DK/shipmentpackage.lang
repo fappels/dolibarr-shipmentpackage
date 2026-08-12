@@ -1,0 +1,91 @@
+# Copyright (C) 2021       Francis Appels          <francis.appels@z-application.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#
+# Generic
+#
+
+# Module label 'ModuleShipmentPackageName'
+ModuleShipmentPackageName = Forsendelsespakker
+# Module description 'ModuleShipmentPackageDesc'
+ModuleShipmentPackageDesc = Opret endelige forsendelsespakker til overdragelse til transportøren.
+
+#
+# Admin page
+#
+ShipmentPackageSetup = Opsætning af forsendelsespakker
+Settings = Indstillinger
+ShipmentPackageSetupPage = Pakkeopsætningsside
+SHIPMENTPACKAGE_WAP_PACKAGEVALUE=Beregn den samlede pakkeværdi fra VVP
+SHIPMENTPACKAGE_WAP_PACKAGEVALUETooltip=Beregn samlet pakkeværdi ud fra vejet gennemsnitspris for produkter, ellers beregnes den ud fra produktets salgspris.
+ShipmentPackageDocumentModules = Dokumentmodeller for forsendelsespakker
+ShipmentPackageNumberingModules = Nummereringsmodeller for forsendelsespakker
+DocumentModelLabelPDF = PDF-skabelon til forsendelsesetiket
+
+#
+# About page
+#
+About = Om
+ShipmentPackageAbout = Om Forsendelsespakker
+ShipmentPackageAboutPage = Om-side for Forsendelsespakker
+
+#
+# Sample page
+#
+ShipmentPackageArea = Område for forsendelsespakker
+ReadShipmentPackage = Læs objekter af Forsendelsespakke
+WriteShipmentPackage = Opret/opdater objekter af Forsendelsespakke
+DeleteShipmentPackage = Slet objekter af Forsendelsespakke
+ShipmentPackage = Forsendelsespakker
+New_ShipmentPackage = Ny pakke
+List_ShipmentPackage = Liste over pakker
+ValueOfPackage = Værdi (pris på indhold, til forsikring og told)
+TransportSupplier = Transportleverandør
+LinkToTransporter = Leverandør der udfører transporten og fakturerer forsendelsen.
+LinkToThirparty = Kunde der modtager pakken.
+ShipmentPackageRefSupplier = Leverandørens forsendelsesreference (sporingsnummer)
+Fkparceltype = Pakketype
+PackageParcelType = Defineres i ordlisten for pakketyper
+c_shipment_package_type = Pakketype
+Dangerousgoods = Farligt gods
+PackageExplosives = Eksplosiver
+PackageFlammableGases = Brandfarlige gasser
+PackageFlammableLiquids = Brandfarlige væsker
+PackageFlammableSolids = Brandfarlige faste stoffer
+PackageOxidizing = Oxiderende
+PackageToxicAndInfectious = Giftige og smittefarlige
+PackageRadioactive = Radioaktive
+PackageCorrosives = Ætsende
+PackageMiscellaneous = Diverse
+Taillift = Læssebagsmæk
+PackageTailLiftRequired = Læssebagsmæk er påkrævet
+ProductLotBatch = Lot/Serienummer
+CreatePackage = Opret pakke
+TrackingUrl = Sporings-URL
+ConfirmCloseShipmentPackage = Bekræft lukning af forsendelsespakke.
+ConfirmReOpenShipmentPackage = Er du sikker på, at du vil genåbne denne pakke?
+AddToPackage = Tilføj til pakke %s
+ShipmentPackageWeightNotAutoCalculated = Vægten blev ikke beregnet automatisk, fordi ikke alle produkter i denne pakke har en defineret vægt. Angiv venligst vægten manuelt, eller udfyld de manglende produktvægte.
+
+#
+# Sample widget
+#
+MyWidget = Min widget
+MyWidgetDescription = Beskrivelse af min widget
+
+#
+# doc
+#
+PdfTitle = Pakke
