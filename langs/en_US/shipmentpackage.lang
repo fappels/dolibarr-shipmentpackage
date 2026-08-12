@@ -44,6 +44,7 @@ ShipmentPackageAboutPage = Shipment Package about page
 #
 # Sample page
 #
+ShipmentPackageArea = Shipment Package Area
 ReadShipmentPackage = Read objects of Shipment Package
 WriteShipmentPackage = Create/Update objects of Shipment Package
 DeleteShipmentPackage = Delete objects of Shipment Package

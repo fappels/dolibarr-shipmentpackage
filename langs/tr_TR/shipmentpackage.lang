@@ -44,6 +44,7 @@ ShipmentPackageAboutPage = Sevkiyat Paketi hakkında sayfası
 #
 # Sample page
 #
+ShipmentPackageArea = Sevkiyat Paket Alanı
 ReadShipmentPackage = Sevkiyat Paketinin nesnelerini oku
 WriteShipmentPackage = Sevkiyat Paketinin nesnelerini Oluştur/Güncelle
 DeleteShipmentPackage = Sevkiyat Paketinin nesnelerini sil
