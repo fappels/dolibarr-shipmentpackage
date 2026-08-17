@@ -1,0 +1,91 @@
+# Copyright (C) 2021       Francis Appels          <francis.appels@z-application.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#
+# Generic
+#
+
+# Module label 'ModuleShipmentPackageName'
+ModuleShipmentPackageName = Colis d'expédition
+# Module description 'ModuleShipmentPackageDesc'
+ModuleShipmentPackageDesc = Créer les colis d'expédition finaux à remettre au transporteur.
+
+#
+# Admin page
+#
+ShipmentPackageSetup = Configuration Colis d'expédition
+Settings = Paramètres
+ShipmentPackageSetupPage = page de configuration du Colis
+SHIPMENTPACKAGE_WAP_PACKAGEVALUE=Calculer la valeur totale du Colis à partir du WAP
+SHIPMENTPACKAGE_WAP_PACKAGEVALUETooltip=Calculer la valeur totale du colis à partir du prix moyen pondéré des produits, sinon calculer à partir du prix de vente du produit.
+ShipmentPackageDocumentModules = Modèles de documents des colis d'expédition
+ShipmentPackageNumberingModules = Modèles de numérotation des colis d'expédition
+DocumentModelLabelPDF = Modèle PDF de l'étiquette d'expédition
+
+#
+# About page
+#
+About = À propos
+ShipmentPackageAbout = À propos de Colis d'expédition
+ShipmentPackageAboutPage = Page à propos de Colis d'expédition
+
+#
+# Sample page
+#
+ShipmentPackageArea = Zone de colis d'expédition
+ReadShipmentPackage = Lire les objets de Colis d'expédition
+WriteShipmentPackage = Créer/Modifier les objets de Colis d'expédition
+DeleteShipmentPackage = Supprimer les objets de Colis d'expédition
+ShipmentPackage = Colis d'expédition
+New_ShipmentPackage = Nouveau colis
+List_ShipmentPackage = Liste des colis
+ValueOfPackage = Valeur (prix du contenu, pour l'assurance et la douane)
+TransportSupplier = Fournisseur de transport
+LinkToTransporter = Fournisseur qui effectue le transport et facture l'expédition.
+LinkToThirparty = Client qui reçoit le colis.
+ShipmentPackageRefSupplier = Référence d'expédition fournisseur (numéro de suivi)
+Fkparceltype = Type de colis
+PackageParcelType = À définir dans le dictionnaire des types de colis
+c_shipment_package_type = Type de colis
+Dangerousgoods = Marchandises dangereuses
+PackageExplosives = Explosifs
+PackageFlammableGases = Gaz inflammables
+PackageFlammableLiquids = Liquides inflammables
+PackageFlammableSolids = Solides inflammables
+PackageOxidizing = Comburants
+PackageToxicAndInfectious = Toxiques et infectieux
+PackageRadioactive = Radioactifs
+PackageCorrosives = Corrosifs
+PackageMiscellaneous = Divers
+Taillift = Hayon élévateur
+PackageTailLiftRequired = Hayon élévateur requis
+ProductLotBatch = Lot/Série
+CreatePackage = Créer le colis
+TrackingUrl = URL de suivi
+ConfirmCloseShipmentPackage = Confirmer la clôture du colis d'expédition.
+ConfirmReOpenShipmentPackage = Êtes-vous sûr de vouloir rouvrir ce colis ?
+AddToPackage = Ajouter au colis %s
+ShipmentPackageWeightNotAutoCalculated = Le poids n'a pas été calculé automatiquement car tous les produits de ce colis n'ont pas de poids défini. Veuillez saisir le poids manuellement ou compléter les poids de produits manquants.
+
+#
+# Sample widget
+#
+MyWidget = Mon widget
+MyWidgetDescription = Description de mon widget
+
+#
+# doc
+#
+PdfTitle = Colis

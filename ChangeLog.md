@@ -1,5 +1,18 @@
 # CHANGELOG SHIPMENTPACKAGE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
+## 1.0.14
+- Add a user guide.in module description and Shipment Package Area.
+
+## 1.0.13
+- Tested on Dolibarr 24
+- Fix possible sql error when list hook is used.
+- Add backtopageforcancel for shipment actionbuttons.
+- Improve get free line description.
+- Add lot number on label and fix show barcode (Only show on page one and not show blank space if no barcode shown).
+- Only auto calculate total weight if all products have weight set.
+- Add missing translation keys.
+- Add extra languages.
+
 ## 1.0.12
 - Remove setup for SHIPMENTPACKAGE_EMPTY_WEIGHT.
 - Fix create package from shipment CSRF.

@@ -1,0 +1,91 @@
+# Copyright (C) 2021       Francis Appels          <francis.appels@z-application.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#
+# Generic
+#
+
+# Module label 'ModuleShipmentPackageName'
+ModuleShipmentPackageName = Paquetes de envío
+# Module description 'ModuleShipmentPackageDesc'
+ModuleShipmentPackageDesc = Cree los paquetes de envío finales para entregar al transportista.
+
+#
+# Admin page
+#
+ShipmentPackageSetup = Configuración Paquetes de envío
+Settings = Configuración
+ShipmentPackageSetupPage = Página de configuración del paquete
+SHIPMENTPACKAGE_WAP_PACKAGEVALUE=Calcular el valor total del paquete a partir del PMP
+SHIPMENTPACKAGE_WAP_PACKAGEVALUETooltip=Calcular el valor total del paquete a partir del precio medio ponderado de los productos, en caso contrario se calcula a partir del precio de venta del producto.
+ShipmentPackageDocumentModules = Modelos de documentos de paquetes de envío
+ShipmentPackageNumberingModules = Modelos de numeración de paquetes de envío
+DocumentModelLabelPDF = Plantilla PDF de etiqueta de envío
+
+#
+# About page
+#
+About = Acerca de
+ShipmentPackageAbout = Acerca de Paquetes de envío
+ShipmentPackageAboutPage = Página acerca de Paquetes de envío
+
+#
+# Sample page
+#
+ShipmentPackageArea = Área de Paquetes de envío
+ReadShipmentPackage = Leer objetos de Paquete de envío
+WriteShipmentPackage = Crear/actualizar objetos de Paquete de envío
+DeleteShipmentPackage = Eliminar objetos de Paquete de envío
+ShipmentPackage = Paquetes de envío
+New_ShipmentPackage = Nuevo paquete
+List_ShipmentPackage = Lista de paquetes
+ValueOfPackage = Valor (precio del contenido, para seguro y aduanas)
+TransportSupplier = Proveedor de transporte
+LinkToTransporter = Proveedor que realiza el transporte y factura el envío.
+LinkToThirparty = Cliente que recibe el paquete.
+ShipmentPackageRefSupplier = Referencia de envío del proveedor (número de seguimiento)
+Fkparceltype = Tipo de paquete
+PackageParcelType = A definir en el diccionario de tipos de paquete
+c_shipment_package_type = Tipo de paquete
+Dangerousgoods = Mercancías peligrosas
+PackageExplosives = Explosivos
+PackageFlammableGases = Gases inflamables
+PackageFlammableLiquids = Líquidos inflamables
+PackageFlammableSolids = Sólidos inflamables
+PackageOxidizing = Comburentes
+PackageToxicAndInfectious = Tóxicos e infecciosos
+PackageRadioactive = Radiactivos
+PackageCorrosives = Corrosivos
+PackageMiscellaneous = Varios
+Taillift = Plataforma elevadora trasera
+PackageTailLiftRequired = Se requiere plataforma elevadora trasera
+ProductLotBatch = Lote/Serie
+CreatePackage = Crear paquete
+TrackingUrl = URL de seguimiento
+ConfirmCloseShipmentPackage = Confirmar el cierre del paquete de envío.
+ConfirmReOpenShipmentPackage = ¿Está seguro de que desea reabrir este paquete?
+AddToPackage = Añadir al paquete %s
+ShipmentPackageWeightNotAutoCalculated = El peso no se calculó automáticamente porque no todos los productos de este paquete tienen un peso definido. Establezca el peso manualmente o complete los pesos de producto que faltan.
+
+#
+# Sample widget
+#
+MyWidget = Mi widget
+MyWidgetDescription = Descripción de mi widget
+
+#
+# doc
+#
+PdfTitle = Paquete

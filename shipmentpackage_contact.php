@@ -90,24 +90,28 @@ include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be includ
 
 $permission = $user->rights->shipmentpackage->shipmentpackage->write;
 $origin = 'shipping';
-$object->origin = $origin;
-$object->fetchObjectLinked();
+// search only links where $object is the target, to avoid the deprecated $object->origin property
+$object->fetchObjectLinked(null, '', $object->id, $object->getElementType());
+$expeditions = array();
+$objectsrcs = array();
 if (!empty($object->linkedObjectsIds[$origin])) {
-	$originIds = $object->linkedObjectsIds[$origin];
-	$originid = array_pop($originIds);
-	$object->origin_id = $originid;
-	$object->fetch_origin();
-	$expedition = $object->expedition;
-	$origin = 'commande';
-	$expedition->origin = $origin;
-	$expedition->fetchObjectLinked();
-	$originIds = $expedition->linkedObjectsIds[$origin];
-	$originid = array_pop($originIds);
-	$expedition->origin_id = $originid;
-	$expedition->fetch_origin();
-	$objectsrc = $expedition->commande;
-} else {
-	$objectsrc = null;
+	foreach ($object->linkedObjectsIds[$origin] as $originid) {
+		$expedition = new Expedition($db);
+		if ($expedition->fetch($originid) > 0) {
+			$expeditions[$expedition->id] = $expedition;
+
+			// search only links where $expedition is the target (its origin order), same reasoning as above
+			$expedition->fetchObjectLinked(null, '', $expedition->id, $expedition->getElementType());
+			if (!empty($expedition->linkedObjectsIds['commande'])) {
+				foreach ($expedition->linkedObjectsIds['commande'] as $commandeid) {
+					$commande = new Commande($db);
+					if ($commande->fetch($commandeid) > 0) {
+						$objectsrcs[$commande->id] = $commande;
+					}
+				}
+			}
+		}
+	}
 }
 
 // Security check (enable the most restrictive one)

@@ -27,8 +27,8 @@ ModuleShipmentPackageDesc = Taşıyıcıya teslim edilecek son sevkiyat paketler
 #
 ShipmentPackageSetup = Sevkiyat Paketi kurulumu
 Settings = Ayarlar
-ShipmentPackageSetupPage = Palet kurulum sayfası
-SHIPMENTPACKAGE_WAP_PACKAGEVALUE=WAP'tan toplam Giden Palet değerini hesaplayın
+ShipmentPackageSetupPage = Paket kurulum sayfası
+SHIPMENTPACKAGE_WAP_PACKAGEVALUE=WAP'tan toplam Paket değerini hesaplayın
 SHIPMENTPACKAGE_WAP_PACKAGEVALUETooltip=Ürünlerin ağırlıklı ortalama fiyatından hesaplanan toplam paket değeri, hesaplandığında ürün satış fiyatından hesaplanır.
 ShipmentPackageDocumentModules = Sevkiyat paketi belge modelleri
 ShipmentPackageNumberingModules = Sevkiyat paketi numaralandırma modelleri
@@ -44,6 +44,7 @@ ShipmentPackageAboutPage = Sevkiyat Paketi hakkında sayfası
 #
 # Sample page
 #
+ShipmentPackageArea = Sevkiyat Paket Alanı
 ReadShipmentPackage = Sevkiyat Paketinin nesnelerini oku
 WriteShipmentPackage = Sevkiyat Paketinin nesnelerini Oluştur/Güncelle
 DeleteShipmentPackage = Sevkiyat Paketinin nesnelerini sil
@@ -76,6 +77,7 @@ TrackingUrl = Takip Url'si
 ConfirmCloseShipmentPackage = Sevkiyat paketinin kapandığını onaylayın.
 ConfirmReOpenShipmentPackage = Bu paketi tekrar açmak istediğine emin misin?
 AddToPackage = Pakete ekle %s
+ShipmentPackageWeightNotAutoCalculated = Bu paketteki tüm ürünlerin ağırlığı tanımlanmadığı için ağırlık otomatik olarak hesaplanmadı. Lütfen ağırlığı manuel olarak ayarlayın veya eksik ürün ağırlıklarını girin.
 
 #
 # Sample widget

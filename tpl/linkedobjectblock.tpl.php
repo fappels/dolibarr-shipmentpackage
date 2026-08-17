@@ -55,20 +55,9 @@ foreach ($linkedObjectBlock as $key => $objectlink) {
 		if ($user->rights->commande->lire && is_array($objectlink->lines)) {
 			$lineTotal = 0;
 			foreach ($objectlink->lines as $packageLine) {
-				dol_include_once('/expedition/class/expedition.class.php');
-				dol_include_once('/commande/class/commande.class.php');
-				$shipmentLine = new ExpeditionLigne($db);
-				$shipmentLine->fetch($packageLine->fk_origin_line);
-				if ($shipmentLine->id > 0) {
-					$orderLine = new OrderLine($db);
-					if ((int) DOL_VERSION < 20) {
-						$orderLine->fetch($shipmentLine->fk_origin_line);
-					} else {
-						$orderLine->fetch($shipmentLine->fk_elementdet);
-					}
-					if ($orderLine->id > 0) {
-						$lineTotal = $lineTotal + ($orderLine->subprice * $packageLine->qty);
-					}
+				$orderLine = ShipmentPackageLine::getOrderLineFromShipmentLineId($db, $packageLine->fk_origin_line);
+				if ($orderLine) {
+					$lineTotal = $lineTotal + ($orderLine->subprice * $packageLine->qty);
 				}
 			}
 			$total = $total + $lineTotal;

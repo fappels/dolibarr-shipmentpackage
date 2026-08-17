@@ -1,0 +1,91 @@
+# Copyright (C) 2021       Francis Appels          <francis.appels@z-application.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#
+# Generic
+#
+
+# Module label 'ModuleShipmentPackageName'
+ModuleShipmentPackageName = Pachete de expediere
+# Module description 'ModuleShipmentPackageDesc'
+ModuleShipmentPackageDesc = Creați pachetele finale de expediere pentru predare către transportator.
+
+#
+# Admin page
+#
+ShipmentPackageSetup = Configurare Pachete de expediere
+Settings = Setări
+ShipmentPackageSetupPage = Pagină de configurare a pachetului
+SHIPMENTPACKAGE_WAP_PACKAGEVALUE=Calculează valoarea totală a pachetului pe baza PMP
+SHIPMENTPACKAGE_WAP_PACKAGEVALUETooltip=Calculează valoarea totală a pachetului pe baza prețului mediu ponderat al produselor, altfel se calculează pe baza prețului de vânzare al produsului.
+ShipmentPackageDocumentModules = Modele de documente pentru pachete de expediere
+ShipmentPackageNumberingModules = Modele de numerotare pentru pachete de expediere
+DocumentModelLabelPDF = Model PDF etichetă de expediere
+
+#
+# About page
+#
+About = Despre
+ShipmentPackageAbout = Despre Pachete de expediere
+ShipmentPackageAboutPage = Pagină despre Pachete de expediere
+
+#
+# Sample page
+#
+ShipmentPackageArea = Zonă Pachete de expediere
+ReadShipmentPackage = Citire obiecte Pachet de expediere
+WriteShipmentPackage = Creare/actualizare obiecte Pachet de expediere
+DeleteShipmentPackage = Ștergere obiecte Pachet de expediere
+ShipmentPackage = Pachete de expediere
+New_ShipmentPackage = Pachet nou
+List_ShipmentPackage = Listă de pachete
+ValueOfPackage = Valoare (prețul conținutului, pentru asigurare și vamă)
+TransportSupplier = Furnizor de transport
+LinkToTransporter = Furnizorul care efectuează transportul și facturează expedierea.
+LinkToThirparty = Client care primește pachetul.
+ShipmentPackageRefSupplier = Referință de expediere furnizor (număr de urmărire)
+Fkparceltype = Tip de colet
+PackageParcelType = A se defini în dicționarul tipurilor de colete
+c_shipment_package_type = Tip de colet
+Dangerousgoods = Mărfuri periculoase
+PackageExplosives = Explozivi
+PackageFlammableGases = Gaze inflamabile
+PackageFlammableLiquids = Lichide inflamabile
+PackageFlammableSolids = Solide inflamabile
+PackageOxidizing = Oxidante
+PackageToxicAndInfectious = Toxice și infecțioase
+PackageRadioactive = Radioactive
+PackageCorrosives = Corozive
+PackageMiscellaneous = Diverse
+Taillift = Platformă hidraulică
+PackageTailLiftRequired = Platformă hidraulică necesară
+ProductLotBatch = Lot/Serie
+CreatePackage = Creare pachet
+TrackingUrl = URL de urmărire
+ConfirmCloseShipmentPackage = Confirmați închiderea pachetului de expediere.
+ConfirmReOpenShipmentPackage = Sigur doriți să redeschideți acest pachet?
+AddToPackage = Adaugă la pachetul %s
+ShipmentPackageWeightNotAutoCalculated = Greutatea nu a fost calculată automat deoarece nu toate produsele din acest pachet au o greutate definită. Vă rugăm să setați greutatea manual sau să completați greutățile produselor lipsă.
+
+#
+# Sample widget
+#
+MyWidget = Widget-ul meu
+MyWidgetDescription = Descrierea widget-ului meu
+
+#
+# doc
+#
+PdfTitle = Pachet

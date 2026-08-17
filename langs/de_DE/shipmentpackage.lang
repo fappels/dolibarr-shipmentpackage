@@ -1,0 +1,91 @@
+# Copyright (C) 2021       Francis Appels          <francis.appels@z-application.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#
+# Generic
+#
+
+# Module label 'ModuleShipmentPackageName'
+ModuleShipmentPackageName = Versandpakete
+# Module description 'ModuleShipmentPackageDesc'
+ModuleShipmentPackageDesc = Erstellen Sie endgültige Versandpakete zur Übergabe an den Spediteur.
+
+#
+# Admin page
+#
+ShipmentPackageSetup = Einrichtung Versandpakete
+Settings = Einstellungen
+ShipmentPackageSetupPage = Seite zur Paketkonfiguration
+SHIPMENTPACKAGE_WAP_PACKAGEVALUE=Gesamtwert des Pakets anhand des gewichteten Durchschnittspreises berechnen
+SHIPMENTPACKAGE_WAP_PACKAGEVALUETooltip=Gesamtwert des Pakets anhand des gewichteten Durchschnittspreises der Produkte berechnen, andernfalls Berechnung anhand des Verkaufspreises des Produkts.
+ShipmentPackageDocumentModules = Dokumentmodelle Versandpakete
+ShipmentPackageNumberingModules = Nummerierungsmodelle Versandpakete
+DocumentModelLabelPDF = PDF-Vorlage Versandetikett
+
+#
+# About page
+#
+About = Über
+ShipmentPackageAbout = Über Versandpakete
+ShipmentPackageAboutPage = Über-Seite Versandpakete
+
+#
+# Sample page
+#
+ShipmentPackageArea = Bereich Versandpakete
+ReadShipmentPackage = Objekte von Versandpaket lesen
+WriteShipmentPackage = Objekte von Versandpaket erstellen/bearbeiten
+DeleteShipmentPackage = Objekte von Versandpaket löschen
+ShipmentPackage = Versandpakete
+New_ShipmentPackage = Neues Paket
+List_ShipmentPackage = Liste der Pakete
+ValueOfPackage = Wert (Preis des Inhalts, für Versicherung & Zoll)
+TransportSupplier = Versanddienstleister
+LinkToTransporter = Lieferant, der den Transport durchführt und den Versand in Rechnung stellt.
+LinkToThirparty = Kunde, der das Paket erhält.
+ShipmentPackageRefSupplier = Versandreferenz des Lieferanten (Sendungsnummer)
+Fkparceltype = Pakettyp
+PackageParcelType = Im Wörterbuch der Pakettypen zu definieren
+c_shipment_package_type = Pakettyp
+Dangerousgoods = Gefahrgut
+PackageExplosives = Explosivstoffe
+PackageFlammableGases = Entzündbare Gase
+PackageFlammableLiquids = Entzündbare Flüssigkeiten
+PackageFlammableSolids = Entzündbare feste Stoffe
+PackageOxidizing = Oxidierend
+PackageToxicAndInfectious = Giftig und ansteckungsgefährlich
+PackageRadioactive = Radioaktiv
+PackageCorrosives = Ätzend
+PackageMiscellaneous = Sonstiges
+Taillift = Ladebordwand
+PackageTailLiftRequired = Ladebordwand erforderlich
+ProductLotBatch = Los/Serie
+CreatePackage = Paket erstellen
+TrackingUrl = Tracking-URL
+ConfirmCloseShipmentPackage = Schließen des Versandpakets bestätigen.
+ConfirmReOpenShipmentPackage = Sind Sie sicher, dass Sie dieses Paket wieder öffnen möchten?
+AddToPackage = Zu Paket %s hinzufügen
+ShipmentPackageWeightNotAutoCalculated = Das Gewicht wurde nicht automatisch berechnet, da nicht für alle Produkte in diesem Paket ein Gewicht definiert ist. Bitte legen Sie das Gewicht manuell fest oder ergänzen Sie die fehlenden Produktgewichte.
+
+#
+# Sample widget
+#
+MyWidget = Mein Widget
+MyWidgetDescription = Beschreibung meines Widgets
+
+#
+# doc
+#
+PdfTitle = Paket

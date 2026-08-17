@@ -215,49 +215,52 @@ if (empty($reshook)) {
 	// link object and replicate extrafield, contacts and lines
 	// if view and origin set means add new shipment to object
 	if (($action == 'add' || $action == 'view') && $origin == 'shipping' && !empty($originid)) {
-		// link object
-		$object_module = $object->module;
-		$object->module = null; //avoid to have add module name to element, because module element name already in element
-		$object->module = $object_module;
-		if ($object->add_object_linked($origin, $originid, $user) > 0) {
-			// Replicate extrafields
-			$objectsrc->fetch_optionals();
-			$object->array_options = $objectsrc->array_options;
+		// Check if this origin is already linked, to avoid re-linking and re-adding lines on form resubmission (double-click, browser back + resend)
+		$object->fetchObjectLinked();
+		$alreadyLinked = !empty($object->linkedObjectsIds[$origin]) && in_array($originid, $object->linkedObjectsIds[$origin]);
 
-			// Repicate notes
-			$object->note_private = $object->getDefaultCreateValueFor('note_private', (!empty($objectsrc->note_private) ? $objectsrc->note_private : null));
-			$object->note_public = $object->getDefaultCreateValueFor('note_public', (!empty($objectsrc->note_public) ? $objectsrc->note_public : null));
-		}
-		// Replicate source contacts list
-		// TODO add shipmentpackage type contact
-		/*$objectsrc->fetch_origin();
-		$srccontactslist = $objectsrc->commande->liste_contact(-1, 'external', 0, 'SHIPPING');
-		if (is_array($srccontactslist) && count($srccontactslist) > 0) {
-			foreach ($srccontactslist as $key => $srccontact) {
-				$object->add_contact($srccontact['id'], $srccontact['code'], 'external');
+		if (!$alreadyLinked) {
+			// link object
+			if ($object->add_object_linked($origin, $originid, $user) > 0) {
+				// Replicate extrafields
+				$objectsrc->fetch_optionals();
+				$object->array_options = $objectsrc->array_options;
+
+				// Repicate notes
+				$object->note_private = $object->getDefaultCreateValueFor('note_private', (!empty($objectsrc->note_private) ? $objectsrc->note_private : null));
+				$object->note_public = $object->getDefaultCreateValueFor('note_public', (!empty($objectsrc->note_public) ? $objectsrc->note_public : null));
 			}
-		}*/
-		if (!empty($objectsrc) && is_array($toSelect) && count($toSelect) > 0) {
-			if (empty($objectsrc->lines) && method_exists($objectsrc, 'fetch_lines')) {
-				$objectsrc->fetch_lines();
-			}
-			foreach ($toSelect as $expeditionDetId) {
-				foreach ($objectsrc->lines as $key => $line) {
-					if (!empty($line->detail_batch)) {
-						foreach ($line->detail_batch as $batch) {
-							if ($batch->id == $expeditionDetId) {
-								foreach ($originLineIds as $originLineId) {
-									if ($originLineId == $expeditionDetId) {
-										$object->addLine($user, $lineQtys[$key], $line->fk_product, $line->id, $batch->batch, $batch->id);
+			// Replicate source contacts list
+			// TODO add shipmentpackage type contact
+			/*$objectsrc->fetch_origin();
+			$srccontactslist = $objectsrc->commande->liste_contact(-1, 'external', 0, 'SHIPPING');
+			if (is_array($srccontactslist) && count($srccontactslist) > 0) {
+				foreach ($srccontactslist as $key => $srccontact) {
+					$object->add_contact($srccontact['id'], $srccontact['code'], 'external');
+				}
+			}*/
+			if (!empty($objectsrc) && is_array($toSelect) && count($toSelect) > 0) {
+				if (empty($objectsrc->lines) && method_exists($objectsrc, 'fetch_lines')) {
+					$objectsrc->fetch_lines();
+				}
+				foreach ($toSelect as $expeditionDetId) {
+					foreach ($objectsrc->lines as $key => $line) {
+						if (!empty($line->detail_batch)) {
+							foreach ($line->detail_batch as $keyBatch =>$batch) {
+								if ($batch->id == $expeditionDetId) {
+									foreach ($originLineIds as $originLineId) {
+										if ($originLineId == $expeditionDetId) {
+											$object->addLine($user, $lineQtys[$keyBatch], $line->fk_product, $line->id, $batch->batch, $batch->id);
+										}
 									}
 								}
 							}
-						}
-					} else {
-						if ($line->id == $expeditionDetId) {
-							foreach ($originLineIds as $originLineId) {
-								if ($originLineId == $expeditionDetId) {
-									$object->addLine($user, $lineQtys[$key], $line->fk_product, $line->id);
+						} else {
+							if ($line->id == $expeditionDetId) {
+								foreach ($originLineIds as $originLineId) {
+									if ($originLineId == $expeditionDetId) {
+										$object->addLine($user, $lineQtys[$key], $line->fk_product, $line->id);
+									}
 								}
 							}
 						}
