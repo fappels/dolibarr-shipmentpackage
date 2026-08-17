@@ -104,6 +104,11 @@ llxHeader("", $langs->trans("ShipmentPackageArea"));
 
 print load_fiche_titre($langs->trans("ShipmentPackageArea"), '', 'shipmentpackage.png@shipmentpackage');
 
+// Show module long description (from README-<language>.md, README-<language short code>.md or README.md)
+dol_include_once('/shipmentpackage/core/modules/modShipmentPackage.class.php');
+$tmpmodule = new modShipmentPackage($db);
+print $tmpmodule->getDescLong();
+
 print '<div class="fichecenter"><div class="fichethirdleft">';
 
 
